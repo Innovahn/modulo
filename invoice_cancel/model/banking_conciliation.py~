@@ -1,0 +1,142 @@
+# -*- coding: utf-8 -*-
+from openerp import models, api
+from openerp.osv import fields, osv
+import openerp.addons.decimal_precision as dp
+from datetime import datetime
+from openerp.tools.translate import _
+import time
+from itertools import ifilter
+
+
+class banking_conciliation(osv.Model):
+	_order = 'date desc'
+	_name = 'banks.conciliation'
+	
+	def load_data_file(self, cr, uid, ids, context = None ):
+		dummy, view_id_form  = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'banks', 'banks_coda_import_view')
+		if not ids: return []
+		return {
+			'name':_("Import File"),
+			'view_type': 'form',
+		   	'res_model': 'banks.consiliation.coda.import',
+		    	'type': 'ir.actions.act_window',
+			'context': context,
+			'views': [(view_id_form, 'form')],
+			'nodestroy': True,
+		    	'target': 'new',
+		    	'domain': '[]'
+			}
+
+	def define_alias(self, cr, uid, ids, context = None):
+		dummy, view_id_form  = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'banks', 'view_banks_conciliation_config_form')
+		if not ids: return []
+		config_id = False
+		context = dict(context or {})
+		context.update({'conciliation_ref' : ids[0]})
+		for c in self.browse(cr, uid, ids, context = context):
+			print c.config_ref
+			print c.config_ref
+			config_id = c.config_ref.id
+		if not config_id:
+			config_id = False
+		return {
+			'name':_("Configuration"),
+			'view_type': 'form',
+		   	'res_model': 'banks.conciliation.config',
+		    	'type': 'ir.actions.act_window',
+			'context': context,
+			'views': [(view_id_form, 'form')],
+			'nodestroy': True,
+			'res_id' : config_id,
+		    	'target': 'new',
+		    	'domain': '[]'
+			}
+
+	
+
+	_columns = {
+		'date':fields.date('Date',  select=True,help="Effective date for accounting entries",required=True ),
+		'description': fields.char(string='Descripcion'),
+		'config_ref': fields.many2one('banks.conciliation.config', 'Configuration ref.',),
+		'state':fields.selection(
+		   	 [('draft','Draft'),
+			  ('conciliated','Concilitaed'),
+			  ('partial_conciliated','Partially Concilitaed'),
+		         ], 'Status'),
+		'conciliation_ids': fields.one2many('banks.conciliation.lines', 'conciliation_id', string="Conciliation lines", copy=False),
+
+	}
+
+
+class banking_conciliation_line(osv.Model):
+	_order = 'date desc'
+	_name = 'banks.conciliation.lines'
+	
+	
+	_columns = {
+		'date':fields.date('Date',  select=True,help="Effective date for accounting entries",required=True ),
+		'conciliation_id': fields.many2one('banks.conciliation', String='Reference', copy=False),
+		'reference': fields.char(string='Reference'),
+		'type': fields.char(string='Type'),
+		'debit': fields.float(string='Debit'),
+		'credit': fields.float(string='Credit'),
+		'mchecks_ref': fields.many2one('mcheck.mcheck', 'Mcheck ref.', copy=False),
+		'deposits_ref': fields.many2one('banks.deposits', 'Deposit ref.', copy=False),
+		'debit_credit_ref': fields.many2one('debit.credit', 'Debit-Credit Ref', copy=False),
+		'banks_transferences': fields.many2one('banks.transference', 'Transferences Ref', copy=False),
+
+	}
+
+class banking_conciliation_config(osv.Model):
+	_name = 'banks.conciliation.config'
+	
+	def update_and_load(self, cr, uid, ids, context = None):
+		dummy, view_id_form  = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'banks', 'view_banks_conciliation_form')
+		if not ids: return []
+		conc_id = None
+		context = dict(context or {})
+		con_pool =  self.pool.get('banks.conciliation')
+		con_pool.write(cr, uid, context.get('conciliation_ref',False),{'config_ref' : ids[0]}, context = context)
+		self.write(cr, uid, ids,{'conciliation_ref' : context.get('conciliation_ref',False)}, context = context)
+		return {
+			'name':_("Conciliation"),
+			'view_type': 'form',
+		   	'res_model': 'banks.conciliation',
+		    	'type': 'ir.actions.act_window',
+			'context': context,
+			'views': [(view_id_form, 'form')],
+			'nodestroy': True,
+			'res_id' : context.get('conciliation_ref',False),
+		    	'target': 'current',
+		    	'domain': '[]'
+			}
+
+	_columns = {
+		'conciliation_ref': fields.many2one('banks.conciliation', 'Conciliation ref.', copy=False),
+		'date':fields.integer(string='Debits Position'),
+		'debit': fields.integer(string='Debits Position'),
+		'credit': fields.integer(string='Credits Position'),
+		'amount': fields.integer(string='Amount Position'),
+		'reference': fields.integer(string='Reference Position'),
+		'type': fields.integer(string='Tipo Position'),
+		'debits': fields.one2many('banks.conciliation.config.lines','bank_config_id_debit',string="Debits Config"),
+		'credits': fields.one2many('banks.conciliation.config.lines','bank_config_id_credit',string="Credits Config"),
+		#'transferences': fields.one2many('banks.conciliation.config.lines','bank_config_id_trans',string="Transferences Config"),
+		#'mchecks': fields.one2many('banks.conciliation.config.lines','bank_config_id_mcheck',string="Checks Config"),
+		#'deposits': fields.one2many('banks.conciliation.config.lines','bank_config_id_deposit',string="Deposits Config"),
+	}
+
+
+class banking_conciliation_config_lines(osv.Model):
+	_name = 'banks.conciliation.config.lines'
+	
+	
+	_columns = {
+		'name': fields.char(string='Name'),
+		'bank_config_id_debit': fields.many2one('banks.conciliation.config', 'Reference', copy=False),
+		'bank_config_id_credit': fields.many2one('banks.conciliation.config', 'Reference', copy=False),
+		#'bank_config_id_mcheck': fields.many2one('banks.conciliation.config', 'Reference', copy=False),
+		#'bank_config_id_deposit': fields.many2one('banks.conciliation.config', 'Reference', copy=False),
+		#'bank_config_id_trans': fields.many2one('banks.conciliation.config', 'Reference', copy=False),
+		'description': fields.char(string='Descripcion'),
+	}

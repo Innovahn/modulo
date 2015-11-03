@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+   <data>
+  <!-- Vista Formulario de Contratos-->
+   <record model="ir.ui.view" id="contractsale_form_view">
+   <field name="name">contractsale.form</field>
+   <field name="model">contratos.contractsale</field>
+   <field name="arch" type="xml">
+     <form string="Contract Forms">
+         <header>
+		<button name="action_draft" type="object" string="Borrador" states="cancel"/>
+		<button name="action_cancel" type="object" string="Cancelar Contrato" states="draft,done" class="oe_highlight" confirm="¿Esta seguro que quiere cancelar el contrato?"/>
+		<button name="action_done" type="object" string="Confirmar Contrato" attrs="{'invisible':['|',('state', '=', 'cancel'),('state', '=', 'done')]}" class="oe_highlight"/>
+		<field name="state" widget="statusbar" nolabel="1"/>
+         </header>				
+          <sheet>  
+           <h1>
+              <field name="name" placeholder="No. de Contrato..." class="oe_inline"/>
+          </h1>
+          <group colspan="4">
+               <group cols="2">            
+                <field name="partner_id"/>
+                <field name="country"/>
+                <field name="project"/> 
+	      </group>
+	      <group cols="2">
+	            <field name="active" />	
+	            <field name="start_date"/>
+                    <field name="end_date"/> 
+	      </group>
+	   </group>		
+	      <notebook>
+	      <!-- Detalle Tecnico de Plantas -->
+	      <page string="Technical details">
+	        <form>
+	         <separator string="Technical details"/>
+	         <group colspan="4">
+	     		 <group cols="2">
+	      		    <field name="product_id"/> 
+	      		    <field name="monto_total"/> 
+	     	 	    <field name="currency_contract"/>
+	      		</group>
+	      		<group cols="2">
+	     		    <field name="amount_plants"/>
+		            <!--<field name="plantas_entregadas"/>-->
+	      		    <field name="add_plants"/>
+	        	</group>
+	         </group>
+		<group colspan="4">
+	     			<separator string="Anticipo de Contrato"/>
+		<field name="anticipo_cliente" nolabel="1" readonly="True" colspan="4" mode="tree">
+	             <tree colors="blue:state == 'draft';gray:state == 'cancel';red:audit" string="Recibos de Pago">
+                    <field name="date"/>
+                    <field name="number"/>
+                    <field name="reference"/>
+                    <field name="partner_id"/>
+                    <field name="journal_id" groups="account.group_account_user"/>
+                    <field name="type" invisible="context.get('visible', True)"/>
+                    <field name="amount" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree> 
+	            </field>
+	         </group>
+		
+		<separator string="Notas"/>
+	           <field name="description" colspan="4" placeholder="Agregue notas para este contrato..."  height="50"/>
+	      </form> 
+	     </page>
+	      <page string="Terminos de Pago">
+		<separator string="Pedido de Ventas"/>
+		<field name="ventas_ids" nolabel="1" readonly="True" colspan="4" mode="tree">
+	             <tree colors="blue:state == 'done'" string="Pedido de Ventas">
+	                 <field name="message_unread" invisible="1"/>
+                    <field name="name" string="Order Number"/>
+                    <field name="date_order"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+		    <field name="currency_id" groups="base.group_multi_currency"/>
+                    <field name="amount_total" sum="Total Tax Included"/>
+                    <field name="state"/>
+	             </tree> 
+	            </field> 
+	         <separator string="Proyección de Cobros"/>	 
+	          <field name="account_invoice_ids" nolabel="1" readonly="True" colspan="4" mode="tree">
+	             <tree colors="blue:state == 'draft';black:state in ('proforma','proforma2','open');gray:state == 'cancel'" string="Invoice">
+	               <field name="number"/>
+	               <field name="date_invoice"/>
+			<field name="origin"/>
+			<field name="residual" sum="Residual Amount"/>
+	               <field name="amount_total" sum="Total de Ventas" />
+	               <field name="currency_id" groups="base.group_multi_currency"/>
+	              <field name="state"/>
+	             </tree> 
+	            </field> 
+	      </page> 
+<!--Entrega parciales-->
+		<page string="Entrega de Plantas">
+	          <separator string="Planificación de entrega"/>	 
+	        <field name="entrega_move" nolabel="1" readonly="True" colspan="4" mode="tree">
+	          <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+                    <field name="name"/>
+                    <field name="location_id"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="min_date"/>
+                    <field name="origin"/>
+                    <!--<field name="backorder_id"/>-->
+                    <field name="state"/>
+			<field name="quantity_total" string="No. de Plantas" sum="Total de plantas"/>
+                    <field name="priority"/>
+                 </tree>   
+	  </field> 
+	     </page>
+	</notebook>
+	</sheet>     
+     </form>
+   </field> 
+   </record>  
+   <!-- Fin de Vista form  -->
+   <!--  Vista Tree Contratos-->
+    <record model="ir.ui.view" id="curso_tree_view">
+   <field name="name">contractsale.tree</field>
+   <field name="model">contratos.contractsale</field>
+   <field name="arch" type="xml">
+       <tree string="Lista de Contracts" colors="blue:state == 'draft';red:state == 'cancel'">
+             <field name="name"/>
+             <field name="partner_id"/>
+             <field name="country"/>
+             <field name="start_date"/>
+             <field name="end_date"/>
+             <field name="project"/>
+	    <field name="monto_total"/> 	
+            <field name="currency_contract"/> 
+	    <field name="state"/>
+       </tree>
+   </field> 
+   </record> 
+   <!--  Accion para Contratos -->
+   <record model="ir.actions.act_window" id="contract_action">
+   <field name="name">Contracts</field>
+   <field name="res_model">contratos.contractsale</field>
+   <field name="view_type">form</field>
+   <field name="view_model">tree,form,calendar</field>
+   <field name="help" type="html">
+   <p class="oe_view_nocontent_create">Create first contract</p>
+   </field>
+   </record>
+   <!-- Fin de Action de Contratos -->
+     <!--  Menu Principal de contratos-->
+   <menuitem name="Contract Information" sequence="5" id="menu_gestion_contract_padre" parent="base.menu_sales" action="contract_action"/>
+   </data>
+</openerp>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

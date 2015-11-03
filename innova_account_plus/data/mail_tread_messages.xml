@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <!-- mcheck subtypes for messaging / Chatter -->
+        <record id="account_plus_state_change" model="mail.message.subtype">
+            <field name="name">Status Change</field>
+            <field name="res_model">account.exchange.difference</field>
+            <field name="default" eval="False"/>
+            <field name="description">Status changed</field>
+        </record>
+
+	   <record id="account_plus_recalculate_change" model="mail.message.subtype">
+            <field name="name">Lines Recalculate</field>
+            <field name="res_model">account.exchange.difference</field>
+            <field name="default" eval="False"/>
+            <field name="description">Total changed</field>
+        </record>
+
+	
+    </data>
+</openerp>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="account_invoice_pricelist_form_view_inh">
+			<field name="name">account.invoice.pricelist.form.inh</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='currency_id']" position="replace" >
+					<field name="currency_id" on_change="onchange_currency_id(currency_id,last_curr_used,invoice_line, date_invoice, context)"/>
+				</xpath>
+				<xpath expr="//field[@name='currency_id']" position="after" >
+					<field name="last_curr_used" invisible="1"/>
+				</xpath>
+				<xpath expr="//field[@name='currency_id']" position="after" >
+					<field name="price_updated" invisible="1" />
+				</xpath>
+				<!--<field name="invoice_line" position="before">
+					<button name="update_prices" string="Update Prices" type="object" attrs="{'invisible':[('price_updated','=',True)]}"/>
+				</field>-->
+			
+			</field>
+		</record>
+
+
+
+		<record model="ir.ui.view" id="account_invoice_pricelist_invoice_form_inh">
+			<field name="name">account.invoice.pricelist.form.inh</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='currency_id']" position="replace" >
+					<field name="currency_id" on_change="onchange_currency_id(currency_id,last_curr_used,invoice_line, date_invoice, context)"/>
+				</xpath>
+				<xpath expr="//field[@name='currency_id']" position="after" >
+					<field name="last_curr_used" invisible="1"/>
+				</xpath>
+				<xpath expr="//field[@name='currency_id']" position="after" >
+					<field name="price_updated" invisible="1"/>
+				</xpath>
+				<!--<field name="invoice_line" position="before">
+					<button name="update_prices" string="Update Prices" type="object" attrs="{'invisible':[('price_updated','=',True)]}"/>
+				</field>-->
+			
+			</field>
+		</record>
+		
+
+	</data>
+</openerp>

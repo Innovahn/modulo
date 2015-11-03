@@ -1,0 +1,32 @@
+# -*- encoding: utf-8 -*-
+from openerp import models, fields, api
+from datetime import datetime, date
+
+class sale_type_entrega(models.Model):
+    _name="sale.type.entrega"
+    _rec_name=fields.Char("Tipo de entrega")
+
+class Sale_order_quotation(models.Model):
+    _inherit="sale.order"
+    week_sowing=fields.Integer(string="Semanas de Siembra")
+    plantas_ha=fields.Float(string="Plantas/Ha")
+    hectareas_siembra=fields.Float(string="Hectareas de siembra")
+    year_start=fields.Date(string="Año inicio de Siembra")
+    year_siembra_start=fields.Char(string="Año inicio de Siembra")
+    weeK_start=fields.Date(string="Semana Inicio Siembra")
+    week_start_siembra=fields.Char(string="Semana Inicio Siembra")
+    tipo_entrega=fields.Many2one("sale.type.entrega", "Tipo de entrega")
+    @api.onchange('year_start','weeK_start')
+
+    def _get_year_start(self):
+        #vdate= datetime.now()
+        vdate1=datetime.strptime(self.year_start,"%Y-%m-%d")
+        self.year_siembra_start=str(vdate1.isocalendar()[1])
+        vdate2=datetime.strptime(self.weeK_start,"%Y-%m-%d")
+        self.week_start_siembra=str(vdate2.isocalendar()[1])
+       
+    _defaults = {        
+                 'year_start':datetime.now(),
+                 'weeK_start':datetime.now(),
+                }
+

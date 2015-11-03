@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report id="product.report_product_label" model="product.product" name="product.product.label" string="Products Labels" xml="product_label/views/labels_fields.xml" xsl="product_label/views/product_label.xsl"/>
+
+
+	<record id="product.report_product_label" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="product_label.paperformat_product_label"/>
+        </record>
+	
+    </data>
+</openerp>

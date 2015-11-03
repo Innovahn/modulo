@@ -1,0 +1,451 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* innova_stock_plus
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-10 15:38+0000\n"
+"PO-Revision-Date: 2015-07-10 15:38+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_account_move
+msgid "Account Entry"
+msgstr "Asiento contable"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.transfer:innova_stock_plus.scrap_form_view
+msgid "Are you sure you want to Transfer?"
+msgstr "¿Seguro que desea realizar la Transferencia?"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.invoices:innova_stock_plus.invoice_Refund_form_view
+msgid "Are you sure you want to create Invoice?"
+msgstr "¿Seguro que desea crear una Factura?"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.invoices:innova_stock_plus.invoice_Refund_form_view
+#: view:innova_stock_plus.transfer:innova_stock_plus.scrap_form_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: innova_stock_plus
+#: view:sale.order:innova_stock_plus.view_innova_stock_plus_sale_order_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: innova_stock_plus
+#: view:sale.order:innova_stock_plus.view_innova_stock_plus_sale_order_form
+msgid "Confirm Sale"
+msgstr "Confirmar venta"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.invoices:innova_stock_plus.invoice_Refund_form_view
+msgid "Create"
+msgstr "Crear"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.invoices,create_uid:0
+#: field:innova_stock_plus.transfer,create_uid:0
+#: field:innova_stock_plus.transfer_line,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.invoices,create_date:0
+#: field:innova_stock_plus.transfer,create_date:0
+#: field:innova_stock_plus.transfer_line,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: innova_stock_plus
+#: model:ir.actions.act_window,name:innova_stock_plus.action_credit_note
+#: model:ir.ui.menu,name:innova_stock_plus.menu_credit_note
+#: view:sale.order:innova_stock_plus.view_innova_stock_plus_sale_order_form
+msgid "Credit Note"
+msgstr "Nota de crédito"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.invoices,partner_id:0
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:372
+#, python-format
+msgid "Define an expense account for this product: \"%s\" (id:%d)."
+msgstr "Definir una cuenta de gastos para este producto: \"%s\" (id:%d)."
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/wizard/invoices.py:87
+#, python-format
+msgid "Define purchase journal for this company: \"%s\" (id:%d)."
+msgstr "Definir diario de compras para esta empresa: \"%s\" (id:%d)."
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer,oe_destino:0
+msgid "Destino"
+msgstr "Destino"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:109
+#: code:addons/innova_stock_plus/model/stock_picking.py:122
+#: code:addons/innova_stock_plus/model/stock_picking.py:372
+#: code:addons/innova_stock_plus/wizard/invoices.py:87
+#: code:addons/innova_stock_plus/wizard/transfer.py:13
+#: code:addons/innova_stock_plus/wizard/transfer.py:18
+#, python-format
+msgid "Error!"
+msgstr "Error!"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.invoices,id:0
+#: field:innova_stock_plus.transfer,id:0
+#: field:innova_stock_plus.transfer_line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:545
+#: code:addons/innova_stock_plus/model/stock_picking.py:617
+#: code:addons/innova_stock_plus/wizard/invoices.py:27
+#: code:addons/innova_stock_plus/wizard/invoices.py:53
+#: model:ir.model,name:innova_stock_plus.model_account_invoice
+#, python-format
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Línea de factura"
+
+#. module: innova_stock_plus
+#: view:account.invoice:innova_stock_plus.view_innova_stock_plus_account_invoice2_form
+msgid "Invoice Lines"
+msgstr "Líneas de factura"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:483
+#, python-format
+msgid "Invoice cannot be created for this Sales Order Line due to one of the following reasons:\n"
+"1.The state of this sales order line is either \"draft\" or \"cancel\"!\n"
+"2.The Sales Order Line is Invoiced!"
+msgstr "Factura no se puede crear para esta línea de órdenes de venta debido a una de las siguientes razones:\n"
+"1.El estado de esta línea de pedido de cliente es  \"Borrador\" ó \"Cancelada\"!\n"
+"2.Las Lineas ya estan facturadas"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:470
+#, python-format
+msgid "Invoice created"
+msgstr "Factura Creada"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.invoices:innova_stock_plus.invoice_Refund_form_view
+msgid "Invoices Refund"
+msgstr "Crear Nota de crédito"
+
+#. module: innova_stock_plus
+#: field:res.partner,is_internal:0
+#: field:sale.order,is_internal:0
+#: field:sale.order,is_internalf:0
+msgid "Is Internal?"
+msgstr "Interno?"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.invoices,write_uid:0
+#: field:innova_stock_plus.transfer,write_uid:0
+#: field:innova_stock_plus.transfer_line,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.invoices,write_date:0
+#: field:innova_stock_plus.transfer,write_date:0
+#: field:innova_stock_plus.transfer_line,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer,stock_move:0
+msgid "Move picking"
+msgstr "Movimiento"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer_line,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:299
+#, python-format
+msgid "No Partner Defined!"
+msgstr "No hay Cliente Definido!"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer,oe_origen:0
+msgid "Origen"
+msgstr "Origen"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_pack_operation
+msgid "Packing Operation"
+msgstr "Operación de empaquetado"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_picking
+msgid "Picking List"
+msgstr "Albarán"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_transfer_details
+msgid "Picking wizard"
+msgstr "Asistente de albarán"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_transfer_details_items
+msgid "Picking wizard items"
+msgstr "Elementos del asistente de albarán"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/wizard/transfer.py:13
+#, python-format
+msgid "Please complete the fields!"
+msgstr "Complete los campos!"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:122
+#, python-format
+msgid "Please define a sequence on the journal."
+msgstr "Defina una Secuencia para el diario."
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer_line,product_id:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_product_category
+msgid "Product Category"
+msgstr "Categoría de producto"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_quant
+msgid "Quants"
+msgstr "Quants"
+
+#. module: innova_stock_plus
+#: view:sale.order:innova_stock_plus.view_innova_stock_plus_sale_order_form
+msgid "Quotation"
+msgstr "Cotización"
+
+#. module: innova_stock_plus
+#: model:ir.actions.act_window,name:innova_stock_plus.Refund_Invoice_wizard_action
+#: model:ir.ui.menu,name:innova_stock_plus.Refund_Invoice_wizard_menu
+msgid "Refund Invoice"
+msgstr "Crear Nota de crédito"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_sale_order
+#: view:sale.order:innova_stock_plus.view_innova_stock_plus_sale_order_form
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de existencias"
+
+#. module: innova_stock_plus
+#: field:stock.picking,adestino:0
+#: field:stock.picking,aorigen:0
+#: field:stock.picking,symbol:0
+msgid "Symbol"
+msgstr "Simbolo"
+
+#. module: innova_stock_plus
+#: field:stock.move,mtax:0
+#: field:stock.pack.operation,mtax:0
+#: field:stock.transfer_details_items,mtax:0
+msgid "Tax"
+msgstr "Tax"
+
+#. module: innova_stock_plus
+#: model:ir.model,name:innova_stock_plus.model_stock_picking_type
+msgid "The picking type determines the picking view"
+msgstr "El tipo de albarán determina la vista de albarán"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer_line,transfer_id:0
+#: view:sale.order:innova_stock_plus.view_innova_stock_plus_sale_order_form
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: innova_stock_plus
+#: view:account.invoice:innova_stock_plus.view_innova_stock_plus_account_invoice2_form
+msgid "Transferir"
+msgstr "Transferir"
+
+#. module: innova_stock_plus
+#: model:ir.actions.act_window,name:innova_stock_plus.action_transfer_sap
+#: model:ir.ui.menu,name:innova_stock_plus.menu_warehouse
+msgid "Transfers"
+msgstr "Transferencias"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer,picking_type_id:0
+#: field:sale.order,type_order:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.transfer:innova_stock_plus.scrap_form_view
+msgid "Validate"
+msgstr "Validate"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:483
+#, python-format
+msgid "Warning!"
+msgstr "Warning!"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:109
+#, python-format
+msgid "You cannot validate a non-balanced entry.\n"
+"Make sure you have configured payment terms properly.\n"
+"The latest payment term line should be of the \"Balance\" type."
+msgstr "You cannot validate a non-balanced entry.\n"
+"Make sure you have configured payment terms properly.\n"
+"The latest payment term line should be of the \"Balance\" type."
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:299
+#, python-format
+msgid "You must first select a partner!"
+msgstr "You must first select a partner!"
+
+#. module: innova_stock_plus
+#: field:stock.picking,account_move_id:0
+msgid "account move"
+msgstr "Movimineto de cuentas"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/model/stock_picking.py:409
+#, python-format
+msgid "credit note"
+msgstr "Nota de Crédito"
+
+#. module: innova_stock_plus
+#: selection:sale.order,type_order:0
+msgid "in_order"
+msgstr "orden de entrada"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer,lines:0
+msgid "lines"
+msgstr "lineas"
+
+#. module: innova_stock_plus
+#: selection:sale.order,type_order:0
+msgid "out_order"
+msgstr "orden de salida"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/wizard/transfer.py:64
+#, python-format
+msgid "picking"
+msgstr "Movimiento"
+
+#. module: innova_stock_plus
+#: code:addons/innova_stock_plus/wizard/transfer.py:18
+#, python-format
+msgid "please add some line!"
+msgstr "Agregue alguna Linea!"
+
+#. module: innova_stock_plus
+#: field:stock.pack.operation,price_unit:0
+#: field:stock.transfer_details_items,price_unit:0
+msgid "price_unit"
+msgstr "Unidad de precio"
+
+#. module: innova_stock_plus
+#: field:innova_stock_plus.transfer_line,qty:0
+msgid "qty"
+msgstr "qty"
+
+#. module: innova_stock_plus
+#: field:product.category,recalculate:0
+msgid "recalculate"
+msgstr "Recalcular"
+
+#. module: innova_stock_plus
+#: field:account.invoice.line,invoice_call:0
+msgid "ref"
+msgstr "ref"
+
+#. module: innova_stock_plus
+#: field:stock.picking.type,same_seq:0
+msgid "same sequence number"
+msgstr "Mismo Numero de Secuencia"
+
+#. module: innova_stock_plus
+#: view:innova_stock_plus.transfer:innova_stock_plus.scrap_form_view
+#: model:ir.ui.menu,name:innova_stock_plus.scrap_wizard_menu
+msgid "scrap"
+msgstr "Desecho"
+
+#. module: innova_stock_plus
+#: field:account.invoice,account_id_some:0
+#: field:account.invoice.line,account_id_some:0
+#: field:innova_stock_plus.invoices,account_id_some1:0
+msgid "some"
+msgstr "Algunas"
+
+#. module: innova_stock_plus
+#: field:account.invoice,account_move_id:0
+msgid "stock picking"
+msgstr "Movimiento de Inventario"
+
+#. module: innova_stock_plus
+#: field:stock.move,amount_total:0
+#: field:stock.pack.operation,amount_total:0
+#: field:stock.picking,amount_total:0
+#: field:stock.transfer_details_items,amount_total:0
+msgid "total"
+msgstr "total"
+
+#. module: innova_stock_plus
+#: model:ir.actions.act_window,name:innova_stock_plus.scrap_wizard_action
+msgid "transfer"
+msgstr "Transeferir"
+
+#. module: innova_stock_plus
+#: field:account.invoice,wizardcall:0
+#: field:account.invoice.line,wizardcall:0
+msgid "wizardcall"
+msgstr "wizardcall"
+

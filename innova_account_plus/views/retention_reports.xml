@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+        <data>
+		<report
+	    	   id="iap_retention_lines_print"
+	    	   model="retentions"
+	    	   string="Retentions"
+	   	   report_type="qweb-pdf"
+	    	   name="innova_account_plus.retention_lines_print"
+	   	   file="innova_account_plus.retention_lines_print"
+		/>
+		<record id="iap_retention_lines_print" model="ir.actions.report.xml">
+		    <field name="paperformat_id" ref="innova_account_plus.retentions_paper_format"/>
+		</record> 
+        </data>
+
+
+</openerp>

@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+{
+"name":"Contrato de Ventas",
+"author": "Alejandro Rodriguez, Grupo Innova",
+"description": "Modulo de agrupación de ordenes de ventas y facturas por contrato, falta extención a presupuesto",
+"category":"Sale",
+"depends":["base",
+           "account_budget",
+           "sale",
+	  "account_advance_payment",
+           "account_voucher",
+           "account"],
+ "data": [
+        "views/cliente_contrato_view.xml",
+        "views/ventascontrato_view.xml",
+        "views/contract_view.xml",
+        "views/facturascontrato_view.xml",
+	"views/contracto_sale_sequence.xml",
+	"views/sotck_move.xml",
+        "reports/report_contract.xml",
+        "reports/report_contract_view.xml"
+        ],
+'update_xml' : [
+            'security/groups.xml',
+            'security/ir.model.access.csv'
+    ],
+    "auto_install": False,
+    "installable": True,
+}

@@ -1,0 +1,7 @@
+# -*- encoding: utf-8 -*-
+from openerp import models, fields
+class Stockcontrato(models.Model):
+    _name = 'stock.picking'
+    _inherit = 'stock.picking'
+    contrato_stock_ids=fields.Many2one("contratos.contractsale","Contract No.",ondelete="set null",help="Contratos asociados a clientes",index=True)
+    

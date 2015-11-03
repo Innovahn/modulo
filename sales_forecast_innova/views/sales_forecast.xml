@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+		
+
+
+ 
+
+        <record model="ir.ui.view" id="view_sale_forecast_form">
+            <field name="name">Sale Forecast</field>
+            <field name="model">sale.forecast</field>
+            <field name="arch" type="xml">
+               		 <form>
+				 <header>
+					<button name="calculate_forecast" string="Calculate" type="object" states="draft"  />
+					<button name="validate" string="Validate" type="object" states="draft"  />
+					<button name="cancel" string="Cancel" type="object" states="done"  />
+					<field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
+					
+                  		</header>
+                 		<sheet >
+					<h2><field name="msj" class="oe_inline" readonly="1" /></h2>
+					<group col="2" colspan="2">
+						<field name="name" string="Name" readonly="0"/>
+					</group>
+					<group col="4" colspan="4">
+						<field name="date_from" string="From"/>
+						<field name="date_to" string="To" />
+						<field name="process" string="Process" on_change="some_change(process)"/>
+						<field name="growht_rate" string="Growht Rate" on_change="some_change(process)"/>
+						<field name="currency_id" string="Currency" on_change="some_change(process)"/>
+					</group>
+					<!-- colors="blue:sum =='True';red:sum!= 'True';" -->
+						<field name="sale_forecast_line">
+							<tree editable="top" colors="blue:sum =='True';red:sum!= 'True';" >
+								<field name="product_id" string="Producto" readonly="1"/>
+								<field name="auto_quantity" string="Auto. Quantity" readonly="1" sum = "auto_quantity"/>
+								<field name="auto_amount" string="Auto. Amount" readonly="1" sum = "auto_amount"/>
+								<field name="manual_quantity" string="Manual Quantity" on_change="onchange_value(manual_quantity,auto_quantity,1)" sum ="manual_quantity"/>
+								<field name="manual_amount" string="Manual Amount" on_change="onchange_value(auto_amount,manual_amount,-1)" sum = "manual_amount"/>
+								<field name="factor1" readonly="1"/>
+								<field name="factor2" readonly="1"/>
+								<field name="sum" invisible="1"/>
+							</tree>
+						</field>
+					<field name="msj_hide" class="oe_inline" invisible = "1" />
+				</sheet>
+				
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+        <record model="ir.ui.view" id="view_sale_forecast_tree">
+            <field name="name">Sala Forecast</field>
+            <field name="model">sale.forecast</field>
+            <field name="arch" type="xml">
+                <tree  create="true">  
+			<field name="name" />
+			<field name="date_from" />
+			<field name="date_to"/>
+			<field name="process" />
+			<field name="state"/>
+		</tree>
+            </field>
+        </record>
+	
+
+
+	
+		<record id="sale_forecast_action" model="ir.actions.act_window">
+				<field name="name">Sale Forecast</field>
+				<field name="res_model">sale.forecast</field>
+				<field name="view_type">form</field>
+				<field name="view_mode">tree,form</field>
+				<field name="domain">[]</field>
+				<field name="view_id" eval="False"/>            
+				
+		</record>
+
+
+
+  <menuitem id="finazas_sales_forecast" name="Sales Forecast" parent="financial.finanzas_principal" />
+   <menuitem action="sale_forecast_action" id="inansas_forecast" string="Sales Forecast"  parent="sales_forecast_innova.finazas_sales_forecast" sequence="20" />
+
+    </data>
+</openerp>

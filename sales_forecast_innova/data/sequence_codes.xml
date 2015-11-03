@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+
+	   <record id="codes_for_ir_sequence_type_ch" model="ir.sequence.type">
+           	  <field name="name">emp_product_reception</field>
+          	  <field name="code">emp_product_reception</field>
+       	   </record>
+
+  	   <record id="codes_for_ir_sequence_type_ch" model="ir.sequence.type">
+           	  <field name="name">empacadora_process</field>
+          	  <field name="code">empacadora_process</field>
+       	   </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+ 
+	<report
+    	id="product_recept_checks_print"
+    	model="empacadora.product.reception"
+    	string="Print Reporte Producto"
+   	 report_type="qweb-pdf"
+    	name="empacadora.product_reception_print"
+   	 file="empacadora.product_reception_print"
+        attachment="(object.state in ('done'))"
+/>
+
+
+    </data>
+</openerp>

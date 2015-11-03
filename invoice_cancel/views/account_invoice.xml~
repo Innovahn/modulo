@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+<record model="ir.ui.view" id="account_invoice_cancel_form">
+    <field name="name">account.invoice.cance.permission</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.invoice_form"/>
+    <field name="arch" type="xml">
+
+			
+			<group>	
+				<xpath expr="//header/button[@String='Cancel Invoice']" position="replace" >
+				
+					 <button name="invoice_cancel" states="draft,proforma2,open" string="Cancelar Invoice" groups="invoice_cancel.group_invoice_cancel"/>
+				
+				</xpath>
+			</group>
+	
+	
+   		</field>
+	</record>
+    </data>
+</openerp>

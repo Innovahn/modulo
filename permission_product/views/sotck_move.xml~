@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+<data>
+<record model="ir.ui.view" id="stock_picking_contrato_form_view">
+          <field name="name">contractsale.stock_contrato</field>
+          <field name="model">stock.picking</field>
+          <field name="inherit_id" ref="stock.view_picking_form" />
+          <field name="arch" type="xml">
+             <field name="partner_id" position="after">
+                  <field name="contrato_stock_ids" domain='[("partner_id","=",partner_id)]'/>	
+		<field name="quantity_total"/>
+            </field>	     
+          </field>
+ </record>
+<record model="ir.ui.view" id="stock_picking_contrato_tree_view">
+          <field name="name">contractsale.stock_contrato</field>
+          <field name="model">stock.picking</field>
+          <field name="inherit_id" ref="stock.vpicktree" />
+          <field name="arch" type="xml">
+             <field name="state" position="after">	
+		<field name="quantity_total"/>
+            </field>	     
+          </field>
+ </record>
+
+ </data>
+</openerp>

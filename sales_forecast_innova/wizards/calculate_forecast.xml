@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+		
+
+
+ 
+
+        <record model="ir.ui.view" id="view_sale_forecast_calculate_form">
+            <field name="name">Sale Forecast Calculate</field>
+            <field name="model">sales.forecast.calculate.wizard</field>
+            <field name="arch" type="xml">
+               		 <form string="Sale Forecast Calculate" >
+				<sheet string="Fincas">
+					<field name="name" string="Name" readonly="1"/>
+					<group col="4" colspan="4">
+						<field name="date_from" string="From" readonly="1"/>
+						<field name="date_to" string="To" readonly="1"/>
+						<field name="process" string="Process" readonly="1"/>
+						<field name="growht_rate" string="Growht Rate" readonly="1"/>
+						<field name="currency_id" string="Currency" readonly="1"/>
+					</group>
+					
+						
+					
+				</sheet>
+			<button string="Accept" name="calculate_sales_forecast" type="object"  class="oe_highlight" context="{'user_checker': 'Im Crazy'}"/>
+                      		  or
+                        <button string="Cancel" class="oe_link" special="cancel"/>	
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

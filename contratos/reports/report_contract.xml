@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <report
+        id="report_contract"
+        model="contratos.contractsale"
+        string="Contract Report"
+        name="contratos.report_contract_view"
+        file="contratos.report_contract"
+        report_type="qweb-pdf" />
+</data>
+</openerp>
+

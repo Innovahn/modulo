@@ -1,0 +1,101 @@
+# -*- coding: utf-8 -*-
+
+from openerp.osv import fields, osv
+from datetime import datetime
+import locale
+import pytz
+from openerp.tools.translate import _
+
+class banks_check_books(osv.osv):
+	_name = 'banks.checkbook'
+	def _get_debit_pc(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			result[banks_checkbok.id] = banks_checkbok.journal.default_debit_account_id.debit
+		return result
+
+
+	def _get_credit_pc(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			result[banks_checkbok.id] = banks_checkbok.journal.default_debit_account_id.credit
+		return result
+
+			
+	def _get_balance_pc(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			result[banks_checkbok.id] = banks_checkbok.journal.default_debit_account_id.balance
+		return result
+
+	def _get_debit_sec_curr(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			if banks_checkbok.journal.default_debit_account_id.currency_id:
+				result[banks_checkbok.id] = banks_checkbok.journal.default_debit_account_id.debit_currency
+			else:
+				result[banks_checkbok.id] = 0.0				
+		return result
+
+	def _get_credit_sec_curr(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			if banks_checkbok.journal.default_debit_account_id.currency_id:
+				result[banks_checkbok.id] = banks_checkbok.journal.default_debit_account_id.credit_currency
+			else:
+				result[banks_checkbok.id] = 0.0
+		return result
+	def _get_name(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			result[banks_checkbok.id] = banks_checkbok.bank_account
+		return result
+
+	def _get_balance_sec_curr(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for banks_checkbok in self.browse(cr,uid,ids,context=context):
+			if banks_checkbok.journal.default_debit_account_id.currency_id:
+				result[banks_checkbok.id] = banks_checkbok.journal.default_debit_account_id.balance_currency
+			else:
+				result[banks_checkbok.id] = 0.0
+		return result
+	def hay_atomicidad(self, cr, uid, journal, context=None):
+		bcb_pool = self.pool.get('banks.checkbook')
+		bck = bcb_pool.browse(cr, uid, bcb_pool.search(cr, uid,[],context=context), context=context)
+		for b in bck:
+			if b.journal.id == journal:
+				return False
+		return True
+	def create(self, cr, uid, values, context=None):
+		jour_comp_id = None
+		journal = self.pool.get('account.journal').browse(cr, uid , values['journal'],context=context)
+		if self.hay_atomicidad(cr, uid, values['journal'],context=context):
+			b = super(banks_check_books, self).create(cr, uid, values, context=context)
+			if b:
+				return b
+			else:
+				return False
+					
+		else:
+			raise osv.except_osv(_('Error!'),_("This Journal already have a bank vinculated"))	
+
+
+	def onchange_journal(self,cr,uid,ids,journal_id,context=None):
+		journal = self.pool.get('account.journal').browse(cr , uid, journal_id, context=context)
+		return { 'value' :{ 'debit_pc' : journal.default_debit_account_id.debit,'credit_pc' : journal.default_debit_account_id.credit ,'balance_pc' : journal.default_debit_account_id.balance,'debit_sc' : journal.default_debit_account_id.debit_currency, 'credit_sc' : journal.default_debit_account_id.credit_currency, 'balance_sc' :journal.default_debit_account_id.balance_currency}}
+
+	_columns = {
+		'name' : fields.function(_get_name,type='char',string='Name', ),
+		'bank' : fields.many2one( 'banks.banks' , string="Bank", required=True),
+		'bank_account' : fields.char('Account number', required=True),
+		'journal' : fields.many2one('account.journal', string="Journal",required=True),
+		'debit_pc' : fields.function(_get_debit_pc,type='float',string='Debit', ),	
+		'credit_pc' : fields.function(_get_credit_pc,type='float',string='Credit', ),
+		'balance_pc' : fields.function(_get_balance_pc,type='float',string='Balance', ),
+		'debit_sc' : fields.function(_get_debit_sec_curr,type='float',string='Debit Secundary Corrency', ),	
+		'credit_sc' : fields.function(_get_credit_sec_curr,type='float',string='Credit Secundary Corrency', ),
+		'balance_sc' : fields.function(_get_balance_sec_curr,type='float',string='Balance Secundary Corrency', ),
+		'check_format' : fields.selection([
+						('bac','BAC CREDOMATIC'),
+						('ficohsa','Ficohsa')],string='Check Format'),
+	}

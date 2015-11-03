@@ -1,0 +1,65 @@
+
+from openerp.osv import osv
+import time
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+    	
+class reporte(osv.AbstractModel):
+	_name = 'report.partner_invoice.report_facturas_view_document'
+	def render_html(self, cr, uid, ids, data=None, context=None):
+		self.cr = cr
+		self.uid = uid
+		report_obj = self.pool['report']
+		report = report_obj._get_report_from_name(cr, uid, 'partner_invoice.report_facturas_view_document')
+		docargs = {
+			'doc_ids': ids,
+			'doc_model': report.model,
+			'docs': self.pool[report.model].browse(cr, uid, ids, context=context),
+			'get_rango' : self.get_rango,
+			'rango' : self.rango,
+			'suma' : self.suma,
+			}
+		return report_obj.render(cr, uid, ids, 'partner_invoice.report_facturas_view_document',docargs, context=context)
+
+	def rango(self,document,rango):
+		invo_pool = self.pool.get('account.invoice')
+		for d in document.facturas_ids:
+			invo_obj = invo_pool.browse(self.cr,self.uid,d.id,context=None)
+			fecha = fecha = datetime.now() - datetime.strptime(invo_obj.date_due ,'%Y-%m-%d') 
+			if (fecha.days >= 1 and fecha.days <= 30) and (rango == 30):
+				return True
+			elif (fecha.days > 30 and fecha.days <= 60) and (rango == 60):
+				return True
+			elif (fecha.days > 60 and fecha.days <= 90) and (rango == 90):
+				return True
+			elif (fecha.days > 90 and fecha.days <= 120) and (rango == 120):
+				return True
+			elif (fecha.days > 120) and (rango == -1):
+				return True
+			else:
+				continue
+	def get_rango(self,document,rango):
+		fecha =  None
+		invo_pool = self.pool.get('account.invoice')
+		invo_obj = invo_pool.browse(self.cr,self.uid,document.id,context=None)
+		fecha = datetime.now() - datetime.strptime(invo_obj.date_due ,'%Y-%m-%d') 
+		if not fecha:
+			return False
+		if fecha.days <= 0:
+			return False
+		if (fecha.days >= 1 and fecha.days <= 30) and (rango == 30):
+			return True
+		elif (fecha.days > 30 and fecha.days <= 60) and (rango == 60):
+			return True
+		elif (fecha.days > 60 and fecha.days <= 90) and (rango == 90):
+			return True
+		elif (fecha.days > 90 and fecha.days <= 120) and (rango == 120):
+			return True
+		elif (fecha.days > 120) and (rango == -1):
+			return True
+		else:
+			return False
+	def suma(self,x,y):
+		return x+y
+

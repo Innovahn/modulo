@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="product_reception_print">
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+				    <t t-if="o and 'company_id' in o">
+					<t t-set="company" t-value="o.company_id"></t>
+				    </t>
+				    <t t-if="not o or not 'company_id' in o">
+					<t t-set="company" t-value="res_company"></t>
+				    </t>
+			
+<div class="header">
+		<table  style="width:100%;"> 
+			<tbody>	
+				<tr>	
+					<td  style="width:20%;">
+						  <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="height: 80px;"/>
+					</td>
+					<td style="width:60%;">
+						<h2><strong><p class="text-center"><span t-field="company.name"/></p></strong></h2>
+					</td>
+					<td style="width:20%;">
+						<strong><span t-field="o.number"/></strong>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+					    
+		<div class="col-xs-12">
+	    		<div style="border-bottom: 1px solid black;"></div>
+		</div>
+		
+		<table> 
+			<tbody>	
+				<tr>	
+					<td style="width:10%;">
+						
+					</td>
+					<td style="width:80%;">
+						<div class="table table-condensed">
+						  <p>
+							<strong><span t-field="company.name"/></strong>
+							<span t-field="company.street"/>
+							<span t-field="company.street2"/>
+							<strong>RTN :</strong>
+							<span t-field="company.company_registry"/>
+							<strong>Tel:</strong>
+							<span t-field="company.phone"/>
+							<br/>
+							<br/>
+			
+					   	  </p>
+						</div>
+					</td>
+					<td style="width:10%;">
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		      
+
+</div>
+
+						
+
+<div class="page">
+
+	
+		<table style="width:100%;"> 
+			<tbody>	
+				<tr>	
+					<td style="width:5%;">
+					</td>
+					<td style="width:90%; font-size:16px;" >
+						<strong><p class="text-center">REPORTE DE PRODUCTO RECIBIDO SEGUN REMISION</p></strong>
+					</td>
+					<td style="width:5%;">
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+		<table style="width:100%;"> 
+			<tbody>	
+				
+				<tr>	
+					<td style="width:12%;">
+					</td>
+					<td style="width:12%;">
+					</td>
+					<td style="width:52%;" >
+						<div style="border-bottom: 1px solid black;"></div>
+					</td>
+					<td style="width:12%;">
+					</td>
+					<td style="width:12%;">
+					</td>
+				</tr>
+			</tbody>
+		</table>		
+
+<br/>
+<table style="width:100%; font-size:14px; padding:45px 0px 0px 0px"> 
+	<tbody>	
+
+		<tr>	
+			<td>
+					
+					<table style="width:100%; font-size:14px;"> 
+						<tbody>
+							<tr>
+								<td style="width:50%;"><strong>NUMERO:</strong><span t-field="o.number"/></td>
+							</tr>
+							<tr>
+								<td style="width:50%;"><strong>FECHA:</strong><span t-field="o.date"/></td>
+							</tr>
+						</tbody>
+					</table>
+			     
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<br/>
+	<table style="width:100%; font-size:14px; border:1px; padding:20px 0px 0px 0px"> 
+		<tbody>	
+		<tr>
+			<table style="width:90%; font-size:14px; border:1px; padding:40px 20px 20px 20px;" class="table table-condensed"> 
+				<tbody>
+					<tr>
+						<th style="width:20%;"><p class="text-center">FINCA</p></th>
+						<th style="width:15%;"><p class="text-center">LAGUNA</p></th>
+						<th style="width:15%;"><p class="text-center">VIVERO</p></th>
+						<th style="width:15%;"><p class="text-center">LIBRA</p></th>
+						<th style="width:15%;"><p class="text-center">BINES</p></th>
+						<th style="width:20%;"><p class="text-center">Nro. DE REMISIONES</p></th>
+					</tr>
+					<t t-foreach="o.prod_recep_line" t-as="a">
+						<tr>
+							<td><p class="text-center"><span t-field="a.finca_id.name"/></p></td>
+							<td><p class="text-center"><span t-field="a.laguna_id.name"/></p></td>
+							<td><p class="text-center"><span t-esc="a.vivero"/></p></td>
+							<td><p class="text-center"> <span t-field="a.libras"/></p></td>
+								<td><t t-foreach="a.bines" t-as="b">
+									<span t-field="b.name"/>,
+								</t>
+							</td>
+							<td><p class="text-center"> <span t-field="a.nremisiones"/></p></td>
+						</tr>
+					</t>
+					
+					
+				</tbody>
+			</table>
+		</tr>
+		<br/>
+		<br/>
+		<br/>
+		<tr class="border-black" >	
+			<td>
+					
+					<table style="width:100%; font-size:14px; padding:25px 25px 25px 25px;"> 
+						<tbody>
+							<tr>
+								
+								<td style="width:50%;"><strong>OBSERVACION:</strong><span t-field="o.observation"/></td>
+							</tr>
+							<tr>
+								<td style="width:50%; padding:40px 10px 0px 10px;"><strong><p class="text-center"><span t-field="o.create_uid"/></p></strong></td>
+								<td style="width:50%; padding:40px 10px 0px 10px;"><strong><p class="text-center"><span t-field="o.check_by"/></p></strong></td>
+							</tr>
+							<tr>
+								<td ><strong><p class="text-center"><br/><hr style="color: solid black; size=2;"></hr></p></strong></td>
+								<td ><strong><p class="text-center"><br/><hr style="color: solid black; size=2;"></hr></p></strong></td>
+							</tr>
+							<tr>
+								<td style="padding:5px 10px 10px 10px;"><strong><p class="text-center">ELABORADO POR:</p></strong></td>
+								<td style="padding:5px 10px 10px 10px;"><strong><p class="text-center">REVISADO POR:</p></strong></td>
+							</tr>
+						</tbody>
+					</table>
+			     
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+						</div>
+
+					</t>
+				
+			</t>
+		</template>
+	</data>
+</openerp>

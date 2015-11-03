@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+cancel_group_invoice,invoice_cancel_permission.create,model_account_invoice,group_invoice_cancel,1,1,1,1	
+	

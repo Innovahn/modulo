@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+	<record model="ir.ui.view" id="retention_lines_assig_wizard_form">
+            	<field name="name">Retention Lines Assigment</field>
+            	<field name="model">retention_lines_assig_wizard</field>
+           	 <field name="arch" type="xml">
+               		 <form string="Retention Lines Assigment">
+                 			
+					<h2> <field name="number" readonly="1"/> </h2>
+					<group col="4" colspan="4"> 
+						<field name="pay_number" readonly="1" invisible="context.get('voucher_id','sale') in [False,None]"/>
+						<field name="pay_number_check" readonly="1" invisible="context.get('mcheck_id','sale') in [False,None]"/>
+						<field name="date" />
+						<field name="description" />
+					
+					</group>
+					 
+					 <notebook colspan="4">
+						<page string="Retentions Lines" >
+                     		    		 	<field name="retentions_lines" readonly="1" >
+								<tree create="fasle">  
+									<field name="account_id" />               
+									<field name="description" />
+									<field name="amount" sum="amount"/>
+								</tree>
+								<form string="Retention Lines" >
+									<group col="4" colspan="4">
+							 		 	<field name="account_id" domain="[('type', 'not in',['view'])]"/>               
+									 	<field name="description" />
+									 	<field name="amount" />
+									</group>
+						       		 </form>
+							</field>
+						</page>
+					
+				 	 </notebook>
+			<button string="Accept" name="assingn_line_retention" type="object"  class="oe_highlight"/>
+                      		  or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+			 </form>
+          	  </field>
+        </record>
+
+	<record id="retention_lines_assigment_action" model="ir.actions.act_window">
+		<field name="name">Retention Lines Assigment</field>
+		<field name="res_model">retention_lines_assig_wizard</field>
+		<field name="src_model">retention_lines_assig_wizard</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="retention_lines_assig_wizard_form"/> 
+		<field name="target">new</field>
+				
+	</record>
+		
+		
+    </data>
+</openerp>

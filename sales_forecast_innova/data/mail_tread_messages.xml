@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <!-- mcheck subtypes for messaging / Chatter -->
+        <record id="emp_rec_change" model="mail.message.subtype">
+            <field name="name">Status Change</field>
+            <field name="res_model">empacadora.product.reception</field>
+            <field name="default" eval="False"/>
+            <field name="description">Status changed</field>
+        </record>
+	 <record id="empacadora_process_state_change" model="mail.message.subtype">
+            <field name="name">Status Change</field>
+            <field name="res_model">empacadora.process</field>
+            <field name="default" eval="False"/>
+            <field name="description">Status changed</field>
+        </record>
+
+	 
+
+    </data>
+</openerp>

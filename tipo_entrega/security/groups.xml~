@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+ <record model="ir.module.category" id="module_sale_tipo_entrega">
+            <field name="name">Tipo de entrega/ventas</field>
+            <field name="description">Tipo de entrega.</field>
+            <field name="sequence">2</field>
+        </record>
+
+<record id="group_tipo_entrega" model="res.groups">
+<field name="category_id" ref="module_sale_tipo_entrega"/>
+<field name="name">Tipo de entrega</field>
+</record>
+
+  
+
+</data>
+</openerp>
+
+

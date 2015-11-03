@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+		<record model="ir.ui.view" id="view_pos_account_voucher_aplus_sp">
+		    <field name="name">account.voucher.ap.sp</field>
+		    <field name="model">account.voucher</field>
+		    <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+		    <field name="arch" type="xml">
+				<xpath expr="//page[@string='Payment Information']" position="after">
+					<page string="Retention Lines" attrs="{'invisible': [('payment_option','!=','retention_lines')]}">
+						<group col="4" colspan="4">
+							<field name="writeoff_amount_copy" readonly="1"/>
+						</group>
+						<field name="retention_lines" editable="top"/>
+						 <group col="4" colspan="4">
+							<field name="dif_ret_writeamount" readonly="1"/>
+						</group>
+						<group col="4" colspan="4">
+							<button name="load_reten_wizard" type='object' string='Assign it' attrs="{'invisible': ['|',('retention_ref','not in',[False,None]),('state','!=','posted')]}" />
+							<field name="retention_ref" attrs="{'invisible': [('retention_ref','in',[False,None])]}"/>
+						</group>
+						
+					</page>
+				</xpath>
+
+		    </field>
+		</record>
+    </data>
+</openerp>

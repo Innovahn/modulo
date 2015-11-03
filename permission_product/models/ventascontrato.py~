@@ -1,0 +1,11 @@
+# -*- encoding: utf-8 -*-
+from openerp import models, fields
+class Ventascontrato(models.Model):
+    _name = 'sale.order'
+    _inherit = 'sale.order'
+    contrato_ventas_ids=fields.Many2one("contratos.contractsale","No. de Contrato",ondelete="set null",domain=[('active', '=', True)],
+                               help="Contratos asociados a clientes",index=True)
+    _defaults={
+           'partner_id' : lambda self, cr, uid, context : context['partner_id'] if context and 'partner_id' in context else None,               
+            "product_id": lambda self, cr, uid, context:context['product_id'] if context and 'contrato_ventas_ids' in context else None, 
+            }

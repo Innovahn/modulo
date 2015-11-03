@@ -1,0 +1,475 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_plus
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-18 22:13+0000\n"
+"PO-Revision-Date: 2015-06-18 22:13+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_plus
+#: view:exchange_diff_wizard:account_plus.account_plus_exchange_wizard_form
+msgid "Accept"
+msgstr "Aceptar"
+
+#. module: account_plus
+#: field:account.exchange.difference.lines,account_id:0
+#: model:ir.model,name:account_plus.model_account_account
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: account_plus
+#: field:account.exchange.difference,move_id:0
+msgid "Account Entry"
+msgstr "Account Entry"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Accounting"
+msgstr "Accounting"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Are you sure you want to Unreconciliate this Document?"
+msgstr "¿Está seguro en romper la conciliación de este ?"
+
+#. module: account_plus
+#: view:exchange_diff_wizard:account_plus.account_plus_exchange_wizard_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: account_plus
+#: field:account.exchange.difference,comment:0
+#: code:addons/account_plus/wizard/exchange_diff.py:269
+#: field:exchange_diff_wizard,comment:0
+#: help:exchange_diff_wizard,comment:0
+#, python-format
+msgid "Comment"
+msgstr "Referencia"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ir_sequence.py:23
+#, python-format
+msgid "Configuration Error !"
+msgstr "¡ Error de Configuración !"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:126
+#, python-format
+msgid "Could't update the sequence for this journal!"
+msgstr "No se puede actualizar la secuencia para este diario"
+
+#. module: account_plus
+#: field:account.exchange.difference,create_uid:0
+#: field:account.exchange.difference.lines,create_uid:0
+#: field:exchange_diff_wizard,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_plus
+#: field:account.exchange.difference,create_date:0
+#: field:account.exchange.difference.lines,create_date:0
+#: field:exchange_diff_wizard,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: account_plus
+#: field:account.exchange.difference,currency_id:0
+#: field:exchange_diff_wizard,currency:0
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:272
+#: help:exchange_diff_wizard,currency:0
+#, python-format
+msgid "Currency to evaluate"
+msgstr "Moneda a evaluar"
+
+#. module: account_plus
+#: field:exchange_diff_wizard,today_date:0
+msgid "Date"
+msgstr "Hasta"
+
+#. module: account_plus
+#: help:account.exchange.difference,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr "Date of the last message posted on the record."
+
+#. module: account_plus
+#: selection:account.exchange.difference,state:0
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: account_plus
+#: model:ir.model,name:account_plus.model_account_exchange_difference
+msgid "Email Thread"
+msgstr "Hilo de mensajes"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ir_sequence.py:45
+#, python-format
+msgid "Error"
+msgstr "Error"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:126
+#, python-format
+msgid "Error !"
+msgstr "¡ Error !"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ap_account_journal.py:23
+#: code:addons/account_plus/models/exchange_diference.py:87
+#: code:addons/account_plus/models/exchange_diference.py:159
+#: code:addons/account_plus/models/exchange_diference.py:199
+#: code:addons/account_plus/models/exchange_diference.py:254
+#: code:addons/account_plus/wizard/exchange_diff.py:107
+#: code:addons/account_plus/wizard/exchange_diff.py:109
+#: code:addons/account_plus/wizard/exchange_diff.py:150
+#: code:addons/account_plus/wizard/exchange_diff.py:263
+#, python-format
+msgid "Error!"
+msgstr "¡ Error!"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Exchange"
+msgstr "Exchange"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:203
+#, python-format
+msgid "Exchange Diference"
+msgstr "Diferencial cambiario"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:50
+#: code:addons/account_plus/models/exchange_diference.py:142
+#, python-format
+msgid "Exchange Diference Recalcullation"
+msgstr "Recálcular Diferencial cambiario"
+
+#. module: account_plus
+#: model:ir.actions.act_window,name:account_plus.account_plus_exchange_wizard_action
+msgid "Exchange Diff"
+msgstr "Diferencial cambiario"
+
+#. module: account_plus
+#: view:exchange_diff_wizard:account_plus.account_plus_exchange_wizard_form
+#: model:ir.actions.act_window,name:account_plus.account_plus_account_exchange_difference_action
+#: model:ir.ui.menu,name:account_plus.account_plus_exchange_wizard
+msgid "Exchange Difference"
+msgstr "Diferencial cambiario"
+
+#. module: account_plus
+#: field:account.exchange.difference,message_follower_ids:0
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: account_plus
+#: field:account.exchange.difference,date_from:0
+#: field:exchange_diff_wizard,last_procces_date:0
+msgid "From"
+msgstr "Desde"
+
+#. module: account_plus
+#: help:account.exchange.difference,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+
+#. module: account_plus
+#: field:account.exchange.difference,id:0
+#: field:account.exchange.difference.lines,id:0
+#: field:exchange_diff_wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: account_plus
+#: help:account.exchange.difference,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "If checked new messages require your attention."
+
+#. module: account_plus
+#: code:addons/account_plus/models/ir_sequence.py:58
+#, python-format
+msgid "Invalid prefix or suffix for sequence '%s'"
+msgstr "Invalid prefix or suffix for sequence '%s'"
+
+#. module: account_plus
+#: field:account.exchange.difference,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Is a Follower"
+
+#. module: account_plus
+#: field:account.exchange.difference,journal_id:0
+#: field:exchange_diff_wizard,journal_id:0
+#: model:ir.model,name:account_plus.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: account_plus
+#: field:account.exchange.difference,message_last_post:0
+msgid "Last Message Date"
+msgstr "Last Message Date"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:271
+#: help:exchange_diff_wizard,today_date:0
+#, python-format
+msgid "Last Procces Date"
+msgstr "Last Procces Date"
+
+#. module: account_plus
+#: field:account.exchange.difference,write_uid:0
+#: field:account.exchange.difference.lines,write_uid:0
+#: field:exchange_diff_wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: account_plus
+#: field:account.exchange.difference,write_date:0
+#: field:account.exchange.difference.lines,write_date:0
+#: field:exchange_diff_wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+#: field:account.exchange.difference.lines,aed_id:0
+msgid "Lines"
+msgstr "Detalle"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:201
+#, python-format
+msgid "Message!"
+msgstr "Message!"
+
+#. module: account_plus
+#: field:account.exchange.difference,message_ids:0
+msgid "Messages"
+msgstr "Messages"
+
+#. module: account_plus
+#: help:account.exchange.difference,message_ids:0
+msgid "Messages and communication history"
+msgstr "Messages and communication history"
+
+#. module: account_plus
+#: view:account.account:account_plus.view_bank_account_account_form
+msgid "Multi Currency"
+msgstr "Multimoneda"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:263
+#, python-format
+msgid "No currency rate associated for currency '%s' for the given period"
+msgstr "No currency rate associated for currency '%s' for the given period"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:201
+#, python-format
+msgid "None of the accounst with the secundary currency  has an exchange difference value"
+msgstr "Todas las cuentas con moneda secundaria están conciliadas"
+
+#. module: account_plus
+#: field:account.exchange.difference,number:0
+msgid "Number"
+msgstr "Número"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ir_sequence.py:23
+#, python-format
+msgid "Please activate the sequence of selected journal !"
+msgstr "Por favor active la secuencia del diario seleccionado !"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ir_sequence.py:45
+#, python-format
+msgid "Please configurate this journal sequence implementation as 'No gap'!"
+msgstr "Configure la secuencia de este diario para 'No Saltos'!"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+#: code:addons/account_plus/wizard/exchange_diff.py:273
+#: field:exchange_diff_wizard,rate:0
+#: help:exchange_diff_wizard,rate:0
+#, python-format
+msgid "Rate"
+msgstr "Tasa"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Recalculate"
+msgstr "Procesar"
+
+#. module: account_plus
+#: field:account.exchange.difference,state:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: account_plus
+#: field:account.exchange.difference,message_summary:0
+msgid "Summary"
+msgstr "Total"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:199
+#, python-format
+msgid "The Operation was not finished"
+msgstr "No se finalizó la operación"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:150
+#, python-format
+msgid "Ther was a problem, please try again!"
+msgstr "Ther was a problem, please try again!"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:159
+#, python-format
+msgid "There are some required fields with null values"
+msgstr "There are some required fields with null values"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:87
+#, python-format
+msgid "There are validated documents with a date above  , you have to unreconciliate!"
+msgstr "Ya ha validado una conciliación de Diferencial cambiario con una fecha posterior a la de este documento; No puede romper esta conciliación!"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:107
+#, python-format
+msgid "There is a date that is already in a range"
+msgstr "Este rango de fecha ya está contenido en otro documento. Revise el rango de fecha"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ap_account_journal.py:23
+#, python-format
+msgid "There is not a journal with a sequence code 'exch_diff', please create one!"
+msgstr "There is not a journal with a sequence code 'exch_diff', please create one!"
+
+#. module: account_plus
+#: code:addons/account_plus/wizard/exchange_diff.py:109
+#, python-format
+msgid "This currency is the same of your company"
+msgstr "Esta moneda es la de la compañia. No se puede Procesar"
+
+#. module: account_plus
+#: field:account.exchange.difference,date:0
+msgid "To"
+msgstr "Hasta"
+
+#. module: account_plus
+#: field:account.exchange.difference,move_lines:0
+msgid "Total"
+msgstr "Total"
+
+#. module: account_plus
+#: field:account.exchange.difference,message_unread:0
+msgid "Unread Messages"
+msgstr "Mensajes no leídos"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Unreconciliate"
+msgstr "Romper conciliación"
+
+#. module: account_plus
+#: field:account.exchange.difference,was_unreconcilied:0
+msgid "Unreconcilied"
+msgstr "Unreconcilied"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Validate"
+msgstr "Validar"
+
+#. module: account_plus
+#: selection:account.exchange.difference,state:0
+msgid "Validated"
+msgstr "Validado"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+msgid "Voucher Entry"
+msgstr "Apuntes contables"
+
+#. module: account_plus
+#: code:addons/account_plus/models/ir_sequence.py:58
+#, python-format
+msgid "Warning"
+msgstr "Advertencia"
+
+#. module: account_plus
+#: code:addons/account_plus/models/exchange_diference.py:254
+#, python-format
+msgid "You can not delete this file when it has a diferent state than Draft !"
+msgstr "You can not delete this file when it has a diferent state than Draft !"
+
+#. module: account_plus
+#: field:account.exchange.difference.lines,calculated_amount:0
+msgid "amount"
+msgstr "Monto Calc."
+
+#. module: account_plus
+#: field:account.exchange.difference.lines,amount_forg_curr:0
+msgid "amount(forg)"
+msgstr "Monto(Forn.)"
+
+#. module: account_plus
+#: field:account.exchange.difference.lines,amount_local_curr:0
+msgid "amount(local)"
+msgstr "Monto(Local)"
+
+#. module: account_plus
+#: field:exchange_diff_wizard,msg:0
+msgid "char"
+msgstr "char"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+#: field:account.exchange.difference.lines,credit:0
+msgid "credit"
+msgstr "Crédito"
+
+#. module: account_plus
+#: view:account.exchange.difference:account_plus.view_account_account_exchange_difference_form
+#: field:account.exchange.difference.lines,debit:0
+msgid "debit"
+msgstr "Débito"
+
+#. module: account_plus
+#: field:account.exchange.difference,lines_ids:0
+msgid "lines"
+msgstr "Detalle"
+
+#. module: account_plus
+#: field:account.exchange.difference,name:0
+msgid "name"
+msgstr "Nombre"
+
+#. module: account_plus
+#: view:exchange_diff_wizard:account_plus.account_plus_exchange_wizard_form
+msgid "or"
+msgstr "o"
+
+#. module: account_plus
+#: field:account.exchange.difference,rate:0
+msgid "rate"
+msgstr "Tasa"
+
+#. module: account_plus
+#: field:account.exchange.difference.lines,ref:0
+msgid "ref"
+msgstr "Referencia"
+

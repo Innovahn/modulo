@@ -1,0 +1,324 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* contratos
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-23 00:06+0000\n"
+"PO-Revision-Date: 2015-07-23 00:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: contratos
+#: model:ir.actions.act_window,help:contratos.contract_action
+msgid "<p class=\"oe_view_nocontent_create\">Create first contract</p>\n"
+"   "
+msgstr "<p class=\"oe_view_nocontent_create\">Create first contract</p>\n"
+"   "
+
+#. module: contratos
+#: field:contratos.contractsale,active:0
+msgid "Active contract"
+msgstr "Contrato Activo"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Agregue notas para este contrato..."
+msgstr "Agregue notas para este contrato..."
+
+#. module: contratos
+#: help:contratos.contractsale,add_plants:0
+msgid "Canitdad de plantas adicionales para el contrato"
+msgstr "Canitdad de plantas adicionales para el contrato"
+
+#. module: contratos
+#: help:contratos.contractsale,amount_plants:0
+msgid "Canitdad de plantas del contrato"
+msgstr "Canitdad de plantas del contrato"
+
+#. module: contratos
+#: field:contratos.contractsale,amount_plants:0
+msgid "Cantidad de plantas(%)"
+msgstr "Cantidad de plantas"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Contract Forms"
+msgstr "Formulario de contrato"
+
+#. module: contratos
+#: model:ir.ui.menu,name:contratos.menu_gestion_contract_padre
+msgid "Contract Information"
+msgstr "Información de contratos"
+
+#. module: contratos
+#: model:ir.module.category,name:contratos.module_category_sales_contract
+msgid "Contract Managment"
+msgstr "Administración de contratos"
+
+#. module: contratos
+#: model:ir.module.category,description:contratos.module_category_sales_contract
+msgid "Contract Managment."
+msgstr "Administración de contratos."
+
+#. module: contratos
+#: model:ir.actions.report.xml,name:contratos.report_contract
+msgid "Contract Report"
+msgstr "Reporte de contrato"
+
+#. module: contratos
+#: model:res.groups,name:contratos.group_contract_sale_manager
+msgid "Contract sale / Manager"
+msgstr "Contract sale / Manager"
+
+#. module: contratos
+#: model:res.groups,name:contratos.group_contract_sale_user
+msgid "Contract sale / User"
+msgstr "Contract sale / User"
+
+#. module: contratos
+#: model:ir.actions.act_window,name:contratos.contract_action
+msgid "Contracts"
+msgstr "Contratos"
+
+#. module: contratos
+#: field:contratos.contractsale,ventas_ids:0
+#: field:res.partner,contratos_ids:0
+msgid "Contratos"
+msgstr "Contratos"
+
+#. module: contratos
+#: help:account.invoice,contrato_ids:0
+#: help:sale.order,contrato_ventas_ids:0
+msgid "Contratos asociados a clientes"
+msgstr "Contratos asociados a clientes"
+
+#. module: contratos
+#: view:res.partner:contratos.partner_code_form_view
+msgid "Contratos de Ventas"
+msgstr "Contratos de Ventas"
+
+#. module: contratos
+#: field:contratos.contractsale,country:0
+msgid "Country"
+msgstr "País"
+
+#. module: contratos
+#: field:contratos.contractsale,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: contratos
+#: field:contratos.contractsale,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: contratos
+#: field:contratos.contractsale,partner_id:0
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: contratos
+#: help:contratos.contractsale,partner_id:0
+msgid "Customer you are making the agreement with"
+msgstr "Customer you are making the agreement with"
+
+#. module: contratos
+#: field:contratos.contractsale,description:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: contratos
+#: field:contratos.contractsale,end_date:0
+msgid "End Date"
+msgstr "Fin de contrato"
+
+#. module: contratos
+#: field:contratos.contractsale,account_invoice_ids:0
+msgid "Facturas"
+msgstr "Facturas"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Facturas de ventas"
+msgstr "Facturas de ventas"
+
+#. module: contratos
+#: view:website:contratos.report_contract_view_document
+msgid "Fecha de inicio:"
+msgstr "Fecha de inicio:"
+
+#. module: contratos
+#: view:website:contratos.report_contract_view_document
+msgid "Fecha final:"
+msgstr "Fecha final:"
+
+#. module: contratos
+#: field:contratos.contractsale,id:0
+#: field:report.contratos.report_contract.py,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+#: model:ir.model,name:contratos.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: contratos
+#: view:website:contratos.report_contract_view_document
+msgid "Invoice address:"
+msgstr "Dirección de facturación:"
+
+#. module: contratos
+#: field:contratos.contractsale,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: contratos
+#: field:contratos.contractsale,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.curso_tree_view
+msgid "Lista de Contracts"
+msgstr "Lista de Contratos"
+
+#. module: contratos
+#: field:contratos.contractsale,currency_contract:0
+msgid "Moneda"
+msgstr "Moneda"
+
+#. module: contratos
+#: field:contratos.contractsale,monto_total:0
+msgid "Monto del contrato"
+msgstr "Monto del contrato"
+
+#. module: contratos
+#: help:contratos.contractsale,monto_total:0
+msgid "Monto total del contrato"
+msgstr "Monto total del contrato"
+
+#. module: contratos
+#: help:contratos.contractsale,project:0
+msgid "Name that helps to identify the project"
+msgstr "Name that helps to identify the project"
+
+#. module: contratos
+#: field:account.invoice,contrato_ids:0
+#: field:sale.order,contrato_ventas_ids:0
+msgid "No. de Contrato"
+msgstr "No. de Contrato"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "No. de Contrato..."
+msgstr "No. de Contrato..."
+
+#. module: contratos
+#: field:contratos.contractsale,name:0
+msgid "No.Contract"
+msgstr "No.Contrato"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Notas"
+msgstr "Notas"
+
+#. module: contratos
+#: view:website:contratos.report_contract_view_document
+msgid "Number of plants extras:"
+msgstr "Número de plantas extras:"
+
+#. module: contratos
+#: view:website:contratos.report_contract_view_document
+msgid "Number of plants:"
+msgstr "Numero de plantas extras:"
+
+#. module: contratos
+#: model:ir.model,name:contratos.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: contratos
+#: field:contratos.contractsale,add_plants:0
+msgid "Plantas adicionales"
+msgstr "Plantas adicionales"
+
+#. module: contratos
+#: help:contratos.contractsale,end_date:0
+msgid "Please write a end date"
+msgstr "Escriba una fecha final"
+
+#. module: contratos
+#: help:contratos.contractsale,start_date:0
+msgid "Please write a start date"
+msgstr "Escriba una fecha inicial"
+
+#. module: contratos
+#: model:res.groups,name:contratos.group_prices_sale
+msgid "Price unit"
+msgstr "Precio unitario"
+
+#. module: contratos
+#: field:contratos.contractsale,project:0
+msgid "Project name"
+msgstr "Nombre de proyecto"
+
+#. module: contratos
+#: model:ir.model,name:contratos.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Sales Orders"
+msgstr "Pedido de ventas"
+
+#. module: contratos
+#: field:contratos.contractsale,start_date:0
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Technical details"
+msgstr "Detalles Técnicos"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Terminos de pago"
+msgstr "Terminos de pago"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Terminso de pagos"
+msgstr "Terminso de pagos"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Total Amount"
+msgstr "MOnto Total"
+
+#. module: contratos
+#: view:contratos.contractsale:contratos.contractsale_form_view
+msgid "Total de Ventas"
+msgstr "Total de Ventas"
+
+#. module: contratos
+#: field:contratos.contractsale,user_restrict_prices:0
+msgid "User Restrict Prices"
+msgstr "User Restrict Prices"
+
+#. module: contratos
+#: field:contratos.contractsale,product_id:0
+msgid "Variedad de cultivo"
+msgstr "Variedad de cultivo"
+

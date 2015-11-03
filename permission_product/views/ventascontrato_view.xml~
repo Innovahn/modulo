@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+<data>
+<record model="ir.ui.view" id="venta_contrato_form_view">
+          <field name="name">contractsale.ventas_contrato</field>
+          <field name="model">sale.order</field>
+          <field name="inherit_id" ref="sale.view_order_form" />
+          <field name="arch" type="xml">
+             <field name="partner_id" position="after">
+                  <field name="contrato_ventas_ids" attrs="{'invisible': [('state','in',('draft','sent',''))]}" domain='[("partner_id","=",partner_id)]'/>	
+            </field>	     
+          </field>
+        </record>
+ </data>
+</openerp>

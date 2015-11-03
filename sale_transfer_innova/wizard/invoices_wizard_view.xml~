@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.actions.act_window" id="Refund_Invoice_wizard_action">
+			<field name="name">Refund Invoice</field>
+			<field name="res_model">innova_stock_plus.invoices</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+	<menuitem name="Refund Invoice" parent="base.menu_sales"
+                sequence="8"
+id="Refund_Invoice_wizard_menu"
+action="Refund_Invoice_wizard_action"/>
+
+
+<record model="ir.ui.view" id="print_report_form_view">
+<field name="name">Refund Invoice</field>
+<field name="model">innova_stock_plus.invoices</field>
+<field name="type">form</field>
+<field name="arch" type="xml">
+<form string="Invoices Refund" col="2">
+
+<field name="partner_id" context="{'search_default_customer':1, 'show_address': 1}" options="{&quot;always_reload&quot;: True}" domain="[('customer', '=', True)]"/>
+<field name="account_id_some1" widget="many2many" domain="[('type','in',['out_invoice']),('state','not in',['draft','cancel']),('partner_id','=',partner_id)]"/>
+					
+
+
+<footer>
+<button type="special" special="cancel"
+string="Cancel" icon="gtk-cancel"/>
+<button type="object" name="validate"
+string="Create" icon="gtk-ok"
+confirm="Are you sure you want to create Invoice?" context="{'account_id_some1':account_id_some1,'partner_id':partner_id}"/>
+</footer>
+</form>
+</field>
+</record>
+
+	</data>
+</openerp>

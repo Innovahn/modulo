@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+<record model="ir.ui.view" id="view_sale_transfer_innova_order_form">
+    <field name="name">sale.transfer.innova.sale.order.form.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
+    <field name="arch" type="xml">
+    
+      <button name="action_view_delivery" position="after">
+   	 <button name="transfer_stock_innova" string="Generar Salida" type="object"
+   	 attrs="{'invisible': [('state','in',['draft'])]}"
+   	 />
+    </button>
+
+
+    </field>
+</record>
+
+	</data>
+</openerp>

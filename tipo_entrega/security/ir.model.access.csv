@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tipo_entrega,sale.entrega,model_sale_entrega,tipo_entrega.group_tipo_entrega,1,1,1,1

@@ -1,0 +1,48 @@
+from openerp.osv import osv
+class reporte2(osv.AbstractModel):
+	_name = 'report.banks.write_checks_print'
+	def render_html(self, cr, uid, ids, data=None, context=None):
+		self.cr = cr
+		self.uid = uid
+		report_obj = self.pool['report']
+		report = report_obj._get_report_from_name(cr, uid, 'banks.write_checks_print')
+		docargs = {
+			'doc_ids': ids,
+			'doc_model': report.model,
+			'docs': self.pool[report.model].browse(cr, uid, ids, context=context),
+			'has_lines' : self._has_somethig,
+			'type' : self._type,
+			}
+		return report_obj.render(cr, uid, ids, 'banks.write_checks_print',docargs, context=context)
+
+	def _has_somethig(self,id,tipo):
+		result = {}
+		pool_voucher = self.pool.get('account.voucher')
+		obj_voucher = pool_voucher.browse(self.cr,self.uid,id)
+		has = False
+		if tipo == 1:
+			for v in obj_voucher:
+				if len(v.line_dr_ids) > 0:
+					has =True
+		else:
+			for v in obj_voucher:
+				if len(v.line_cr_ids) > 0:
+					has=True
+		return has
+
+	def _type(self,id):
+		result = {}
+		pool_voucher = self.pool.get('account.voucher')
+		obj_voucher = pool_voucher.browse(self.cr,self.uid,id)
+		tipo = None
+		for v in obj_voucher:
+				if v.type=='payment':
+					tipo = 1
+				else: 
+					tipo = 99 
+		return tipo
+
+
+
+
+

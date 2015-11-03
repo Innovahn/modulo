@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.actions.act_window" id="sale_transfer_innova_wizard_action">
+			<field name="name">transfer</field>
+			<field name="res_model">sale_transfer_innova.transfer</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+
+
+<record model="ir.ui.view" id="sale_transfer_innova_form_view">
+<field name="name">transfer</field>
+<field name="model">sale_transfer_innova.transfer</field>
+<field name="type">form</field>
+<field name="arch" type="xml">
+<form string="scrap" col="4">
+<header>
+<button type="special" special="cancel" 
+string="Cancelar" icon="gtk-cancel"/>
+<button type="object" name="validate"
+string="Validar" icon="gtk-ok" confirm="Estas seguro que quiere generar la salida de plantas?"  
+context=
+"{'lines':lines,'date':date,'note':note,'picking_type_id':picking_type_id,
+'partner_id':partner_id,'oe_origen':oe_origen,'oe_destino':oe_destino,'order_id':order_id,'binvoce':binvoce,'journal_id':journal_id,'contract_id':contract_id}"/>
+</header>
+<group>
+       <separator string="Entregas Parciales"/>
+	<group colspan="4" col="4">
+ 		<group cols="2">
+			<field name="date"  options="{&quot;always_reload&quot;: True}" />
+		</group>
+		<group cols="2">
+			<field name="binvoce"/>
+			<field name="journal_id" attrs="{'invisible': [('binvoce', '=', False)]}"/>
+		</group>
+		<field name="picking_type_id" invisible="1"/>
+		<field name="partner_id" invisible="1"/>
+		<field name="contract_id" invisible="1"/>
+		<field name="order_id" invisible="1"/>
+		<field name="oe_origen" invisible="1"/>
+		<field name="oe_destino" invisible="1"/>
+	</group>
+</group>
+<separator string="Notas"/>
+<field name="note"/>
+			
+<field name="lines">
+	<tree editable="bottom">
+		<field name="product_id" readonly="1"/>
+
+		<field name="qty"/>
+		<field name="name" invisible="1"/>
+		
+	</tree>
+</field>
+
+</form>
+</field>
+</record>
+
+	</data>
+</openerp>

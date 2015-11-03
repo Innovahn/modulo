@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report id="report_product_label11" 
+model="product.product" 
+name="product.product.label11" 
+string="Products Labels" 
+xml="barcode_small/report/product_label.xml" 
+xsl="barcode_small/report/product_label.xsl"/>
+
+       
+    </data>
+</openerp>

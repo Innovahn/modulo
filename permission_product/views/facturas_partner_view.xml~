@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+<data>
+<record model="ir.ui.view" id="sale_contrato_form_view">
+          <field name="name">partner_invoice.facturas_contrato</field>
+          <field name="model">account.invoice</field>
+          <field name="inherit_id" ref="account.invoice_form" />
+          <field name="arch" type="xml">
+          <field name="residual" position="after">
+              <field name="importe_abonado" invisible='[("state","=","drat")]'/>
+            </field>
+          </field>
+        </record>
+ </data>
+</openerp>

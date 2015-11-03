@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="report_contract_view_document">
+<t t-call="report.external_layout">
+<t t-foreach="docs" t-as="o">
+   <div class="page">
+	      <div class="row">
+	       <h2><span t-field="o.name"/></h2>
+	       </div>
+	        <div class="col-xs-6">
+	        <strong>Invoice address:</strong>
+            <div t-field="o.partner_id"
+                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+	        </div>
+          
+          <div class="row mt32 mb32" id="informations">
+	            <div class="col-xs-3">
+                    <strong>Fecha de inicio:</strong>
+                    <p t-field="o.start_date"/>
+                </div>
+                <div class="col-xs-3">
+                    <strong>Fecha final:</strong>
+                    <p t-field="o.end_date"/>
+                </div>
+                <div class="col-xs-3">
+                    <strong>Number of plants:</strong>
+                    <p t-field="o.amount_plants"/>
+                </div>
+                 <div class="col-xs-3">
+                    <strong>Number of plants extras:</strong>
+                    <p t-field="o.add_plants"/>
+                </div>
+	       </div>	 	   
+   </div> 
+      <!-- Esta etiqueta del footer es la que no funciona -->
+</t>
+</t>
+</template>
+
+<template id="report_contract_view">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+            <t t-raw="translate_doc(doc_id, doc_model,'partner_id.lang','contratos.report_contract_view_document')"/>
+            </t>
+        </t>
+</template>
+</data>
+</openerp>

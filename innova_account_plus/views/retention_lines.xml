@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+			
+        <record model="ir.ui.view" id="view_retention_lines_tree">
+            <field name="name">retention.lines.tree</field>
+            <field name="model">retention.lines</field>
+            <field name="arch" type="xml">
+		<tree string="Retention Lines" editable="bottom">  
+			<field name="account_id" domain="[('type', 'not in',['view']),('use_4_retention', '=', True)]"/>               
+                        <field name="description" />
+			<field name="amount" sum="amount"/>
+		 </tree>
+            </field>
+        </record>
+	
+
+	 <record model="ir.ui.view" id="view_retention_lines_form">
+            <field name="name">retention_lines.form</field>
+            <field name="model">retention.lines</field>
+            <field name="arch" type="xml">
+               		 <form string="Retention Lines" >
+				<group col="4" colspan="4">
+                 		 	<field name="account_id" domain="[('type', 'not in',['view']),('use_4_retention', '=', True)]"/>               
+                        	 	<field name="description" />
+				 	<field name="amount" />
+				</group>
+               		 </form>
+            </field>
+        </record>
+    </data>
+</openerp>

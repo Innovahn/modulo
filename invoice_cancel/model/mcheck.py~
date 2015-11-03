@@ -1,0 +1,1030 @@
+# -*- coding: utf-8 -*-
+from openerp import models, api
+from openerp.osv import fields, osv
+import openerp.addons.decimal_precision as dp
+from datetime import datetime
+import locale
+import pytz
+from openerp.tools.translate import _
+import time
+from itertools import ifilter
+class mcheck(osv.Model):
+	_order = 'date desc'
+	_name = 'mcheck.mcheck'
+	_description='banks.mchecks'
+	_inherit = ['mail.thread']
+	_track = {
+        'state': {
+            'mcheck_mcheck.mcheck_state_change': lambda self, cr, uid, obj, context=None: True,
+       		 },
+	 'total': {
+            'mcheck_mcheck.mcheck_total_change': lambda self, cr, uid, obj, context=None: True,
+       		 },
+   	 }
+
+	#function that brings currency rates from a particular
+	def calculate_curr_rates(self,cr, uid, ids,context=None):
+		company_currency = None
+		journal_currency = None
+		model_user = self.pool.get('res.users')
+		obj_user = model_user.browse(cr,uid,model_user.search(cr,uid,[('id' , '=', uid )],context=None),context=context)
+		model_company = self.pool.get('res.company')
+		obj_company = model_company.browse(cr,uid,model_company.search(cr,uid,[('id' , '=', obj_user.company_id.id )],context=None),context=context)
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			company_currency = obj_company.currency_id.with_context(date=mcheck.date)
+			if mcheck.journal_id.currency:
+				journal_currency = mcheck.journal_id.currency.with_context(date=mcheck.date)
+				if company_currency and journal_currency: 
+					return {'company_curr_id' : company_currency.id , 'company_curr_rate' : company_currency.rate ,'journal_curr_id': journal_currency.id, 'journal_curr_rate': journal_currency.rate}
+				else:
+					raise osv.except_osv(_('Error!'),_("Operation was not finished, Try Again") )
+			else:
+				if company_currency:
+					return {'company_curr_id' : company_currency.id , 'company_curr_rate' : company_currency.rate ,'journal_curr_id': None, 'journal_curr_rate': None}
+				else:
+					raise osv.except_osv(_('Error!'),_("Operation was not finished, Try Again") )
+
+
+	def _get_sequence(self, cr, uid,  ids, journalid,doc_type, context=None):
+		
+		journal_obj = self.pool.get('account.journal')
+		diario = journal_obj.browse(cr,uid,journal_obj.search(cr,uid,[('id','=',journalid)],context=None),context=context)
+		seq_id = None
+		have_multi=False
+		if doc_type == 'mcheck':
+			seq_id = diario.sequence_id.id
+		for sq in diario.sequence_ids:
+			have_multi = True
+			if sq.code == doc_type:
+				seq_id = sq.id
+		return {'result' : have_multi, 'seq_id' : seq_id}
+
+	def anulate_draft_voucher(self, cr, uid, ids, context=None):
+		journal_id = 0
+		doc_type = None
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			journal_id = mcheck.journal_id.id
+			doc_type = mcheck.doc_type
+			self.update_sequence(cr, uid, ids, journal_id, doc_type, context=None)
+			self.write(cr, uid, ids,{'state':'anulated','anulation_date' :mcheck.date}, context=context)
+
+	#this function anullate a check creating another transaction moving detit to credit and viceverse
+	def cancel_voucher(self, cr, uid, ids,anullation_date, context=None):
+		#041802854842570
+		if ids and cr and anullation_date:
+			selected_cancel_date = anullation_date#selected date in the wizard for tha cancelation 
+			reconcile_pool = self.pool.get('account.move.reconcile')
+			chck_memo = ''
+			movec_id = None
+			for mcheck in self.browse(cr,uid,ids,context=context):
+				existe_seq = None 
+				if mcheck.doc_type=='check':
+					existe_seq  = self._get_sequence(cr, uid,  ids, mcheck.journal_id.id,'check_cancel', context=None)
+				else:
+					existe_seq  = self._get_sequence(cr, uid,  ids, mcheck.journal_id.id,'transference_cancel', context=None)
+				if existe_seq['seq_id'] == None:
+					raise osv.except_osv(_('Configuration Error !'),_("Please Create a sequence for cancellation to the selected document type!"))
+			
+				check_move = self.pool.get('account.move')
+				check_move_obj=check_move.browse(cr,uid,check_move.search(cr,uid,[('id','=',mcheck.move_id.id )],context=None),context=context)
+				move_line = self.pool.get('account.move.line')
+				move_l_obj=move_line.browse(cr,uid,move_line.search(cr,uid,[('move_id','=',check_move_obj.id )],context=None),context=context)
+				move_values = {}
+				account_period = self.pool.get('account.period')
+				
+			
+				account_period_obj = account_period.browse(cr,uid,account_period.search(cr,uid,['&','&',( 'date_start','<=', selected_cancel_date),('date_stop', '>=',selected_cancel_date),('special','<>',True),('company_id','=',mcheck.journal_id.company_id.id),('state', '=', 'draft')],context=None),context=context)
+				for obj in check_move_obj:
+					move_values['date'] = selected_cancel_date
+					move_values['journal_id'] = obj['journal_id'].id
+					if mcheck.doc_type=='check':
+						move_values['name'] = self.journal_number(cr,uid,ids,mcheck.journal_id.id,'check_cancel',context=context)
+					else:
+						move_values['name'] = self.journal_number(cr,uid,ids,mcheck.journal_id.id,'transference_cancel',context=context)
+					move_values['period_id']=account_period_obj.id
+					move_values['ref']=obj['ref']
+					move_values['narration'] = 'Annulment of check '+ str(mcheck.number) + ' from ' + mcheck.date
+				
+				move_id = check_move.create(cr,uid,move_values)
+				movec_id = move_id 
+				move_l_values = {}
+				move_l_values['date'] = selected_cancel_date
+				for lines2 in move_l_obj:
+					move_l_values['name'] = lines2['name']
+					move_l_values['account_id'] = lines2['account_id'].id
+					move_l_values['mcheck_id'] = lines2['mcheck_id'].id
+					move_l_values['analytic_account_id']= lines2['analytic_account_id'].id
+					move_l_values['move_id'] = move_id		
+					move_l_values['currency_id'] = lines2['currency_id'].id
+					move_l_values['amount_currency'] = lines2['amount_currency']
+			
+					if lines2.credit == 0:
+						move_l_values['debit'] = 0
+						move_l_values['credit'] = lines2.debit
+						move_l_values['amount_currency'] = lines2['amount_currency']*(-1)
+			
+					else:
+						move_l_values['credit'] = 0
+						move_l_values['debit'] = lines2.credit
+						move_l_values['amount_currency'] = lines2['amount_currency']*(-1)
+				
+					move_line.create(cr,uid,move_l_values)
+				for lin in mcheck.mcheck_ids:
+					if lin.name:
+						new_name = 'Annulment of check '+str(mcheck.number)
+					else:
+						new_name = 'Annulment of check '+str(mcheck.number)
+					self.write(cr, uid, ids,{'mcheck_ids': [(1,lin.id,{'name':new_name})]}, context=context)
+				if mcheck.name:
+					chck_memo = mcheck.name
+				else:
+					chck_memo = 'Annulment of check '+ str(mcheck.number)
+				if mcheck.doc_type=='check':
+					self.update_sequence(cr, uid, mcheck.id,mcheck.journal_id.id,'check_cancel', context=None)
+				else:
+					self.update_sequence(cr, uid, mcheck.id,mcheck.journal_id.id,'transference_cancel', context=None)
+			return self.write(cr, uid, ids, {'state':'anulated','name':chck_memo, 'anulation_date' : anullation_date , 'anulation_ref' : movec_id}, context=context)
+		else:
+			raise osv.except_osv(_('Error!'),_("Operation was not finished, Try Again") )
+
+
+	def existe_number(self, cr, uid, isd,number, context = None):
+		mcheck_pool = self.pool.get('mcheck.mcheck')
+		mids = mcheck_pool.search(cr, uid, ['|',('state','=','validated'),('state','=','anulated')] , context =context)
+		for mcheck in self.browse(cr, uid, mids, context = context):	
+			if mcheck.number == number:
+				return True
+		return False
+		
+	
+			
+	def action_validate(self, cr, uid, ids, context=None):
+		currency_rate = 0.0
+		model_currency_rate = None
+		decimal_precision = self.pool.get('decimal.precision')
+		dec_prec = decimal_precision.browse(cr,uid,decimal_precision.search(cr,uid,[('name' , '=', 'Account' )],context=None),context=context)
+		for m in self.browse(cr,uid,ids,context=context):
+			model_user = self.pool.get('res.users')
+			obj_user = model_user.browse(cr,uid,model_user.search(cr,uid,[('id' , '=', uid )],context=None),context=context)
+			model_company = self.pool.get('res.company')
+			obj_company = model_company.browse(cr,uid,model_company.search(cr,uid,[('id' , '=', obj_user.company_id.id )],context=None),context=context)
+		curr_rates={}
+		curr_rates = self.calculate_curr_rates(cr, uid, ids, context=context)
+		currency_rate = curr_rates['company_curr_rate']
+		currency_id = curr_rates['company_curr_id']
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			if len(mcheck.mcheck_ids) > 0:
+				total = 0
+				totald = 0
+				totalc = 0
+				flag=True
+				
+				select_journal_currency_id = curr_rates['journal_curr_id']#the currency of the journal selected, if it dosent have it, it will see if the default account have a currency, in defect it will be the default company currency
+				if select_journal_currency_id:#if there is a secundary currency, brings the curency rate for this currency
+					select_journal_currency_rate = curr_rates['journal_curr_rate']#rate of the currently selected journal				
+					#select_journal_currency_name = curr_rates['company_curr_rate']
+				else: #if there was not a secundary currency, wi will use the ones that la compania usa
+					select_journal_currency_rate = currency_rate 
+					select_journal_currency_id = currency_id
+				#brings the object with the corresponding period for the date escogida
+				account_period = self.pool.get('account.period')
+				account_period_obj = account_period.browse(cr,uid,account_period.search(cr,uid,['&','&',( 'date_start','<=', mcheck.date ),('date_stop', '>=',mcheck.date),('special','<>',True)
+,('company_id','=',mcheck.journal_id.company_id.id),('state', '=', 'draft')],context=None),context=context)
+				if not account_period_obj:
+					raise osv.except_osv(_('Error!'),_("There is not an open period for you company on the selected date") )
+				for line in mcheck.mcheck_ids:
+					total+=line.amount
+					if line.amount <= 0:
+						flag=False
+					if line.type=='dr':
+						totald+=line.amount
+					if line.type=='cr':
+						totalc+=line.amount
+				
+				if ((totald-totalc) > 0 and flag==True):
+					totalc_curr = 0
+					totald_curr = 0
+					totald=0
+					totalc=0
+					lines_array=[]
+					name = "/"
+					if mcheck.number:
+						if self.existe_number(cr, uid, ids, mcheck.number, context=context):
+							raise osv.except_osv(_('Error'),_("This number belong to a validated check, you can not create journal items with the same number") )
+						else:						
+							name = mcheck.number
+					amove_obj= self.pool.get('account.move')
+					amovedata={}
+					amovedata['journal_id']=mcheck.journal_id.id
+					amovedata['name']=name
+					amovedata['date']=mcheck.date
+					amovedata['period_id']=account_period_obj.id
+					amovedata['ref']=mcheck.reference					
+					#seq_obj = self.pool.get('ir.sequence')
+
+					move_id= amove_obj.create(cr,uid,amovedata)
+					mline_obj= self.pool.get('account.move.line')
+					flag2=True
+					for lines in mcheck.mcheck_ids:
+						lines_col={}
+						lines_col['move_id']=move_id
+						lines_col['account_id']=lines.account_id.id
+						lines_col['name']=lines.name  or '/'
+						lines_col['partner_id']=lines.partner_id.id
+						lines_col['currency_id'] = None
+						lines_col['amount_currency']=None
+						if lines.type == 'dr':
+							lines_col['credit']=0
+							lines_col['debit'] = round((lines.amount * (1/select_journal_currency_rate))*currency_rate,dec_prec.digits)
+							totald+=lines_col['debit']
+							if select_journal_currency_id == currency_id:#si el currency de 
+								totald_curr+=lines_col['debit']
+							else:
+								lines_col['amount_currency']=(lines.amount * (1/select_journal_currency_rate))*select_journal_currency_rate#shame on me, hahahaha 1(x/y)y=x
+								lines_col['currency_id'] = select_journal_currency_id
+								totald_curr+=lines.amount
+						else:
+							lines_col['debit']=0
+							lines_col['credit'] = round(((lines.amount * (1/select_journal_currency_rate))*currency_rate),dec_prec.digits)
+							totalc+=lines_col['credit']  #total of debit multiplicated by default
+							if select_journal_currency_id == currency_id:
+								totalc_curr+=lines_col['credit']
+							else:
+								lines_col['amount_currency'] = (lines.amount * (1/select_journal_currency_rate))*(-1)*select_journal_currency_rate
+								lines_col['currency_id'] = select_journal_currency_id
+								totalc_curr+=lines.amount
+						lines_col['move_id']=move_id
+						lines_col['date']=mcheck.date
+						lines_col['mcheck_id']=mcheck.id
+						lines_col['analytic_account_id']=lines.chqmanalitics.id
+						lines_array.append(lines_col)#adding movline to an array
+					if mcheck.commission > 0:#for commission lines creation
+						
+						if mcheck.journal_id.commission_account.id:
+
+							for i in [1,2]:				
+			 					com_line = {}
+								com_line['move_id']=move_id
+								com_line['mcheck_id']=mcheck.id
+								com_line['name']='/Commission-'+str(mcheck.name)
+								com_line['amount_currency'] = None
+								com_line['currency_id'] = None
+								if i==1:
+									
+									com_line['account_id']=mcheck.journal_id.commission_account.id
+									if not select_journal_currency_id == currency_id:
+										com_line['amount_currency']=(mcheck.commission * (1/select_journal_currency_rate))*select_journal_currency_rate	
+										com_line['currency_id'] = select_journal_currency_id
+									com_line['debit']=round(((mcheck.commission * (1/select_journal_currency_rate))*currency_rate),dec_prec.digits) 
+									com_line['credit']=0
+								else:
+									if mcheck.journal_id.default_debit_account_id:
+										com_line['account_id']=mcheck.journal_id.default_debit_account_id.id
+									if not select_journal_currency_id == currency_id:
+										com_line ['amount_currency'] = (mcheck.commission * (1/select_journal_currency_rate))*(-1)*select_journal_currency_rate
+										com_line ['currency_id'] = select_journal_currency_id
+									com_line['debit']=0
+									com_line['credit']=round((mcheck.commission * (1/select_journal_currency_rate))*currency_rate,dec_prec.digits)
+								
+								lines_array.append(com_line)
+						else:
+							raise osv.except_osv(_('Error!'),_("The selected journal must have a commission account asociadted if you want to use commissions") )
+					mline_data={}
+					mline_data['move_id']=move_id
+					mline_data['name'] = mcheck.name
+					mline_data['credit']= totald-totalc
+					mline_data['debit']=0
+					mline_data['date']=mcheck.date
+					if not (currency_id == select_journal_currency_id):
+						mline_data['currency_id'] = select_journal_currency_id
+						mline_data['amount_currency']=((totald_curr-totalc_curr) * (1/select_journal_currency_rate)*select_journal_currency_rate)*(-1)
+					else:
+						mline_data['currency_id'] = None
+						mline_data['amount_currency'] = None
+					mline_data['account_id']=mcheck.journal_id.default_credit_account_id.id
+					mline_data['mcheck_id']=mcheck.id
+					if round(totald_curr-totalc_curr,dec_prec.digits ) != round(mcheck.total,dec_prec.digits ):
+						raise osv.except_osv(_('you still have '+str(mcheck.total-(totald_curr-totalc_curr))),_("Try to make it fit") )
+					line_id= mline_obj.create(cr,uid,mline_data)
+					for lines2 in lines_array:
+						mline_obj.create(cr,uid,lines2)
+					
+					if currency_id == select_journal_currency_id:
+						select_journal_currency_rate = False
+					for lin in mcheck.mcheck_ids:
+						if not lin.name:
+							new_name = mcheck.name
+							self.write(cr, uid, ids,{'mcheck_ids': [(1,lin.id,{'name':new_name})]}, context=context)
+					mchecks_pool = self.pool.get('mcheck.mcheck')
+					if not mcheck.was_unreconcilied:
+						n=self.journal_number(cr,uid,mcheck.id,mcheck.journal_id.id,mcheck.doc_type,context=None)
+						nids = mchecks_pool.search(cr, uid,[('number', '=', n),('state' , '!=', 'draft')])
+						if len(nids) > 0:
+							raise osv.except_osv(_('Error!'),_("Number most be unique for validated Miscellaneous checks, you may have to check the sequence of you journal") )
+						self.update_sequence(cr, uid, mcheck.id,mcheck.journal_id.id,mcheck.doc_type, context=None)
+					else:
+						n=mcheck.number
+						nids = mchecks_pool.search(cr, uid,[('number', '=', n),('state' , '!=', 'draft')])
+						if len(nids) > 0:
+							raise osv.except_osv(_('Error!'),_("Number most be unique for validated Miscellaneous checks, you may have to check the sequence of you journal") )
+						
+					self.update_state_draf(cr, uid, mcheck.id,mcheck.journal_id.id,mcheck.doc_type, context=None)#actualiza el estado de los cheques o transacciones que esten en draft
+					jour_id = mcheck.journal_id.company_id.id
+					jour_comp_id = None
+					if mcheck.journal_id.company_id.id:
+						jour_comp_id = mcheck.journal_id.company_id.id
+					else:
+						jour_comp_id= self.pool.get('res.user').browse(cr,uid,uid, context=context).company_id.id
+
+					return self.write(cr, uid, ids, {'state':'validated','number':n,'move_id':move_id, 'actual_comp_rate': currency_rate,'actual_sec_curr_rate': select_journal_currency_rate, 'jour_company_id' : jour_comp_id}, context=context)
+								
+				else:
+					raise osv.except_osv(_('amount total is 0'),_("the value of total is 0") )
+			else:
+				raise osv.except_osv(_('No lines'),_("select more than one line") )
+
+	def update_state_draf(self, cr, uid, ids,journal_id,doc_type, context=None):
+		seq = self._get_sequence(cr, uid, ids, journal_id,doc_type, context=None)
+		if seq['seq_id'] != None:
+			mchecks_model = self.pool.get('mcheck.mcheck')
+			mchecks_obj=mchecks_model.browse(cr,uid,mchecks_model.search(cr,uid,[('state','=','draft' ),('doc_type','=',doc_type),('journal_id','=',journal_id), ('was_unreconcilied','!=',True )],context=None),context=context)
+			nn=self.journal_number(cr,uid,ids,journal_id,doc_type,context=None)
+			for draft_checks in mchecks_obj:
+				mchecks_model.write(cr, uid, draft_checks.id, {'number':nn}, context=context)
+			acc_voucher_model = self.pool.get('account.voucher')
+			acc_voucher_obj=acc_voucher_model.browse(cr,uid,acc_voucher_model .search(cr,uid,[('state','=','draft' ),('pay_method_type','=',doc_type),('journal_id','=',journal_id)],context=None),context=context)
+			for draft_acc_vouch in acc_voucher_obj:
+				acc_voucher_model.write(cr, uid, draft_acc_vouch.id, {'number':nn,'next_number' : nn}, context=context)
+		
+		
+	def _get_totald(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		totald=0
+		totalc=0			
+		total=0
+			
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			if len(mcheck.mcheck_ids) > 0:
+				for lines in mcheck.mcheck_ids:
+					total+=lines.amount
+					if lines.type=='dr':
+						totald+=lines.amount
+					if lines.type=='cr':
+						totalc+=lines.amount
+			result[mcheck.id]=self.addComa('%.2f'%(totald-totalc))
+		return result	
+	def _get_totaldebit(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			totald=0
+			if len(mcheck.move_ids) > 0:
+				for lines in mcheck.move_ids:
+					totald+=lines.debit
+			result[mcheck.id]=self.addComa('%.2f'%(totald))
+		return result	
+	def _get_totalcredit(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		totalc=0
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			if len(mcheck.move_ids) > 0:
+				for lines in mcheck.move_ids:
+					totalc+=lines.credit
+			result[mcheck.id]=self.addComa('%.2f'%(totalc))
+		return result	
+
+
+	def _get_totalt(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		total=0
+		totald=0
+		totalc=0
+				
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			if len(mcheck.mcheck_ids) > 0:
+				for lines in mcheck.mcheck_ids:
+					total+=lines.amount
+					if lines.type=='dr':
+						totald+=lines.amount
+					if lines.type=='cr':
+						totalc+=lines.amount
+			if(mcheck.journal_id.currency):
+				a=self.to_word(totald-totalc,mcheck.journal_id.currency.name)
+			else:
+				a=self.to_word(totald-totalc,'HNL')
+			result[mcheck.id]=a
+		return result
+
+	#this function calculate the rest of money you can add as debit in lines
+	
+
+	def _paying_left(self,cr, uid, ids, field, arg, context=None):
+		result = {}
+		tot_lined = 0
+		tot_linec = 0
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			for lines in mcheck.mcheck_ids:
+				if lines.type=='dr':
+					tot_lined+=lines.amount
+				else:
+					tot_linec+=lines.amount
+					
+			result[mcheck.id]=mcheck.total-(tot_lined-tot_linec)
+		return result
+	def update_sequence(self,cr, uid, ids, journal_id, doc_type, context=None):
+		journa_obj = self.pool.get('account.journal')
+		diario = journa_obj.browse(cr,uid,journa_obj.search(cr,uid,[('id','=',journal_id)],context=None),context=context)
+		seq_id=0
+		fl=False
+		for d in diario.sequence_ids:
+			if d.code==doc_type:
+				seq_id=d.id
+				fl=True
+		if fl:
+			cr.execute("UPDATE ir_sequence SET number_next=number_next+number_increment WHERE id=%s ", (seq_id,))
+		else:						
+			raise osv.except_osv(_('Error !'),_("Could't update the sequence for this journal!"))
+
+	
+	
+	#this function return the name/code  based in the code of the sequence code asociatedof the sequence of the journal 
+	def journal_number(self,cr,uid,ids,journalid,doc_type,context=None):
+		if not journalid==False and doc_type !=False:
+			context = dict(context or {})
+			force_company = self.pool.get('res.users').browse(cr, uid, uid).company_id.id#id of the company of the user
+			seq_model = self.pool.get('ir.sequence')
+			name = "/"
+			journal_obj = self.pool.get('account.journal')
+			diario = journal_obj.browse(cr,uid,journal_obj.search(cr,uid,[('id','=',journalid)],context=None),context=context)
+			seq_id=0
+			fl=False
+			for sq in diario.sequence_ids:
+				if sq.code == doc_type:
+					seq_id = sq.id
+					fl = True
+			if not fl:
+				return None	
+		
+			if diario.sequence_id:
+				if not diario.sequence_id.active:
+					raise osv.except_osv(_('Configuration Error !'),_('Please activate the sequence of selected journal !'))			
+				context.update({'no_update' : True})
+				name = seq_model.next_by_id(cr, uid, int(seq_id),context=context)
+				return  name
+			else:
+				return None
+		else:
+			return None
+
+	
+	def onchange_journal(self,cr,uid,ids,journalid,doc_type,date,context=None):
+		rate = None
+		if doc_type is None or doc_type is False or journalid is False:
+			msj=_("Select a Type and a Journal")
+		else:
+			msj=_("Warnig! Please Create a sequence code with the code '"+doc_type+"' or add a sequence for this journal with the code '"+doc_type+"'")
+		journal_pool = self.pool.get('account.journal')
+		journal = journal_pool.browse(cr,uid,journalid,context=context)
+		user_pool = self.pool.get('res.users')
+		user_obj = user_pool.browse(cr, uid, uid, context = context)
+		if journal.currency:
+			if journal.currency.base:
+				rate = user_obj.company_id.currency_id.rate
+			elif journal.currency.id == user_obj.company_id.currency_id.id:
+				rate = False
+			else:
+				company_rate = 0
+				journal_currency = journal.currency.with_context(date=date)
+				rate  = journal_currency.rate
+			
+		n=self.journal_number(cr,uid,ids,journalid,doc_type,context=None)
+		if n is None or n is False:
+			return { 'value' :{ 'number' : n,'number_calc' : n,'msg' : msj, 'currency' : rate }}
+		else:
+			return { 'value' :{ 'number' : n,'number_calc' : n,'msg' : None, 'currency' : rate }}
+		
+
+	def create(self, cr, uid, values, context=None):
+		jour_comp_id = None
+		journal = self.pool.get('account.journal').browse(cr, uid , values['journal_id'],context=context)
+		if journal.company_id.id:
+			values['jour_company_id'] = journal.company_id.id
+		else:
+			values['jour_company_id']= self.pool.get('res.user').browse(cr,uid,uid, context=context).company_id.id
+		
+		if values['number'] is not None and  values['number'] is not False:
+			b = super(mcheck, self).create(cr, uid, values, context=context)
+			if b:
+				return b
+			else:
+				return False
+					
+		else:
+			raise osv.except_osv(_('Configuration Error !'),_("Please Create a sequence code with the code '"+str(values['doc_type'])+"' or add a sequence for this journal with the code '"+str(values['doc_type'])+"'"))	
+
+	def unlink(self, cr, uid, ids, context=None):
+		mchecks = self.pool.get('mcheck.mcheck').browse(cr,uid,ids,context=context)
+		flag=False
+		for mc in mchecks:
+			if mc.state not in  ['draft'] or  mc.was_unreconcilied:
+				flag=True
+		if flag:
+			raise osv.except_osv(_('Error!'),_("You can not delete a Miscellaneous check when it has a diferent state than Draft or it has not been unreconcilied!"))
+		else:	
+			return super(mcheck, self).unlink(cr, uid, ids, context=context)
+				
+	def _calculate_journal_assoc(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		bcb_pool = self.pool.get('banks.checkbook')
+		bck = bcb_pool.browse(cr, uid, bcb_pool.search(cr, uid,[],context=context), context=context)
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			for b in bck:
+				if b.journal.id == mcheck.journal_id.id:
+					result[mcheck.id] = b.bank.id
+		return result
+
+	def _use_creator(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		user_pool = self.pool.get('res.users')
+		user = user_pool.browse(cr, uid, user_pool.search(cr, uid,[],context=context), context=context)
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			result[mcheck.id] = mcheck.create_uid
+		return result
+
+	def _calculate_number(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			result[mcheck.id]=mcheck.number
+		return result
+
+	def _get_msg(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			result[mcheck.id]=None
+		return result
+	def _get_currency(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			journal_currency = mcheck.journal_id.currency.with_context(date=mcheck.date)
+			result[mcheck.id] = journal_currency.rate
+		return result
+	
+	
+	def evaluar_template(self, cr, uid, ids,template,doc_type, context= None):
+		if template:
+			bt = self.pool.get('banks.template').browse(cr,uid,template,context=context)
+			mcheck_pool = self.pool.get('mcheck.mcheck')
+			mcheck = mcheck_pool.browse(cr,uid,bt.doc_id,context=context)
+			mcheck_name_pool = self.pool.get('mcheck.mcheck_name')
+			line_ids=mcheck_name_pool.search(cr, uid, [('mcheck_id','=',mcheck.id)],context=context)
+			list_of_lines=[]	
+			for lineas in mcheck_name_pool.browse(cr, uid , line_ids, context=context ):
+				new_line={}
+				if lineas.account_id.id:
+					new_line['account_id']=lineas.account_id.id
+				if lineas.amount:
+					new_line['amount']=lineas.amount
+				if lineas.chqmanalitics:
+					new_line['chqmanalitics']=lineas.chqmanalitics
+				if lineas.type:
+					new_line['type']=lineas.type
+				if lineas.name:
+					new_line['name'] = None
+					#new_line['name']=lineas.name
+				if lineas.partner_id.id:
+					new_line['partner_id']=lineas.partner_id.id
+				list_of_lines.append(new_line)
+			return [ mcheck.name, mcheck.journal_id.id ,mcheck.reference,  mcheck.total,  mcheck.doc_type, list_of_lines]
+		else:
+			return [ None, None , None , None,  None, None ]
+
+	#it takes a template to be use for a new check
+	def onchange_template(self, cr, uid, ids,template,doc_type, context= None):
+		name,jour_id, reference, total, doc_type,list_lines = self.evaluar_template(cr, uid, ids,template,doc_type, context= context)
+		return {'value' : { 'name' : name,'journal_id' : jour_id , 'reference': reference,'total': total, 'doc_type' : doc_type,'mcheck_ids':list_lines}}
+		
+	
+	
+	def set_as_template(self, cr, uid, ids, context= None):
+		mcheck=self.browse(cr, uid,ids,context=None)
+		jour_comp_id =None
+		if not ids: return []
+		return {
+			'name':_("Set as Template"),
+			'view_mode': 'form',
+			'view_type': 'form,tree',
+		   	'res_model': 'banks.template',
+		    	'type': 'ir.actions.act_window',
+			'context': context,
+			'nodestroy': True,
+		    	'target': 'new',
+		    	'domain': '[]',
+		    	'context': {'doc_id' : ids[0],'doc_type': mcheck.doc_type, 'hide_buttons':True}
+			}
+
+	def load_reten_wizard(self, cr, uid, ids, context=None):
+		dummy, view_id_form  = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'innova_account_plus', 'retention_lines_assig_wizard_form')
+		if not ids: return []
+		act_check = self.browse(cr, uid, ids, context=context)
+		context=dict(context or {})
+		line_ids=[]
+		new_retention_line = {}
+		new_retention_line = dict(new_retention_line or {})
+		ret_line_pool = self.pool.get('retention.lines')
+		context.update({'voucher_id': False})
+		context.update({'mcheck_id': act_check.id})
+		for mcheck in act_check:
+			for line in mcheck.mcheck_ids:
+				b=None
+				des = '/'
+				if line.name:
+					des=line.name
+				if line.account_id.use_4_retention:
+					new_retention_line.update({'account_id': line.account_id.id , 'description' : des , 'amount': line.amount})
+					b = ret_line_pool.create(cr, uid,new_retention_line, context = context )
+					if b:
+						line_ids.append(b)
+		if len(line_ids)>0:
+			context.update({'retentions_lines':line_ids})
+		return {
+			'name':_("Exchange Diference"),
+			'view_type': 'form',
+		   	'res_model': 'retention_lines_assig_wizard',
+		    	'type': 'ir.actions.act_window',
+			'context': context,
+			'views': [(view_id_form, 'form')],
+			'nodestroy': True,
+		    	'target': 'new',
+		    	'domain': '[]'
+			}
+
+	def unreconciliate_mcheck(self, cr, uid, ids, context=None):
+		reconcile_pool = self.pool.get('account.move.reconcile')
+		move_pool = self.pool.get('account.move')
+		move_line_pool = self.pool.get('account.move.line')
+		doc_type = ''
+		journal_id = False
+		
+		for mcheck in self.browse(cr, uid, ids, context=context):
+			# refresh to make sure you don't unlink an already removed move
+			doc_type = mcheck.doc_type
+			journal_id = mcheck.journal_id.id
+			mcheck.refresh()
+			if mcheck.move_id:
+				move_pool.button_cancel(cr, uid, [mcheck.move_id.id])
+				move_pool.unlink(cr, uid, [mcheck.move_id.id])
+		res = {
+		    'state':'draft',
+		    'move_id':False,
+		    'was_unreconcilied' : True,
+		}
+		self.write(cr, uid, ids, res)
+		self.update_state_draf(cr, uid, ids, journal_id, doc_type, context=None)#actualiza el estado de los cheques o transacciones que esten en draft
+		return True
+	
+	@api.one
+   	@api.depends('mcheck_ids.amount', 'total')
+	def _compute_rest_credit(self):
+		tot_lined = 0
+		tot_linec = 0
+		cont=0
+		for lines in self.mcheck_ids:
+			if lines.type=='dr':
+				tot_lined+=lines.amount 
+			elif lines.type=='cr':
+				tot_linec+=lines.amount
+			else:
+				tot_linec+=0
+				tot_lined+=0
+			if lines.account_id.use_4_retention:
+				cont+=1
+		if cont > 0:
+			self.has_retentions = True
+		else:
+			self.has_retentions = False
+        	self.rest_credit = self.total - (tot_lined-tot_linec)
+
+	@api.one
+	#@api.return
+	def ret_doc_type(self):
+		return self.doc_type
+
+	
+
+	_columns={
+        	'move_id':fields.many2one('account.move', 'Account Entry', copy=False),
+	        'journal_id':fields.many2one('account.journal', 'Journal',required=True ),
+		'name':fields.text('Memo', required=True),
+		'date':fields.date('Date',  select=True, 
+                           help="Effective date for accounting entries",required=True ),	
+		'amount': fields.function(_get_totald,type='char',string='Total', ),
+		'amountdebit': fields.function(_get_totaldebit,type='char',string='Total', ),
+		'amountcredit': fields.function(_get_totalcredit,type='char',string='Total',),
+		'amounttext': fields.function(_get_totalt,type='char',string='Total',),
+		'was_unreconcilied': fields.boolean(string='Unreconcilied'),
+		'total': fields.float(string='Total',required=True, track_visibility='onchange', ),
+		#'temporal_code': fields.char(string='Temporal Code',),
+		'currency': fields.function(_get_currency,type='float',string='Currency',),
+		'jour_company_id' : fields.integer(string='Company',),
+		
+		'template_id' : fields.many2one('banks.template','Template', options ="{'limit': 10, 'create': False, 'create_edit': False ,'no_open': True }" ),
+		'doc_type' : fields.selection([
+						('check','Check'),
+						('transference','Transference')],string='Doc. type'),
+		'tax_amount':fields.float('Tax Amount', digits_compute=dp.get_precision('Account'), ),
+		'reference': fields.char('Pay to', 
+		                         help="Transaction reference number.", copy=False,required=True),
+		#'rest_credit' : fields.integer(t string='Debit left'),
+		'rest_credit' : fields.float( string='Debit left', store=False,compute='_compute_rest_credit',),
+		'commission' : fields.float('Commission'),
+		'actual_comp_rate' : fields.float('Company rate'),
+		'actual_sec_curr_rate' : fields.float('Actual Secundary Currency Rate'),
+		'anulation_date' : fields.date('Date of anulation',  select=True, 
+                           help="Effective date for anulation", ), #date of the anulation of the check
+		'number': fields.char('Number'),
+		'msg': fields.function(_get_msg, type='char',  store=False),
+		'number_calc': fields.function(_calculate_number, type='char', string='Number', store=False),
+		'obs':fields.text('obs',  ),
+		'retentions_lines' : fields.many2many('retention.lines','pay_number_check',required=False),
+		'anulation_ref':fields.many2one('account.move', 'Anullation Ref', copy=False),
+		'retention_ref' : fields.many2one('retentions','Retention Payment',required=False),
+		'has_retentions': fields.boolean(string='has retentions', ),
+		'banks_check_book_assoc': fields.function(_calculate_journal_assoc, type='many2one', relation="banks.checkbook", string='Journal Bank', store=False),
+		'user_creator': fields.function(_use_creator, type='many2one', relation="res.users", string='User', store=False),
+        	        	
+		'type':fields.selection([
+			('sale','Sale'),
+			('purchase','Purchase'),
+			('payment','Payment'),
+			('receipt','Receipt'),
+			],'Default Type', ),		
+		'mcheck_ids' :fields.one2many('mcheck.mcheck_name','mcheck_id',string="checks lines"),
+		'move_ids' :fields.one2many('account.move.line','mcheck_id',string="Check Account Move lines"),
+		'state':fields.selection(
+		    [('draft','Draft'),
+		     ('validated','Validated'),
+		     ('anulated','Anulated'),
+		    ], 'Status', 
+		    help=' * The \'Draft\' status is used when a user is encoding a new and unconfirmed Voucher. \
+		                \n* The \'Pro-forma\' when voucher is in Pro-forma status,voucher does not have an voucher number. \
+		                \n* The \'Posted\' status is used when user create voucher,a voucher number is generated and voucher entries are created in account \
+		                \n* The \'Cancelled\' status is used when user cancel voucher.', track_visibility='onchange'),
+
+	}
+
+	_order = 'number desc, date desc'
+	_defaults = {
+	'state' : 'draft',
+	'type' : 'payment',
+ 	'date': lambda *a: time.strftime('%Y-%m-%d'),
+	'doc_type' : 'check',
+	'was_unreconcilied': False,
+	'has_retentions' : False
+		    } 
+
+
+	@api.multi
+    	def copy(self, default=None):
+		default = dict(default or {})
+		default['number'] = self.journal_number(self.journal_id.id, self.doc_type)
+		default['state'] ='draft'
+		default['reference'] = self.reference
+		default['date'] = datetime.now()
+		encabezado = super(mcheck, self).copy(default)
+		for line in self.mcheck_ids:
+			a = self.env['mcheck.mcheck_name'].create({'mcheck_id': encabezado.id, 'account_id': line.account_id.id, 'name':line.name, 'amount': line.amount, 'chqmanalitics': line.chqmanalitics.id, 'type':line.type })
+
+		return encabezado
+
+
+	# Para definir la moneda me estoy basando en los código que establece el ISO 4217
+	# Decidí poner las variables en inglés, porque es más sencillo de ubicarlas sin importar el país
+	# Si, ya sé que Europa no es un país, pero no se me ocurrió un nombre mejor para la clave.
+
+	def validate_centavos(numero):
+		if numero > 0 and numero < 9:
+			return True
+	def to_word(self,number, mi_moneda):
+	    valor= number
+	    number=int(number)
+	    centavos=int((round(valor-number,2))*100)
+	    UNIDADES = (
+	    '',
+	    'UN ',
+	    'DOS ',
+	    'TRES ',
+	    'CUATRO ',
+	    'CINCO ',
+	    'SEIS ',
+	    'SIETE ',
+	    'OCHO ',
+	    'NUEVE ',
+	    'DIEZ ',
+	    'ONCE ',
+	    'DOCE ',
+	    'TRECE ',
+	    'CATORCE ',
+	    'QUINCE ',
+	    'DIECISEIS ',
+	    'DIECISIETE ',
+	    'DIECIOCHO ',
+	    'DIECINUEVE ',
+	    'VEINTE '
+	)
+
+	    DECENAS = (
+	    'VEINTE',
+	    'TREINTA ',
+	    'CUARENTA ',
+	    'CINCUENTA ',
+	    'SESENTA ',
+	    'SETENTA ',
+	    'OCHENTA ',
+	    'NOVENTA ',
+	    'CIEN '
+	)
+
+	    CENTENAS = (
+	    'CIENTO ',
+	    'DOSCIENTOS ',
+	    'TRESCIENTOS ',
+	    'CUATROCIENTOS ',
+	    'QUINIENTOS ',
+	    'SEISCIENTOS ',
+	    'SETECIENTOS ',
+	    'OCHOCIENTOS ',
+	    'NOVECIENTOS '
+	)
+	    MONEDAS = (
+		    {'country': u'Colombia', 'currency': 'COP', 'singular': u'PESO COLOMBIANO', 'plural': u'PESOS COLOMBIANOS', 'symbol': u'$'},
+		    {'country': u'Honduras', 'currency': 'HNL', 'singular': u'Lempira', 'plural': u'Lempiras', 'symbol': u'L'},
+		    {'country': u'Estados Unidos', 'currency': 'USD', 'singular': u'DÓLAR', 'plural': u'DÓLARES', 'symbol': u'US$'},
+		    {'country': u'Europa', 'currency': 'EUR', 'singular': u'EURO', 'plural': u'EUROS', 'symbol': u'€'},
+		    {'country': u'México', 'currency': 'MXN', 'singular': u'PESO MEXICANO', 'plural': u'PESOS MEXICANOS', 'symbol': u'$'},
+		    {'country': u'Perú', 'currency': 'PEN', 'singular': u'NUEVO SOL', 'plural': u'NUEVOS SOLES', 'symbol': u'S/.'},
+		    {'country': u'Reino Unido', 'currency': 'GBP', 'singular': u'LIBRA', 'plural': u'LIBRAS', 'symbol': u'£'}
+		)
+	    if mi_moneda != None:
+		try:
+		    moneda = ifilter(lambda x: x['currency'] == mi_moneda, MONEDAS).next()
+		    if number < 2:
+		        moneda = moneda['singular']
+		    else:
+		        moneda = moneda['plural']
+		except:
+		    return "Tipo de moneda inválida"
+	    else:
+		moneda = ""
+	    moneda = ""
+	    """Converts a number into string representation"""
+	    converted = ''
+
+	    if not (0 < number < 999999999):
+		return 'No es posible convertir el numero a letras'
+
+	    number_str = str(number).zfill(9)
+	    millones = number_str[:3]
+	    miles = number_str[3:6]
+	    cientos = number_str[6:]
+
+	    if(millones):
+		if(millones == '001'):
+		    converted += 'UN MILLON '
+		elif(int(millones) > 0):
+		    converted += '%sMILLONES ' % self.convert_group(millones)
+
+	    if(miles):
+		if(miles == '001'):
+		    converted += 'MIL '
+		elif(int(miles) > 0):
+		    converted += '%sMIL ' % self.convert_group(miles)
+
+	    if(cientos):
+		if(cientos == '001'):
+		    converted += 'UN '
+		elif(int(cientos) > 0):
+		    converted += '%s ' % self.convert_group(cientos)
+	    exactos = "Exactos"
+	    if(centavos)>0:
+		exactos = ""
+		if centavos < 9:
+			converted+= "con 0%i/100 "%centavos
+		else:
+			converted+= "con %2i/100 "%centavos
+	    moneda=""
+	    #converted += moneda
+	    converted += (moneda + exactos)
+
+	    return converted.title()
+
+
+	def convert_group(self,n):
+	    UNIDADES = (
+	    '',
+	    'UN ',
+	    'DOS ',
+	    'TRES ',
+	    'CUATRO ',
+	    'CINCO ',
+	    'SEIS ',
+	    'SIETE ',
+	    'OCHO ',
+	    'NUEVE ',
+	    'DIEZ ',
+	    'ONCE ',
+	    'DOCE ',
+	    'TRECE ',
+	    'CATORCE ',
+	    'QUINCE ',
+	    'DIECISEIS ',
+	    'DIECISIETE ',
+	    'DIECIOCHO ',
+	    'DIECINUEVE ',
+	    'VEINTE '
+	)
+
+	    DECENAS = (
+	    'VEINTE',
+	    'TREINTA ',
+	    'CUARENTA ',
+	    'CINCUENTA ',
+	    'SESENTA ',
+	    'SETENTA ',
+	    'OCHENTA ',
+	    'NOVENTA ',
+	    'CIEN '
+	)
+
+	    CENTENAS = (
+	    'CIENTO ',
+	    'DOSCIENTOS ',
+	    'TRESCIENTOS ',
+	    'CUATROCIENTOS ',
+	    'QUINIENTOS ',
+	    'SEISCIENTOS ',
+	    'SETECIENTOS ',
+	    'OCHOCIENTOS ',
+	    'NOVECIENTOS '
+	)
+	    MONEDAS = (
+		    {'country': u'Colombia', 'currency': 'COP', 'singular': u'PESO COLOMBIANO', 'plural': u'PESOS COLOMBIANOS', 'symbol': u'$'},
+		    {'country': u'Honduras', 'currency': 'HNL', 'singular': u'Lempira', 'plural': u'Lempiras', 'symbol': u'L'},
+		    {'country': u'Estados Unidos', 'currency': 'USD', 'singular': u'DÓLAR', 'plural': u'DÓLARES', 'symbol': u'US$'},
+		    {'country': u'Europa', 'currency': 'EUR', 'singular': u'EURO', 'plural': u'EUROS', 'symbol': u'€'},
+		    {'country': u'México', 'currency': 'MXN', 'singular': u'PESO MEXICANO', 'plural': u'PESOS MEXICANOS', 'symbol': u'$'},
+		    
+{'country': u'Perú', 'currency': 'PEN', 'singular': u'NUEVO SOL', 'plural': u'NUEVOS SOLES', 'symbol': u'S/.'},
+		    {'country': u'Reino Unido', 'currency': 'GBP', 'singular': u'LIBRA', 'plural': u'LIBRAS', 'symbol': u'£'}
+		)
+	    """Turn each group of numbers into letters"""
+	    output = ''
+
+	    if(n == '100'):
+		output = "CIEN "
+	    elif(n[0] != '0'):
+		output = CENTENAS[int(n[0]) - 1]
+
+	    k = int(n[1:])
+	    if(k <= 20):
+		output += UNIDADES[k]
+	    else:
+		if((k > 30) & (n[2] != '0')):
+		    output += '%sY %s' % (DECENAS[int(n[1]) - 2], UNIDADES[int(n[2])])
+		else:
+		    output += '%s%s' % (DECENAS[int(n[1]) - 2], UNIDADES[int(n[2])])
+
+	    return output
+
+	def addComa(self, snum ):
+		s = snum;
+		i = s.index('.') # Se busca la posición del punto decimal
+		while i > 3:
+			i = i - 3
+			s = s[:i] +  ',' + s[i:]
+		return s
+
+
+
+
+class mcheck_name(osv.Model):
+			
+	_name='mcheck.mcheck_name'
+	_columns = {
+		'mcheck_id':fields.many2one('mcheck.mcheck','mcheck'),
+	        'account_id':fields.many2one('account.account','Account',domain="[('type','not in',['view'])]",required=True),
+		'name':fields.char('Description',),
+		'amount':fields.float('Amount', digits_compute=dp.get_precision('Account')),
+		'chqmanalitics':fields.many2one("account.analytic.account",string="Check Misc Analiticos"),	
+        	'type':fields.selection([('dr','Debit'),('cr','Credit')], 'Dr/Cr'),
+		'partner_id' : fields.many2one('res.partner', 'Partner'),
+		'is_retention' : fields.boolean('Is Retention'),
+		
+}
+
+	_defaults = {
+	'type' : 'dr',
+		} 
+class account_move_line(osv.osv):
+	_inherit = 'account.move.line'
+	_columns = {
+		'mcheck_id':fields.many2one('mcheck.mcheck','mcheck'),
+		}

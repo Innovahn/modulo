@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+<data>
+<record model="ir.ui.view" id="partner_factura_form_view">
+          <field name="name">facura.cliente.concialada</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_partner_form"/>
+          <field name="arch" type="xml">
+            <notebook position="inside">
+                 <page string="Estado de Cuenta">
+		       <div class="oe_right oe_button_box" name="followup_button">
+                            <button name="do_print_payment" string="Imprimir pagos pendientes"/>
+                        </div>			
+			<br/>
+			<p class="oe_grey">
+                            A continuación está el historial de las transacciones de este cliente.
+                        </p>
+			<group colspan="4">
+			<field name="monto_adeudado"/>
+			</group>
+		     <separator string="Estado de cuenta de cliente"/>
+                      <field name="facturas_ids" nolabel="1" colspan="4" mode="tree">
+			 <tree string="Invoice" colors="red:in_due==True">
+			       <field name="number"/>
+			       <field name="date_invoice"/>
+				 <field name="date_due"/>
+				<field name="origin"/>
+				<field name="importe_abonado" sum="Importe Pagado" string="Importe Pagado"/>
+				<field name="residual" sum="Residual Amount"/>
+			       <field name="amount_total" sum="Total de Facturas" string="Total de Factura"/>
+			      <field name="state"/>
+				<field name="in_due" invisible="1"/>
+	                 </tree> 	
+		      </field>
+                 </page>
+           </notebook>
+         </field>
+</record>
+ </data>
+</openerp>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_retentions,innova_account_plus.access_retentions,model_retentions,group_retentions_manager,1,1,1,1
+access_retention_lines,innova_account_plus.access_retention_lines,model_retention_lines,group_retentions_manager,1,1,1,1
+

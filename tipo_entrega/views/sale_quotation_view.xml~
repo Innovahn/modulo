@@ -1,0 +1,59 @@
+<openerp>
+   <data>
+   <record model="ir.ui.view" id="sale_entrge_form_view">
+   <field name="name">sale.entrega.form</field>
+   <field name="model">sale.entrega</field>
+   <field name="arch" type="xml">
+     <form string="Tipo de entrega">	
+          <sheet>  
+           <h1>
+              <field name="name"/>
+          </h1>    
+     </form>
+   </field> 
+   </record>  
+   <!-- Fin de Vista form  -->
+   <!--  Vista Tree Contratos-->
+    <record model="ir.ui.view" id="curso_tree_view">
+   <field name="name">sale.entrega.tree</field>
+   <field name="model">sale.entrega</field>
+   <field name="arch" type="xml">
+     <tree string="Tipo de entrega">
+        <field name="name"/> 	
+     </tree>
+   </field> 
+   </record> 
+   <!--  Accion para Contratos -->
+   <record model="ir.actions.act_window" id="action_type_entrega">
+   <field name="name">Tipo de entrega</field>
+   <field name="res_model">sale.entrega</field>
+   <field name="view_type">form</field>
+   <field name="view_model">tree,form,calendar</field>
+   <field name="help" type="html">
+   <p class="oe_view_nocontent_create">Crear tipo de entrega</p>
+   </field>
+   </record>
+   <!-- Fin de Action de Contratos -->
+     <!--  Menu Principal de contratos-->
+   <menuitem name="Contract Information" id="menu_gestion_type_padre" parent="base.menu_sales" action="action_type_entrega"/>
+   </data>
+</openerp>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</data>
+</openerp>

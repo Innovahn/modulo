@@ -1,0 +1,26 @@
+# -*- encoding: utf-8 -*-
+from openerp import models, fields, api
+from datetime import datetime
+class Facturaabono(models.Model):
+        _inherit = 'account.invoice'
+
+	importe_abonado=fields.Float(string='Importe Pagado', compute='_amount_paid')
+	in_due = fields.Boolean(string='Vencida', compute='_is_due')	
+
+        @api.one
+	def _is_due(self):
+		for invoice in self:
+			if invoice.date_due < str(datetime.now()):
+				self.in_due = True
+			else:
+				self.in_due = False
+
+	@api.one
+	@api.depends("residual","amount_total")
+	def _amount_paid(self):
+		self.importe_abonado=self.amount_total-self.residual
+
+	
+			
+	
+		

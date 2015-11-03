@@ -1,0 +1,610 @@
+# -*- coding: utf-8 -*-
+
+from openerp.osv import fields, osv
+from datetime import datetime
+import openerp.addons.decimal_precision as dp
+import locale
+import pytz
+from openerp.tools.translate import _
+import time
+from itertools import ifilter
+class ap_account_voucher(osv.Model):
+	bandera=0
+	#this function retuns the id of the sequence for the transation type(check,transaction) for the costumer invoice
+	def _get_sequence(self, cr, uid,  ids, journalid, context=None):
+		for invoice in self.browse(cr,uid,ids,context=context):
+			doc_type = invoice.pay_method_type
+			journalid=invoice.journal_id.id
+		if doc_type is False or doc_type is None:
+			doc_type = 'deposit'
+		journal_obj = self.pool.get('account.journal')
+		diario = journal_obj.browse(cr,uid,journal_obj.search(cr,uid,[('id','=',journalid)],context=None),context=context)
+		seq_id = 0
+		have_multi=False
+		seq_id = diario.sequence_id.id
+		for sq in diario.sequence_ids:
+			have_multi = True
+			if sq.code == doc_type:
+				seq_id = sq.id
+		return {'result' : have_multi, 'seq_id' : seq_id}
+	#this funtion return the next number of the check or transaction
+	def next_seq_number(self,cr,uid,ids,journalid,doc_type,seq_o_name,context=None):
+		context = dict(context or {})
+		if journalid :
+			seq_model = self.pool.get('ir.sequence')
+			journal_obj = self.pool.get('account.journal')
+			diario = journal_obj.browse(cr,uid,journal_obj.search(cr,uid,[('id','=',journalid)],context=None),context=context)
+			if doc_type == 'otros':
+				if diario.sequence_id:
+					context.update({'no_update' : True})
+					name = seq_model.next_by_id(cr, uid, int(diario.sequence_id.id),context=context)
+					return name
+				else:
+					raise osv.except_osv(_('Configuration Error !'),_('Please activate the sequence of selected journal!'))
+			if context.get('journal_type') or context.get('type'): 
+				if context.get('journal_type',False)=='sale' or context.get('type',False) == 'receipt': 
+					doc_type ='deposit' 
+				else: 
+					doc_type = doc_type 
+			else: 
+				doc_type = doc_type 
+		else: 
+			return None
+		if not journalid==False and doc_type != False:
+			journal_obj = self.pool.get('account.journal')
+			diario = journal_obj.browse(cr,uid,journal_obj.search(cr,uid,[('id','=',journalid)],context=None),context=context)
+			seq_model = self.pool.get('ir.sequence')
+			seq_id=0
+			fl=False
+			for sq in diario.sequence_ids:
+				if sq.code == doc_type:
+					seq_id = sq.id
+					if seq_o_name=='seq_id':
+						return seq_id
+					fl = True
+			if not fl:
+				return None
+			if diario.sequence_id:
+				if not diario.sequence_id.active:
+					raise osv.except_osv(_('Configuration Error !'),_('Please activate the sequence of selected journal !'))
+				context.update({'no_update' : True})
+				name = seq_model.next_by_id(cr, uid, int(seq_id),context=context)
+				return  name
+			else:
+				return None
+		else:
+			return None	
+	def actualizar_seq_journal(self, cr, uid, voucher_id,journal_id, context=None):
+		try:
+			ids = voucher_id
+			seq_obj = self.pool.get('ir.sequence')
+			seq_id=self._get_sequence(cr, uid, voucher_id,journal_id, context=None)
+			if seq_id:#si no tiene multisequence activado tomara el journal por defecto
+				name = seq_obj.next_by_id(cr, uid, seq_id['seq_id'], context=context)
+				actual_voucher = self.browse(cr,uid,voucher_id,context=context)
+				if actual_voucher.pay_method_type:
+					self.update_state_draf( cr, uid, ids, context=None)
+				else:
+					self.update_deposits_draft( cr, uid, ids, context=None)#update deposits when is a journal_type=sale
+				return name
+			return False
+		except ValueError:
+			raise osv.except_osv(_('Error!'), _('Sequence was not updated!'))
+
+	
+
+	#override function that is used for account.voucher to create the account move, and account move line(location/adoo/addons/account_voucher/account_voucher.py linea 1043)
+	def account_move_get(self, cr, uid, voucher_id, context=None):
+		seq_obj = self.pool.get('ir.sequence')
+	        voucher = self.pool.get('account.voucher').browse(cr,uid,voucher_id,context)
+		
+		name=''	
+		if voucher.number:
+			name = voucher.number
+		
+	        elif voucher.journal_id.sequence_id:
+			if not voucher.journal_id.sequence_id.active:
+	        	        raise osv.except_osv(_('Configuration Error !'),
+	        	            _('Please activate the sequence of selected journal !'))
+	        	c = dict(context)
+	           	c.update({'fiscalyear_id': voucher.period_id.fiscalyear_id.id})
+			
+	        
+	        else: 
+	        	raise osv.except_osv(_('Error!'),_('Please define a sequence on the journal.'))
+	        if not voucher.reference:
+	        	ref = name.replace('/','')
+	        else:
+	        	ref = voucher.reference
+		new_name=self.actualizar_seq_journal(cr, uid, voucher_id,voucher.journal_id.id, context=context)#adde line
+		#put the number in the accoutn move name
+		if new_name:
+			name = new_name
+		move = {
+	        	'name': name,
+	        	'journal_id': voucher.journal_id.id,
+	                'narration': voucher.narration,
+	                'date': voucher.date,
+	                'ref': ref,
+	                'period_id': voucher.period_id.id,
+	        }
+	        return move
+
+
+	def update_deposits_draft(self, cr, uid, ids, context=None):#update deposits when is a journal_type=sale
+		for av in self.browse(cr, uid, ids, context=None):
+			journal_id = av.journal_id
+		nn=self.next_seq_number(cr,uid,ids,journal_id.id,'deposit','pcabrera',context=context)
+		deposit_model = self.pool.get('banks.deposit')
+		deposit_obj= deposit_model.browse(cr,uid,deposit_model.search(cr,uid,[('state','=','draft' ),('doc_type','=','deposit'),('journal_id','=',journal_id.id)],context=None),context=context)
+		for draft_deposit in deposit_obj:
+			deposit_model.write(cr, uid, draft_deposit.id, {'number':nn}, context=context)
+
+	#this function updates the sequence number of the checks or transactions in the models mcheck y account.voucher 
+	def update_state_draf(self, cr, uid, ids, context=None):
+		for av in self.browse(cr, uid, ids, context=None):
+			journal_id = av.journal_id
+			doc_type = av.pay_method_type
+		mchecks_model = self.pool.get('mcheck.mcheck')
+		mchecks_obj=mchecks_model.browse(cr,uid,mchecks_model.search(cr,uid,[('state','=','draft' ),('doc_type','=',doc_type),('journal_id','=',journal_id.id),('was_unreconcilied','!=',True )],context=None),context=context)
+		nn=self.next_seq_number(cr,uid,ids,journal_id.id,doc_type,'pcabrera',context=context)
+		for draft_checks in mchecks_obj:
+			mchecks_model.write(cr, uid, draft_checks.id, {'number':nn}, context=context)
+		acc_voucher_model = self.pool.get('account.voucher')
+		acc_voucher_obj=acc_voucher_model.browse(cr,uid,acc_voucher_model .search(cr,uid,[('state','=','draft' ),('pay_method_type','=',doc_type),('journal_id','=',journal_id.id)],context=None),context=context)
+		for draft_acc_vouch in acc_voucher_obj:
+			acc_voucher_model.write(cr, uid, draft_acc_vouch.id, {'number':nn,'next_number' : nn}, context=context)
+	
+	def get_number_name(self, cr, uid, ids, context=None):
+		for invoice in self.browse(cr,uid,ids,context=context):
+			return invoice.number_doc
+
+	def get_doc_type(self, cr, uid, ids, context=None):
+		for invoice in self.browse(cr,uid,ids,context=context):
+			return invoice.pay_method_type
+
+	def get_currency_id_rate(self, cr, uid, ids, context=None):
+		currency_id= self._get_company_currency(cr, uid, ids, context)
+            	select_journal_currency_id= self._get_current_currency(cr, uid, ids, context)
+		select_journal_currency_rate = self.pool.get('res.currency').read(cr, uid, select_journal_currency_id, ['rate'], context=context)['rate']
+		currency_rate = self.pool.get('res.currency').read(cr, uid, currency_id, ['rate'], context=context)['rate']
+
+		return (select_journal_currency_id,currency_id,select_journal_currency_rate,currency_rate)
+
+	def generate_commision_move_lines(self, cr, uid, ids,move_id, context=None):
+		select_journal_currency_id=None
+		currency_id = None
+		select_journal_currency_rate = None
+		currency_rate = None
+		
+		select_journal_currency_id,currency_id,select_journal_currency_rate,currency_rate = self.get_currency_id_rate(cr, uid, ids, context=None)
+		for voucher in self.browse(cr, uid, ids, context=context):
+        		if voucher.commission > 0:#for commission lines creation
+				move_line_obj = self.pool.get('account.move.line')
+				decimal_precision = self.pool.get('decimal.precision')
+				dec_prec = decimal_precision.browse(cr,uid,decimal_precision.search(cr,uid,[('name' , '=', 'Account' )],context=None),context=context)
+				if voucher.journal_id.commission_account:
+					lines_array=[]
+					for i in [1,2]:				
+				 		com_line = {}
+						com_line['move_id']=move_id
+						if voucher.name:
+							com_line['name']='/Commission-'+str(voucher.name)
+						else:
+							com_line['name']='/Commission'
+						com_line['amount_currency'] = 0
+						com_line['currency_id'] = None
+						if i==1:
+							com_line['account_id'] = voucher.journal_id.commission_account.id
+							if not select_journal_currency_id == currency_id:
+								com_line['amount_currency']=(voucher.commission * (1/select_journal_currency_rate))*select_journal_currency_rate	
+								com_line['currency_id'] = select_journal_currency_id
+							com_line['debit'] = round(((voucher.commission * (1/select_journal_currency_rate))*currency_rate),dec_prec.digits) 
+							com_line['credit']=0
+						else:
+							if voucher.journal_id.default_debit_account_id.id:
+								com_line['account_id']=voucher.journal_id.default_debit_account_id.id
+							if not select_journal_currency_id == currency_id:
+								com_line ['amount_currency'] = (voucher.commission * (1/select_journal_currency_rate))*(-1)*select_journal_currency_rate
+								com_line ['currency_id'] = select_journal_currency_id
+							com_line['debit'] = 0
+							com_line['credit'] = round((voucher.commission * (1/select_journal_currency_rate))*currency_rate,dec_prec.digits)
+						lines_array.append(com_line)
+					for lines2 in lines_array:	
+						lines = move_line_obj.create(cr, uid, lines2 )
+					return lines
+				else:
+							raise osv.except_osv(_('Error!'),_("The selected journal must have a commission account asociadted if you want to use commissions") )
+
+	def action_move_line_create(self, cr, uid, ids, context=None):
+		'''
+        	Confirm the vouchers given in ids and create the journal entries for each of them
+        	'''
+		super(ap_account_voucher,self).action_move_line_create(cr, uid, ids, context=context)
+		if context is None:
+        		context = {}
+        	for voucher in self.browse(cr, uid, ids, context=context):
+			if voucher.move_id:
+				self.generate_commision_move_lines(cr, uid, voucher.id, voucher.move_id.id, context=context)#added line
+		return True
+
+	#override function that is raised when the button validate on writechecks is pushed
+	def proforma_voucher(self, cr, uid, ids, context=None):
+		super(ap_account_voucher,self).proforma_voucher(cr, uid, ids, context=context)
+		self.update_state_draf(cr, uid, ids, context=context)#added line
+      		return True		
+	#override function that is raised when the button register payment is push
+	def button_proforma_voucher(self, cr, uid, ids, context=None):
+		self.write(cr,uid,ids,{'sequence_id' : self.next_seq_number(cr,uid,ids,None,None,'seq_id'),'number_doc' : self.get_number_name(cr, uid, ids, context=context)},context=context)#this is an added linea
+		super(ap_account_voucher,self).button_proforma_voucher(cr, uid, ids, context=context)
+	
+	def onchange_journal_id(self,cr,uid,ids,journalid,doc_type,context=None):
+		journal_pool = self.pool.get('account.journal')
+		journal = journal_pool.browse(cr,uid,journalid,context=context)
+		if doc_type is None or doc_type is False or journalid is False:
+			msj=_("Select a Type and a Journal")
+		else:
+			msj=_("Warnig! Please Create a sequence code with the code '"+doc_type+"' or add a sequence for this journal with the code '"+doc_type+"'")
+		if doc_type == 'otros':
+			msj = ""
+			n = self.next_seq_number(cr,uid,ids,journalid,doc_type,'pcabrera',context=context)
+			if n not in [None ,False]:
+				if not journal.sequence_ids:
+					return { 'value' :{ 'number_doc' : n, 'next_number' : n,'msg' : msj}}
+				else:
+					msj = "This journal have multisequence activated, please disable this option if you want to use the document Other's option"
+					return { 'value' :{ 'number' : None, 'next_number' : None,'msg' : msj}}
+
+		n = self.next_seq_number(cr,uid,ids,journalid,doc_type,'pcabrera',context=context)
+		if n is None or n is False:
+			return { 'value' :{ 'number_doc' : n,'next_number' : n,'msg' : msj}}#send both because number field is never entry
+		else:
+			return { 'value' :{ 'number_doc' : n,'next_number' : n,'msg' : None}}#send both because number field is never entry
+
+
+
+	def _next_number(self, cr, uid, ids, field, arg, context=None):
+		result={}
+		for invoice in self.browse(cr,uid,ids,context=context):
+			result[invoice.id]=invoice.number_doc
+		return result 
+
+
+	def _doc_type(self, cr, uid, ids, field, arg, context=None):
+		result={}
+		for invoice in self.browse(cr,uid,ids,context=context):
+			result[invoice.id]=invoice.pay_method_type
+		return result 
+	def _sale_o_purch(self, cr, uid, ids, field, arg, context=None):
+		result={}
+		for invoice in self.browse(cr,uid,ids,context=context):
+			result[invoice.id]=invoice.pay_method_type
+		return result 
+
+	#override function of onchange journal and i agregated the update of the values of number(next prefix for sequence) in this function
+	def onchange_journal(self, cr, uid, ids, journal_id, line_ids, tax_id, partner_id, date, amount, ttype, company_id, context=None):
+		doc_type = False
+		if context.get('doc_type'):
+			doc_type =  context.get('doc_type',None)
+		if context.get('costum_pay'):
+			doc_type = None
+			 
+		if context is None:
+		        context = {}
+       		if not journal_id:
+            		return False
+        	journal_pool = self.pool.get('account.journal')
+      		journal = journal_pool.browse(cr, uid, journal_id, context=context)
+       		account_id = journal.default_credit_account_id or journal.default_debit_account_id
+       		tax_id = False
+       		if account_id and account_id.tax_ids:
+        		tax_id = account_id.tax_ids[0].id
+
+    	   	vals = {'value':{} }
+     		if ttype in ('sale', 'purchase'):
+         		vals = self.onchange_price(cr, uid, ids, line_ids, tax_id, partner_id, context)
+          		vals['value'].update({'tax_id':tax_id,'amount': amount})
+       		currency_id = False
+       		if journal.currency:
+         		currency_id = journal.currency.id
+       		else:
+          		currency_id = journal.company_id.currency_id.id
+		period_ids = self.pool['account.period'].find(cr, uid, context=dict(context, company_id=company_id))
+		n=self.next_seq_number(cr,uid,ids,journal.id,doc_type,'pcabrera',context=context)#Line agregated
+		if n in [None, False]:
+			msj=_('The selected journal has no sequence for this kind of documnet')
+		else:
+			msj=''
+		vals['value'].update({
+			'msg' : msj,
+			'number_doc' : n,
+			'next_number' : n,
+           		'currency_id': currency_id,
+           		'payment_rate_currency_id': currency_id,
+           		'period_id': period_ids and period_ids[0] or False
+      		})
+        #in case we want to register the payment directly from an invoice, it's confusing to allow to switch the journal 
+        #without seeing that the amount is expressed in the journal currency, and not in the invoice currency. So to avoid
+        #this common mistake, we simply reset the amount to 0 if the currency is not the invoice currency.
+     		if context.get('payment_expected_currency') and currency_id != context.get('payment_expected_currency'):
+      			vals['value']['amount'] = 0
+        		amount = 0
+       		if partner_id:
+			res = self.onchange_partner_id(cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, context)
+          		for key in res.keys():
+            			vals[key].update(res[key])
+       		return vals
+
+	
+	def _get_totalt(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		for vou in self.browse(cr,uid,ids,context=context):
+			a=self.to_word(vou.amount, vou.currency_id.name)
+			result[vou.id]=a
+		return result
+
+	def _is_type_doc_selected(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		for vou in self.browse(cr,uid,ids,context=context):
+			result[vou.id]=True
+		return result
+
+	def _get_msg(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		for mcheck in self.browse(cr,uid,ids,context=context):
+			result[mcheck.id]=None
+		return result
+
+	def _get_totaldebit(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		obj = self.browse(cr,uid,ids,context=context)
+		for o in obj:
+			totald=0
+			if len(o.move_ids) > 0:
+				for lines in o.move_ids:
+					totald+=lines.debit
+			result[o.id]=self.addComa('%.2f'%(totald))
+		return result	
+	def _get_totalcredit(self, cr, uid, ids, field, arg, context=None):
+		result = {}
+		totalc=0
+		obj = self.browse(cr,uid,ids,context=context)
+		for o in obj:
+			if len(o.move_ids) > 0:
+				for lines in o.move_ids:
+					totalc+=lines.credit
+			result[o.id]=self.addComa('%.2f'%(totalc))
+		return result
+	def _use_creator(self,cr, uid, ids, field, arg, context=None):
+		result={}
+		user_pool = self.pool.get('res.users')
+		user = user_pool.browse(cr, uid, user_pool.search(cr, uid,[],context=context), context=context)
+		for o in self.browse(cr,uid,ids,context=context):
+			result[o.id] = o.create_uid
+		return result
+
+	def _calculate_journal_assoc(self,cr, uid, ids, field, arg, context=None):
+		result = {}
+		bcb_pool = self.pool.get('banks.checkbook')
+		bck = bcb_pool.browse(cr, uid, bcb_pool.search(cr, uid,[],context=context), context=context)
+		for o in self.browse(cr,uid,ids,context=context):
+			for b in bck:
+				if b.journal.id == o.journal_id.id:
+					result[o.id] = b.bank.id
+		return result
+
+
+	_inherit = 'account.voucher'
+	_columns = {
+		'pay_method_type':fields.selection([
+				('check','Check'),
+				('transference','Transference'),
+				('otros','Otros')],string='Pay type'),
+		'sequence_id':fields.many2one('ir.sequence','Sequence id'),
+		'commission':fields.float(string='Commission'),
+		'number_doc' : fields.char(string = 'Number',required=True),
+		'next_number' : fields.function(_next_number,type='char',string='Next number',help='The number of the next check or transaction',store=False),
+		'doc_type' : fields.function(_doc_type,type='char',string='Doc type',help='Choose the paying method',store=False),
+		'amounttext': fields.function(_get_totalt,type='char',string='Total',),
+		'msg': fields.function(_get_msg, type='char',  store=False),
+		'is_type_selected' : fields.function(_is_type_doc_selected,type='boolean',string='is type selected',),
+		'amountdebit': fields.function(_get_totaldebit,type='char',string='Total', store = False, ),
+		'amountcredit': fields.function(_get_totalcredit,type='char',string='Total', store = False, ),
+		'banks_check_book_assoc': fields.function(_calculate_journal_assoc, type='many2one', relation="banks.checkbook", string='Journal Bank', store=False),
+		'user_creator': fields.function(_use_creator, type='many2one', relation="res.users", string='User', store=False),
+	}
+
+	'''_defaults={
+	'pay_method_type': 'check'		
+	}'''
+
+	def to_word(self,number, mi_moneda):
+	    valor= number
+	    number=int(number)
+	    centavos=int((round(valor-number,2))*100)
+	    UNIDADES = (
+	    '',
+	    'UN ',
+	    'DOS ',
+	    'TRES ',
+	    'CUATRO ',
+	    'CINCO ',
+	    'SEIS ',
+	    'SIETE ',
+	    'OCHO ',
+	    'NUEVE ',
+	    'DIEZ ',
+	    'ONCE ',
+	    'DOCE ',
+	    'TRECE ',
+	    'CATORCE ',
+	    'QUINCE ',
+	    'DIECISEIS ',
+	    'DIECISIETE ',
+	    'DIECIOCHO ',
+	    'DIECINUEVE ',
+	    'VEINTE '
+	)
+
+	    DECENAS = (
+	    'VENTI',
+	    'TREINTA ',
+	    'CUARENTA ',
+	    'CINCUENTA ',
+	    'SESENTA ',
+	    'SETENTA ',
+	    'OCHENTA ',
+	    'NOVENTA ',
+	    'CIEN '
+	)
+
+	    CENTENAS = (
+	    'CIENTO ',
+	    'DOSCIENTOS ',
+	    'TRESCIENTOS ',
+	    'CUATROCIENTOS ',
+	    'QUINIENTOS ',
+	    'SEISCIENTOS ',
+	    'SETECIENTOS ',
+	    'OCHOCIENTOS ',
+	    'NOVECIENTOS '
+	)
+	    MONEDAS = (
+		    {'country': u'Colombia', 'currency': 'COP', 'singular': u'PESO COLOMBIANO', 'plural': u'PESOS COLOMBIANOS', 'symbol': u'$'},
+		    {'country': u'Honduras', 'currency': 'HNL', 'singular': u'Lempira', 'plural': u'Lempiras', 'symbol': u'L'},
+		    {'country': u'Estados Unidos', 'currency': 'USD', 'singular': u'DÓLAR', 'plural': u'DÓLARES', 'symbol': u'US$'},
+		    {'country': u'Europa', 'currency': 'EUR', 'singular': u'EURO', 'plural': u'EUROS', 'symbol': u'€'},
+		    {'country': u'México', 'currency': 'MXN', 'singular': u'PESO MEXICANO', 'plural': u'PESOS MEXICANOS', 'symbol': u'$'},
+		    {'country': u'Perú', 'currency': 'PEN', 'singular': u'NUEVO SOL', 'plural': u'NUEVOS SOLES', 'symbol': u'S/.'},
+		    {'country': u'Reino Unido', 'currency': 'GBP', 'singular': u'LIBRA', 'plural': u'LIBRAS', 'symbol': u'£'}
+		)
+	    if mi_moneda != None:
+		try:
+		    moneda = ifilter(lambda x: x['currency'] == mi_moneda, MONEDAS).next()
+		    if number < 2:
+		        moneda = moneda['singular']
+		    else:
+		        moneda = moneda['plural']
+		except:
+		    return "Tipo de moneda inválida"
+	    else:
+		moneda = ""
+	    """Converts a number into string representation"""
+	    converted = ''
+
+	    if not (0 < number < 999999999):
+		return 'No es posible convertir el numero a letras'
+
+	    number_str = str(number).zfill(9)
+	    millones = number_str[:3]
+	    miles = number_str[3:6]
+	    cientos = number_str[6:]
+
+	    if(millones):
+		if(millones == '001'):
+		    converted += 'UN MILLON '
+		elif(int(millones) > 0):
+		    converted += '%sMILLONES ' % self.convert_group(millones)
+
+	    if(miles):
+		if(miles == '001'):
+		    converted += 'MIL '
+		elif(int(miles) > 0):
+		    converted += '%sMIL ' % self.convert_group(miles)
+
+	    if(cientos):
+		if(cientos == '001'):
+		    converted += 'UN '
+		elif(int(cientos) > 0):
+		    converted += '%s ' % self.convert_group(cientos)
+	    if(centavos)>0:
+		converted+= "con %2i/100 "%centavos
+	    converted += moneda
+
+	    return converted.title()
+
+
+	def convert_group(self,n):
+	    UNIDADES = (
+	    '',
+	    'UN ',
+	    'DOS ',
+	    'TRES ',
+	    'CUATRO ',
+	    'CINCO ',
+	    'SEIS ',
+	    'SIETE ',
+	    'OCHO ',
+	    'NUEVE ',
+	    'DIEZ ',
+	    'ONCE ',
+	    'DOCE ',
+	    'TRECE ',
+	    'CATORCE ',
+	    'QUINCE ',
+	    'DIECISEIS ',
+	    'DIECISIETE ',
+	    'DIECIOCHO ',
+	    'DIECINUEVE ',
+	    'VEINTE '
+	)
+
+	    DECENAS = (
+	    'VENTI',
+	    'TREINTA ',
+	    'CUARENTA ',
+	    'CINCUENTA ',
+	    'SESENTA ',
+	    'SETENTA ',
+	    'OCHENTA ',
+	    'NOVENTA ',
+	    'CIEN '
+	)
+
+	    CENTENAS = (
+	    'CIENTO ',
+	    'DOSCIENTOS ',
+	    'TRESCIENTOS ',
+	    'CUATROCIENTOS ',
+	    'QUINIENTOS ',
+	    'SEISCIENTOS ',
+	    'SETECIENTOS ',
+	    'OCHOCIENTOS ',
+	    'NOVECIENTOS '
+	)
+	    MONEDAS = (
+		    {'country': u'Colombia', 'currency': 'COP', 'singular': u'PESO COLOMBIANO', 'plural': u'PESOS COLOMBIANOS', 'symbol': u'$'},
+		    {'country': u'Honduras', 'currency': 'HNL', 'singular': u'Lempira', 'plural': u'Lempiras', 'symbol': u'L'},
+		    {'country': u'Estados Unidos', 'currency': 'USD', 'singular': u'DÓLAR', 'plural': u'DÓLARES', 'symbol': u'US$'},
+		    {'country': u'Europa', 'currency': 'EUR', 'singular': u'EURO', 'plural': u'EUROS', 'symbol': u'€'},
+		    {'country': u'México', 'currency': 'MXN', 'singular': u'PESO MEXICANO', 'plural': u'PESOS MEXICANOS', 'symbol': u'$'},
+		    {'country': u'Perú', 'currency': 'PEN', 'singular': u'NUEVO SOL', 'plural': u'NUEVOS SOLES', 'symbol': u'S/.'},
+		    {'country': u'Reino Unido', 'currency': 'GBP', 'singular': u'LIBRA', 'plural': u'LIBRAS', 'symbol': u'£'}
+		)
+	    """Turn each group of numbers into letters"""
+	    output = ''
+
+	    if(n == '100'):
+		output = "CIEN "
+	    elif(n[0] != '0'):
+		output = CENTENAS[int(n[0]) - 1]
+
+	    k = int(n[1:])
+	    if(k <= 20):
+		output += UNIDADES[k]
+	    else:
+		if((k > 30) & (n[2] != '0')):
+		    output += '%sY %s' % (DECENAS[int(n[1]) - 2], UNIDADES[int(n[2])])
+		else:
+		    output += '%s%s' % (DECENAS[int(n[1]) - 2], UNIDADES[int(n[2])])
+
+	    return output
+
+	def addComa(self, snum ):
+		s = snum;
+		i = s.index('.') # Se busca la posición del punto decimal
+		while i > 3:
+			i = i - 3
+			s = s[:i] +  ',' + s[i:]
+		return s
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+
+	   <record id="codes_for_ir_sequence" model="ir.sequence.type">
+           	  <field name="name">retentions</field>
+          	  <field name="code">retentions</field>
+       	   </record>
+
+	    <record id="sequence" model="ir.sequence">
+           	  <field name="name">Retentions</field>
+          	  <field name="code">retentions</field>
+		  <field name="prefix">RET-#</field>
+		  <field name="implementation">no_gap</field>
+          	  <field name="padding">5</field>
+		 <field name="number_increment">1</field>
+       	   </record>
+  
+
+    </data>
+</openerp>

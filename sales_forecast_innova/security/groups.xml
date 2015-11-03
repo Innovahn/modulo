@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<record id="group_check_manager" model="res.groups">
+<field name="name">Checks / Manager</field>
+</record>
+<record id="group_debit_credit_deposit" model="res.groups">
+<field name="name">Debits, Credits and deposits</field>
+</record>
+
+
+<record id="group_deposit" model="res.groups">
+<field name="name">Deposits</field>
+</record>
+
+<record id="group_banks_banks_transferences" model="res.groups">
+<field name="name">Banks Transactions</field>
+</record>
+
+<record id="group_banks_sequence_edit" model="res.groups">
+<field name="name">Sequences / Edit </field>
+</record>
+</data>
+</openerp>
+
+
+

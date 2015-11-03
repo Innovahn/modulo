@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+from openerp.osv import fields, osv
+from datetime import datetime
+import locale
+import pytz
+from openerp.tools.translate import _
+import openerp.addons.decimal_precision as dp
+class account_account(osv.osv):
+	_inherit = 'account.account'
+	
+	_columns = {
+		'use_4_retention' : fields.boolean('Use for Retentions', help="If you check this option, this account will be used for retentions in Miscellaneous checks",) 
+	}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+<data>
+<record model="ir.ui.view" id="partner_code_form_view">
+          <field name="name">contractsale.cliente_contrato</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_partner_form"/>
+		  <field name="arch" type="xml">
+           <notebook position="inside">
+                 <page string="Contratos de Ventas">
+                    <field name="contratos_ids"  readonly="True"></field>
+                 </page>
+            </notebook>
+          </field>
+        </record>
+ </data>
+</openerp>

@@ -1,0 +1,1705 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* banks
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-30 17:38+0000\n"
+"PO-Revision-Date: 2015-05-30 17:38+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: banks
+#: help:mcheck.mcheck,state:0
+msgid " * The 'Draft' status is used when a user is encoding a new and unconfirmed Voucher. 		                \n"
+"* The 'Pro-forma' when voucher is in Pro-forma status,voucher does not have an voucher number. 		                \n"
+"* The 'Posted' status is used when user create voucher,a voucher number is generated and voucher entries are created in account 		                \n"
+"* The 'Cancelled' status is used when user cancel voucher."
+msgstr " * The 'Draft' status is used when a user is encoding a new and unconfirmed Voucher.                 * The 'Pro-forma' when voucher is in Pro-forma status,voucher does not have an voucher number.                 * The 'Posted' status is used when user create voucher,a voucher number is generated and voucher entries are created in account                 * The 'Cancelled' status is used when user cancel voucher."
+
+#. module: banks
+#: help:banks.deposit,state:0
+#: help:debit.credit,state:0
+msgid " * The 'Draft' status is used when a user is encoding a new and unconfirmed Voucher. 		                \n"
+"* The 'Validated ' when validated"
+msgstr " * The 'Draft' status is used when a user is encoding a new and unconfirmed Voucher. 		                \n"
+"* The 'Validated ' when validated"
+
+#. module: banks
+#: code:addons/banks/model/journal.py:51
+#: code:addons/banks/model/journal.py:52
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (copy)"
+
+#. module: banks
+#: model:ir.actions.act_window,help:banks.deposit_action_form
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"						Click to add a new Deposit.\n"
+"					  </p>\n"
+"					  <p>\n"
+"						With just a quick glance on the Odoo Deposit screen, you\n"
+"						can easily find all the information about your each day debit or credit;					\n"
+"				  	   </p>\n"
+"				"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"						Click to add a new Deposit.\n"
+"					  </p>\n"
+"					  <p>\n"
+"						With just a quick glance on the Odoo Deposit screen, you\n"
+"						can easily find all the information about your each day debit or credit;					\n"
+"				  	   </p>\n"
+"				"
+
+#. module: banks
+#: model:ir.actions.act_window,help:banks.debit_credit_action_form
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"						Click to add a new credit or debit.\n"
+"					  </p>\n"
+"					  <p>\n"
+"						With just a quick glance on the Odoo credit and debit screen, you\n"
+"						can easily find all the information about your each day debit or credit;					\n"
+"				  	   </p>\n"
+"				"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"						Click to add a new credit or debit.\n"
+"					  </p>\n"
+"					  <p>\n"
+"						With just a quick glance on the Odoo credit and debit screen, you\n"
+"						can easily find all the information about your each day debit or credit;					\n"
+"				  	   </p>\n"
+"				"
+
+#. module: banks
+#: model:ir.actions.act_window,help:banks.banks_transactions_action_form_mcheck
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new Bank Transference.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo banks transactions screen, you\n"
+"					can easily find all the information about your each day Bank Transference;					\n"
+"				  </p>\n"
+"				"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new Bank Transference.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo banks transactions screen, you\n"
+"					can easily find all the information about your each day Bank Transference;					\n"
+"				  </p>\n"
+"				"
+
+#. module: banks
+#: model:ir.actions.act_window,help:banks.banks_template_action
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new mcheck.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo Templates screen, you\n"
+"					can easily find all the information about your each day templates;					\n"
+"				  </p>\n"
+"				"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new mcheck.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo Templates screen, you\n"
+"					can easily find all the information about your each day templates;					\n"
+"				  </p>\n"
+"				"
+
+#. module: banks
+#: model:ir.actions.act_window,help:banks.banks_checkbook_action
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new mcheck.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo checkbooks screen, you\n"
+"					can easily find all the information about your each day mcheck;					\n"
+"				  </p>\n"
+"				"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new mcheck.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo checkbooks screen, you\n"
+"					can easily find all the information about your each day mcheck;					\n"
+"				  </p>\n"
+"				"
+
+#. module: banks
+#: model:ir.actions.act_window,help:banks.banks_bank_action
+#: model:ir.actions.act_window,help:banks.mcheck_action_form_mcheck
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"					Click to add a new mcheck.\n"
+"				  </p>\n"
+"				  <p>\n"
+"					With just a quick glance on the Odoo mcheck screen, you\n"
+"					can easily find all the information about your each day mcheck;					\n"
+"				  </p>\n"
+"				"
+msgstr "<p class=\"oe_view_nocontent_create\">Click to add a new mcheck.  </p>  <p>With just a quick glance on the Odoo mcheck screen, youcan easily find all the information about your each day mcheck;  </p>"
+
+#. module: banks
+#: view:anullation_date_wizard:banks.banks_anullation_date_wizard_form
+#: view:template_docid_select:banks.banks_template_doc_id_select_wizard_form
+msgid "Accept"
+msgstr "Accept"
+
+#. module: banks
+#: view:banks.checkbook:banks.view_mcheck_search
+#: field:banks.deposit.name,account_id:0
+#: field:debit.credit.name,account_id:0
+#: model:ir.model,name:banks.model_account_account
+#: field:mcheck.mcheck_name,account_id:0
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: banks
+#: field:banks.deposit,move_id:0
+#: field:debit.credit,move_id:0
+#: field:mcheck.mcheck,move_id:0
+msgid "Account Entry"
+msgstr "Apuntes contables"
+
+#. module: banks
+#: field:banks.banks.transferences,move_id:0
+msgid "Account Move"
+msgstr "Movimientos"
+
+#. module: banks
+#: field:banks.checkbook,bank_account:0
+msgid "Account number"
+msgstr "Cuenta Número"
+
+#. module: banks
+#: view:banks.banks:banks.view_banks_form
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+#: view:banks.deposit:banks.view_deposit_form
+#: view:debit.credit:banks.view_credit_debit_form
+#: model:ir.model,name:banks.model_account_voucher
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Accounting Voucher"
+msgstr "Comprobante contable"
+
+#. module: banks
+#: field:banks.banks.transferences,actual_sec_curr_rate:0
+#: field:banks.deposit,actual_sec_curr_rate:0
+#: field:debit.credit,actual_sec_curr_rate:0
+#: field:mcheck.mcheck,actual_sec_curr_rate:0
+msgid "Actual Secundary Currency Rate"
+msgstr "Tasa de cambio secundaria"
+
+#. module: banks
+#: field:account.journal,allow_banks_transferences:0
+msgid "Allow Banks Tramsactions"
+msgstr "Permitir transacciones bancarias"
+
+#. module: banks
+#: view:account.journal:banks.view_pos_account_journal_form1
+msgid "Allow Multi-Sequence"
+msgstr "Permitir multisecuencia"
+
+#. module: banks
+#: field:account.journal,allow_creditdebit:0
+msgid "Allow debit and credit"
+msgstr "Bancos  Debitos y créditos"
+
+#. module: banks
+#: field:banks.deposit.name,amount:0
+#: field:debit.credit.name,amount:0
+#: field:mcheck.mcheck_name,amount:0
+msgid "Amount"
+msgstr "Total"
+
+#. module: banks
+#: view:banks.deposit:banks.view_deposit_form
+#: view:debit.credit:banks.view_credit_debit_form
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Analitics"
+msgstr "C. Analítica"
+
+#. module: banks
+#: selection:mcheck.mcheck,state:0
+msgid "Anulated"
+msgstr "Anulado"
+
+#. module: banks
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Anulation date"
+msgstr "Anulation date"
+
+#. module: banks
+#: view:anullation_date_wizard:banks.banks_anullation_date_wizard_form
+#: view:template_docid_select:banks.banks_template_doc_id_select_wizard_form
+msgid "Anullation Date"
+msgstr "Anullation Date"
+
+#. module: banks
+#: model:ir.actions.act_window,name:banks.anullation_date_action
+msgid "Anullation Date "
+msgstr "Anullation Date "
+
+#. module: banks
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Are you sure you want to Invalidate this vaucher?"
+msgstr "¿Está seguro de anular este comprobante?"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+msgid "Are you sure you want to Unreconciliate this Bank Transference?"
+msgstr "¿Está seguro de romper la conciliación de esta operación?"
+
+#. module: banks
+#: view:banks.deposit:banks.view_deposit_form
+msgid "Are you sure you want to Unreconciliate this Deposit?"
+msgstr "¿Está seguro de romper la conciliación de esta operación?"
+
+#. module: banks
+#: view:debit.credit:banks.view_credit_debit_form
+msgid "Are you sure you want to Unreconciliate this Document?"
+msgstr "¿Está seguro de romper la conciliación de esta operación?"
+
+#. module: banks
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Are you sure you want to Unreconciliate this check?"
+msgstr "¿Está seguro de romper la conciliación de esta operación?"
+
+#. module: banks
+#: field:account.account,balance_currency:0
+#: view:banks.checkbook:banks.banks_checkbook_tree
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+#: field:banks.checkbook,balance_pc:0
+msgid "Balance"
+msgstr "Saldo"
+
+#. module: banks
+#: field:banks.checkbook,balance_sc:0
+msgid "Balance Secundary Corrency"
+msgstr "Saldo"
+
+#. module: banks
+#: view:banks.checkbook:banks.banks_checkbook_tree
+msgid "Balance(Local)"
+msgstr "Saldo(Moneda Nacional)"
+
+#. module: banks
+#: field:banks.banks,name:0
+#: view:banks.checkbook:banks.view_mcheck_search
+#: field:banks.checkbook,bank:0
+msgid "Bank"
+msgstr "Banco"
+
+#. module: banks
+#: view:banks.banks:banks.banks_banks_tree
+msgid "Banks"
+msgstr "Bancos"
+
+#. module: banks
+#: model:res.groups,name:banks.group_banks_banks_transferences
+msgid "Banks Transactions"
+msgstr "Transacciones bancarias"
+
+#. module: banks
+#: field:account.move.line,bank_transferences_id:0
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: selection:banks.template,doc_type:0
+#: model:ir.actions.act_window,name:banks.banks_transactions_action_form_mcheck
+#: model:ir.ui.menu,name:banks.banks_banks_transactions
+msgid "Banks Transferences"
+msgstr "Transferencias bancarias"
+
+#. module: banks
+#: view:banks.checkbook:banks.banks_checkbook_tree
+msgid "Banks check"
+msgstr "Banks check"
+
+#. module: banks
+#: view:banks.template:banks.view_banks_templates_form
+msgid "Banks templates"
+msgstr "Plantillas"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "CHEQUE #"
+msgstr "CHEQUE #"
+
+#. module: banks
+#: view:anullation_date_wizard:banks.banks_anullation_date_wizard_form
+#: view:banks.template:banks.view_banks_templates_form
+#: view:template_docid_select:banks.banks_template_doc_id_select_wizard_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: banks
+#: selection:banks.template,doc_type:0
+#: selection:mcheck.mcheck,doc_type:0
+msgid "Check"
+msgstr "Cheque"
+
+#. module: banks
+#: field:mcheck.mcheck,move_ids:0
+msgid "Check Account Move lines"
+msgstr "Check Account Move lines"
+
+#. module: banks
+#: field:debit.credit.name,chqmanalitics:0
+#: field:mcheck.mcheck_name,chqmanalitics:0
+msgid "Check Misc Analiticos"
+msgstr "Check Misc Analiticos"
+
+#. module: banks
+#: view:banks.banks:banks.view_banks_form
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+msgid "Checkbooks"
+msgstr "Chequeras"
+
+#. module: banks
+#: model:res.groups,name:banks.group_check_manager
+msgid "Checks / Manager"
+msgstr "Cheques / Manager"
+
+#. module: banks
+#: field:account.voucher,commission:0
+#: field:mcheck.mcheck,commission:0
+msgid "Commission"
+msgstr "Comisión"
+
+#. module: banks
+#: field:banks.banks.transferences,jour_company_id:0
+#: field:banks.deposit,jour_company_id:0
+#: field:debit.credit,jour_company_id:0
+#: field:mcheck.mcheck,jour_company_id:0
+msgid "Company"
+msgstr "Compañia"
+
+#. module: banks
+#: field:banks.banks.transferences,actual_comp_rate:0
+#: field:banks.deposit,actual_comp_rate:0
+#: field:debit.credit,actual_comp_rate:0
+#: field:mcheck.mcheck,actual_comp_rate:0
+msgid "Company rate"
+msgstr "Tasa de cambio de la compañia"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:59
+#: code:addons/banks/model/account_voucher.py:127
+#: code:addons/banks/model/banks_transferences.py:92
+#: code:addons/banks/model/banks_transferences.py:121
+#: code:addons/banks/model/debit_credit.py:384
+#: code:addons/banks/model/debit_credit.py:427
+#: code:addons/banks/model/deposit.py:305
+#: code:addons/banks/model/deposit.py:349
+#: code:addons/banks/model/mcheck.py:77
+#: code:addons/banks/model/mcheck.py:451
+#: code:addons/banks/model/mcheck.py:489
+#: code:addons/banks/wizard/template_docid_select.py:19
+#, python-format
+msgid "Configuration Error !"
+msgstr "Error de configuración"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:225
+#, python-format
+msgid "Configuration error"
+msgstr "Error de configuración"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:71
+#: code:addons/banks/model/debit_credit.py:231
+#: code:addons/banks/model/mcheck.py:415
+#, python-format
+msgid "Could't update the sequence for this journal!"
+msgstr "No puede actualizar la secuencia para este diario!"
+
+#. module: banks
+#: field:anullation_date_wizard,create_uid:0
+#: field:banks.banks,create_uid:0
+#: field:banks.banks.transferences,create_uid:0
+#: field:banks.checkbook,create_uid:0
+#: field:banks.deposit,create_uid:0
+#: field:banks.deposit.name,create_uid:0
+#: field:banks.mchecks.consolidations,create_uid:0
+#: field:banks.template,create_uid:0
+#: field:debit.credit,create_uid:0
+#: field:debit.credit.name,create_uid:0
+#: field:mail.thread,create_uid:0
+#: field:mcheck.mcheck,create_uid:0
+#: field:mcheck.mcheck_name,create_uid:0
+#: field:template_docid_select,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: banks
+#: field:anullation_date_wizard,create_date:0
+#: field:banks.banks,create_date:0
+#: field:banks.banks.transferences,create_date:0
+#: field:banks.checkbook,create_date:0
+#: field:banks.deposit,create_date:0
+#: field:banks.deposit.name,create_date:0
+#: field:banks.mchecks.consolidations,create_date:0
+#: field:banks.template,create_date:0
+#: field:debit.credit,create_date:0
+#: field:debit.credit.name,create_date:0
+#: field:mail.thread,create_date:0
+#: field:mcheck.mcheck,create_date:0
+#: field:mcheck.mcheck_name,create_date:0
+#: field:template_docid_select,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: banks
+#: field:account.account,credit_currency:0
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+#: field:banks.checkbook,credit_pc:0
+#: view:banks.deposit:banks.view_deposit_form
+#: selection:banks.deposit.name,type:0
+#: selection:banks.template,doc_type:0
+#: view:debit.credit:banks.view_credit_debit_form
+#: selection:debit.credit,doc_type:0
+#: selection:debit.credit.name,type:0
+#: view:mcheck.mcheck:banks.view_mcheck_form
+#: selection:mcheck.mcheck_name,type:0
+msgid "Credit"
+msgstr "Crédito"
+
+#. module: banks
+#: field:banks.checkbook,credit_sc:0
+msgid "Credit Secundary Corrency"
+msgstr "Crédito"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Creditos"
+msgstr "Creditos"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "Cuenta"
+msgstr "Cuenta"
+
+#. module: banks
+#: field:anullation_date_wizard,date:0
+#: field:banks.banks.transferences,date:0
+#: field:banks.deposit,date:0
+#: field:banks.mchecks.consolidations,date:0
+#: field:debit.credit,date:0
+#: field:mcheck.mcheck,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: banks
+#: field:mcheck.mcheck,anulation_date:0
+msgid "Date of anulation"
+msgstr "Fecha de anulación"
+
+#. module: banks
+#: help:banks.banks.transferences,message_last_post:0
+#: help:banks.deposit,message_last_post:0
+#: help:debit.credit,message_last_post:0
+#: help:mcheck.mcheck,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr "Fecha de la última actualización."
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "Debe"
+msgstr "Debe"
+
+#. module: banks
+#: field:account.account,debit_currency:0
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+#: field:banks.checkbook,debit_pc:0
+#: view:banks.deposit:banks.view_deposit_form
+#: selection:banks.deposit.name,type:0
+#: selection:banks.template,doc_type:0
+#: view:debit.credit:banks.view_credit_debit_form
+#: selection:debit.credit,doc_type:0
+#: selection:debit.credit.name,type:0
+#: view:mcheck.mcheck:banks.view_mcheck_form
+#: selection:mcheck.mcheck_name,type:0
+msgid "Debit"
+msgstr "Débito"
+
+#. module: banks
+#: field:banks.checkbook,debit_sc:0
+msgid "Debit Secundary Corrency"
+msgstr "Débito"
+
+#. module: banks
+#: model:ir.ui.menu,name:banks.debit_credit
+msgid "Debit and Credit"
+msgstr "Debitos y Créditos"
+
+#. module: banks
+#: field:debit.credit,mcheck_ids:0
+msgid "Debit and Credit lines"
+msgstr "Líneas de Débito y Crédito"
+
+#. module: banks
+#: field:banks.deposit,rest_credit:0
+#: field:debit.credit,rest_credit:0
+#: field:mcheck.mcheck,rest_credit:0
+msgid "Debit left"
+msgstr "Diferencia"
+
+#. module: banks
+#: field:template_docid_select,to_debit_credit:0
+msgid "Debit or Dredit"
+msgstr "Debit or Dredit"
+
+#. module: banks
+#: field:account.move.line,credit_debit_id:0
+msgid "Debit/Credit"
+msgstr "Debit/Credit"
+
+#. module: banks
+#: view:banks.deposit:banks.view_deposit_form
+msgid "Debits"
+msgstr "Débitos"
+
+#. module: banks
+#: model:ir.actions.act_window,name:banks.debit_credit_action_form
+msgid "Debits and  Credits"
+msgstr "Débitos y Créditos"
+
+#. module: banks
+#: view:debit.credit:banks.view_credit_debit_tree
+msgid "Debits and Credits"
+msgstr "Débitos y Créditos"
+
+#. module: banks
+#: model:res.groups,name:banks.group_debit_credit_deposit
+msgid "Debits, Credits and deposits"
+msgstr "Débitos y Créditos"
+
+#. module: banks
+#: field:banks.deposit,type:0
+#: field:banks.mchecks.consolidations,type:0
+#: field:debit.credit,type:0
+#: field:mcheck.mcheck,type:0
+msgid "Default Type"
+msgstr "Tipo predeterminado"
+
+#. module: banks
+#: field:account.move.line,deposit_id:0
+#: selection:banks.deposit,doc_type:0
+#: field:banks.deposit,mcheck_ids:0
+#: field:banks.deposit.name,mcheck_id:0
+#: selection:banks.template,doc_type:0
+#: model:ir.ui.menu,name:banks.deposits
+msgid "Deposit"
+msgstr "Depósitos"
+
+#. module: banks
+#: field:banks.deposit.name,chqmanalitics:0
+msgid "Deposit Analitics"
+msgstr "Deposit Analitics"
+
+#. module: banks
+#: view:banks.deposit:banks.view_deposit_tree
+#: model:ir.actions.act_window,name:banks.deposit_action_form
+#: model:res.groups,name:banks.group_deposit
+msgid "Deposits"
+msgstr "Depósitos"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: field:banks.deposit.name,name:0
+#: field:debit.credit.name,name:0
+#: field:mcheck.mcheck_name,name:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+msgid "Dest. Journal"
+msgstr "Cuenta destino"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+msgid "Dest. journal"
+msgstr "Cuenta destino"
+
+#. module: banks
+#: field:banks.banks.transferences,dest_journal_id:0
+msgid "Destiny Journal"
+msgstr "Cuenta destino"
+
+#. module: banks
+#: field:banks.banks.transferences,dest_journal_desc:0
+msgid "Destiny Journal Description"
+msgstr "Descripción"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "Detalle"
+msgstr "Detalle"
+
+#. module: banks
+#: view:website:banks.external_layout_cierre
+msgid "Dirección:"
+msgstr "Dirección:"
+
+#. module: banks
+#: field:banks.template,doc_id:0
+msgid "Doc"
+msgstr "Transacción"
+
+#. module: banks
+#: field:banks.template,doc_type:0
+#: field:mcheck.mcheck,doc_type:0
+msgid "Doc. type"
+msgstr "Tipo"
+
+#. module: banks
+#: field:template_docid_select,doc_id_debit_credit:0
+#: field:template_docid_select,doc_id_mcheck:0
+msgid "Document"
+msgstr "Document"
+
+#. module: banks
+#: model:ir.actions.act_window,name:banks.banks_doc_id_select_action
+msgid "Document Selection"
+msgstr "Document Selection"
+
+#. module: banks
+#: code:addons/banks/wizard/template_docid_select.py:35
+#: code:addons/banks/wizard/template_docid_select.py:37
+#: help:template_docid_select,doc_id_debit_credit:0
+#: help:template_docid_select,doc_id_mcheck:0
+#, python-format
+msgid "Document to use as template"
+msgstr "Document to use as template"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Documento"
+msgstr "Documento"
+
+#. module: banks
+#: field:banks.deposit.name,type:0
+#: field:debit.credit.name,type:0
+#: field:mcheck.mcheck_name,type:0
+msgid "Dr/Cr"
+msgstr "Dr/Cr"
+
+#. module: banks
+#: selection:banks.banks.transferences,state:0
+#: selection:banks.deposit,state:0
+#: selection:debit.credit,state:0
+#: selection:mcheck.mcheck,state:0
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: banks
+#: code:addons/banks/wizard/anulation_date_wizard.py:18
+#: help:anullation_date_wizard,date:0
+#, python-format
+msgid "Effective date for  anullation"
+msgstr "Effective date for  anullation"
+
+#. module: banks
+#: help:banks.mchecks.consolidations,date:0
+msgid "Effective date for accosunting entries"
+msgstr "Fecha de vigencia para los asientos contables"
+
+#. module: banks
+#: help:banks.banks.transferences,date:0
+#: help:banks.deposit,date:0
+#: help:debit.credit,date:0
+#: help:mcheck.mcheck,date:0
+msgid "Effective date for accounting entries"
+msgstr "Fecha de vigencia para los asientos contables"
+
+#. module: banks
+#: help:mcheck.mcheck,anulation_date:0
+msgid "Effective date for anulation"
+msgstr "Fecha de anulación"
+
+#. module: banks
+#: model:ir.model,name:banks.model_mail_thread
+msgid "Email Thread"
+msgstr "Hilo de mensajes"
+
+#. module: banks
+#: code:addons/banks/model/ir_sequence.py:24
+#, python-format
+msgid "Error"
+msgstr "Error"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:71
+#: code:addons/banks/model/debit_credit.py:231
+#: code:addons/banks/model/mcheck.py:415
+#, python-format
+msgid "Error !"
+msgstr "Error !"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:82
+#: code:addons/banks/model/account_voucher.py:134
+#: code:addons/banks/model/account_voucher.py:235
+#: code:addons/banks/model/banks_transferences.py:37
+#: code:addons/banks/model/banks_transferences.py:42
+#: code:addons/banks/model/banks_transferences.py:109
+#: code:addons/banks/model/banks_transferences.py:157
+#: code:addons/banks/model/banks_transferences.py:225
+#: code:addons/banks/model/debit_credit.py:45
+#: code:addons/banks/model/debit_credit.py:50
+#: code:addons/banks/model/debit_credit.py:100
+#: code:addons/banks/model/debit_credit.py:410
+#: code:addons/banks/model/deposit.py:42
+#: code:addons/banks/model/deposit.py:47
+#: code:addons/banks/model/deposit.py:101
+#: code:addons/banks/model/deposit.py:331
+#: code:addons/banks/model/mcheck.py:40
+#: code:addons/banks/model/mcheck.py:45
+#: code:addons/banks/model/mcheck.py:138
+#: code:addons/banks/model/mcheck.py:175
+#: code:addons/banks/model/mcheck.py:269
+#: code:addons/banks/model/mcheck.py:498
+#: code:addons/banks/wizard/anulation_date_wizard.py:14
+#: code:addons/banks/wizard/template_docid_select.py:22
+#, python-format
+msgid "Error!"
+msgstr "Error!"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Fecha"
+msgstr "Fecha"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Fecha Original"
+msgstr "Fecha Original"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "Firma Autorizada"
+msgstr "Firma Autorizada"
+
+#. module: banks
+#: field:banks.banks.transferences,message_follower_ids:0
+#: field:banks.deposit,message_follower_ids:0
+#: field:debit.credit,message_follower_ids:0
+#: field:mcheck.mcheck,message_follower_ids:0
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+#: view:banks.checkbook:banks.view_mcheck_search
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: view:debit.credit:banks.view_credit_debit_search
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "Haber"
+msgstr "Haber"
+
+#. module: banks
+#: help:banks.banks.transferences,message_summary:0
+#: help:banks.deposit,message_summary:0
+#: help:debit.credit,message_summary:0
+#: help:mcheck.mcheck,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+
+#. module: banks
+#: field:anullation_date_wizard,id:0
+#: field:banks.banks,id:0
+#: field:banks.banks.transferences,id:0
+#: field:banks.checkbook,id:0
+#: field:banks.deposit,id:0
+#: field:banks.deposit.name,id:0
+#: field:banks.mchecks.consolidations,id:0
+#: field:banks.template,id:0
+#: field:debit.credit,id:0
+#: field:debit.credit.name,id:0
+#: field:mcheck.mcheck,id:0
+#: field:mcheck.mcheck_name,id:0
+#: field:report.banks.mcheck_print,id:0
+#: field:report.banks.write_checks_print,id:0
+#: field:report.debitcredit_print,id:0
+#: field:template_docid_select,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: banks
+#: help:banks.banks.transferences,message_unread:0
+#: help:banks.deposit,message_unread:0
+#: help:debit.credit,message_unread:0
+#: help:mcheck.mcheck,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "If checked new messages require your attention."
+
+#. module: banks
+#: code:addons/banks/model/ir_sequence.py:37
+#, python-format
+msgid "Invalid prefix or suffix for sequence '%s'"
+msgstr "Invalid prefix or suffix for sequence '%s'"
+
+#. module: banks
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Invalidate Voucher"
+msgstr "Anular comprobante"
+
+#. module: banks
+#: field:banks.banks.transferences,message_is_follower:0
+#: field:banks.deposit,message_is_follower:0
+#: field:debit.credit,message_is_follower:0
+#: field:mcheck.mcheck,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Es seguidor"
+
+#. module: banks
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "Issued to"
+msgstr "Pagado a"
+
+#. module: banks
+#: view:banks.checkbook:banks.banks_checkbook_tree
+#: view:banks.checkbook:banks.view_mcheck_search
+#: field:banks.checkbook,journal:0
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: field:banks.deposit,journal_id:0
+#: view:debit.credit:banks.view_credit_debit_search
+#: field:debit.credit,journal_id:0
+#: model:ir.model,name:banks.model_account_journal
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+#: field:mcheck.mcheck,journal_id:0
+msgid "Journal"
+msgstr "Diario"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: view:banks.deposit:banks.view_deposit_form
+#: view:debit.credit:banks.view_credit_debit_form
+#: model:ir.model,name:banks.model_account_move_line
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Journal Items"
+msgstr "Apuntes contables"
+
+#. module: banks
+#: field:banks.template,journal_comp_id:0
+msgid "Journal company id"
+msgstr "Journal company id"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+#: view:website:banks.write_checks_print
+msgid "La suma de"
+msgstr "La suma de"
+
+#. module: banks
+#: field:banks.banks.transferences,message_last_post:0
+#: field:banks.deposit,message_last_post:0
+#: field:debit.credit,message_last_post:0
+#: field:mcheck.mcheck,message_last_post:0
+msgid "Last Message Date"
+msgstr "Fecha del último mensaje"
+
+#. module: banks
+#: field:anullation_date_wizard,write_uid:0
+#: field:banks.banks,write_uid:0
+#: field:banks.banks.transferences,write_uid:0
+#: field:banks.checkbook,write_uid:0
+#: field:banks.deposit,write_uid:0
+#: field:banks.deposit.name,write_uid:0
+#: field:banks.mchecks.consolidations,write_uid:0
+#: field:banks.template,write_uid:0
+#: field:debit.credit,write_uid:0
+#: field:debit.credit.name,write_uid:0
+#: field:mail.thread,write_uid:0
+#: field:mcheck.mcheck,write_uid:0
+#: field:mcheck.mcheck_name,write_uid:0
+#: field:template_docid_select,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultima actualización por"
+
+#. module: banks
+#: field:anullation_date_wizard,write_date:0
+#: field:banks.banks,write_date:0
+#: field:banks.banks.transferences,write_date:0
+#: field:banks.checkbook,write_date:0
+#: field:banks.deposit,write_date:0
+#: field:banks.deposit.name,write_date:0
+#: field:banks.mchecks.consolidations,write_date:0
+#: field:banks.template,write_date:0
+#: field:debit.credit,write_date:0
+#: field:debit.credit.name,write_date:0
+#: field:mail.thread,write_date:0
+#: field:mcheck.mcheck,write_date:0
+#: field:mcheck.mcheck_name,write_date:0
+#: field:template_docid_select,write_date:0
+msgid "Last Updated on"
+msgstr "Ultima actualización el"
+
+#. module: banks
+#: selection:banks.mchecks.consolidations,type:0
+msgid "Mcheck"
+msgstr "Cheques"
+
+#. module: banks
+#: field:template_docid_select,to_mcheck:0
+msgid "Mcheck or Transferences"
+msgstr "Mcheck or Transferences"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+#: field:banks.banks.transferences,name:0
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: field:banks.deposit,name:0
+#: view:debit.credit:banks.view_credit_debit_search
+#: field:debit.credit,name:0
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+#: field:mcheck.mcheck,name:0
+msgid "Memo"
+msgstr "Descripción"
+
+#. module: banks
+#: field:banks.banks.transferences,message_ids:0
+#: field:banks.deposit,message_ids:0
+#: field:debit.credit,message_ids:0
+#: field:mcheck.mcheck,message_ids:0
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: banks
+#: help:banks.banks.transferences,message_ids:0
+#: help:banks.deposit,message_ids:0
+#: help:debit.credit,message_ids:0
+#: help:mcheck.mcheck,message_ids:0
+msgid "Messages and communication history"
+msgstr "Histórico de Mensajes y Comunicación"
+
+#. module: banks
+#: field:account.journal,checkmiscelaneous:0
+msgid "Miscellaneous Checks"
+msgstr "Cheques Misceláneos"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: view:debit.credit:banks.view_credit_debit_search
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "Month"
+msgstr "Mes"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Monto"
+msgstr "Monto"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Monto original"
+msgstr "Monto original"
+
+#. module: banks
+#: field:banks.deposit,move_ids:0
+#: field:debit.credit,move_ids:0
+msgid "Move lines"
+msgstr "Apuntes contables"
+
+#. module: banks
+#: view:account.account:banks.view_bank_account_account_form
+msgid "Multi Currency"
+msgstr "Multimoneda"
+
+#. module: banks
+#: view:banks.banks:banks.banks_banks_tree
+#: field:banks.checkbook,name:0
+#: field:banks.template,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:217
+#: code:addons/banks/model/deposit.py:203
+#: code:addons/banks/model/mcheck.py:314
+#, python-format
+msgid "No lines"
+msgstr "Operación sin detalle"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+#: field:banks.banks.transferences,number:0
+#: field:banks.banks.transferences,number_calc:0
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: field:banks.deposit,number:0
+#: field:banks.deposit,number_calc:0
+#: field:banks.mchecks.consolidations,number:0
+#: view:debit.credit:banks.view_credit_debit_search
+#: field:debit.credit,number:0
+#: field:debit.credit,number_calc:0
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+#: field:mcheck.mcheck,number:0
+#: field:mcheck.mcheck,number_calc:0
+msgid "Number"
+msgstr "Número"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:37
+#: code:addons/banks/model/banks_transferences.py:42
+#: code:addons/banks/model/debit_credit.py:45
+#: code:addons/banks/model/debit_credit.py:50
+#: code:addons/banks/model/deposit.py:42
+#: code:addons/banks/model/deposit.py:47
+#: code:addons/banks/model/mcheck.py:40
+#: code:addons/banks/model/mcheck.py:45
+#: code:addons/banks/model/mcheck.py:138
+#, python-format
+msgid "Operation was not finished, Try Again"
+msgstr "Operation was not finished, Try Again"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+msgid "Orig. Journal"
+msgstr "Cuenta origen"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+msgid "Orig. journal"
+msgstr "Cuenta origen"
+
+#. module: banks
+#: field:banks.banks.transferences,orig_journal_id:0
+msgid "Origin Journal"
+msgstr "Cuenta origen"
+
+#. module: banks
+#: field:banks.banks.transferences,orig_journal_desc:0
+msgid "Origin Journal Description"
+msgstr "Descripción"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Pago"
+msgstr "Pago"
+
+#. module: banks
+#: view:website:banks.mcheck_print
+msgid "Paguese a"
+msgstr "Paguese a"
+
+#. module: banks
+#: field:debit.credit.name,partner_id:0
+#: model:ir.model,name:banks.model_res_partner
+#: field:mcheck.mcheck_name,partner_id:0
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: banks
+#: field:mcheck.mcheck,reference:0
+msgid "Pay to"
+msgstr "Pagar a"
+
+#. module: banks
+#: selection:banks.deposit,type:0
+#: selection:debit.credit,type:0
+#: selection:mcheck.mcheck,type:0
+msgid "Payment"
+msgstr "Pago"
+
+#. module: banks
+#: view:account.voucher:banks.view_account_voucher_vendor_form
+#: view:account.voucher:banks.view_account_voucher_vendor_payment_form
+#: view:account.voucher:banks.view_account_voucher_vendor_recipient_dialog
+msgid "Payment type"
+msgstr "Tipo"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:121
+#: code:addons/banks/model/debit_credit.py:427
+#: code:addons/banks/model/deposit.py:349
+#: code:addons/banks/model/mcheck.py:489
+#, python-format
+msgid "Please Create a sequence code with the code '' or add a sequence for this journal with the code ''"
+msgstr "Aun no ha definido una secuencia de tipo '' para este diario. Cree o seleccione una en la configuración de este diario"
+
+#. module: banks
+#: code:addons/banks/model/mcheck.py:77
+#, python-format
+msgid "Please Create a sequence for cancellation to the selected document type!"
+msgstr "Necesita definir una secuencia de anulación en la configuración de este diario para poder anular esta operación"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:59
+#: code:addons/banks/model/account_voucher.py:128
+#: code:addons/banks/model/banks_transferences.py:92
+#: code:addons/banks/model/debit_credit.py:384
+#: code:addons/banks/model/deposit.py:305
+#: code:addons/banks/model/mcheck.py:451
+#, python-format
+msgid "Please activate the sequence of selected journal !"
+msgstr "Active la secuencia correspondiente a esta operación en el diario seleccionado"
+
+#. module: banks
+#: code:addons/banks/model/ir_sequence.py:24
+#, python-format
+msgid "Please configurate this journal sequence implementation as 'No gap'!"
+msgstr "Please configurate this journal sequence implementation as 'No gap'!"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:134
+#, python-format
+msgid "Please define a sequence on the journal."
+msgstr "Defina una secuencia en este diario.."
+
+#. module: banks
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+msgid "Primary Currency"
+msgstr "Moneda principal"
+
+#. module: banks
+#: model:ir.actions.report.xml,name:banks.banks_mcheck_print
+msgid "Print Check"
+msgstr "Print Check"
+
+#. module: banks
+#: selection:banks.deposit,type:0
+#: selection:debit.credit,type:0
+#: selection:mcheck.mcheck,type:0
+msgid "Purchase"
+msgstr "Compra"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Páguese a:"
+msgstr "Páguese a"
+
+#. module: banks
+#: view:website:banks.external_layout_cierre
+msgid "RTN:"
+msgstr "RTN:"
+
+#. module: banks
+#: selection:banks.deposit,type:0
+#: selection:debit.credit,type:0
+#: selection:mcheck.mcheck,type:0
+msgid "Receipt"
+msgstr "Recibo"
+
+#. module: banks
+#: view:website:banks.write_checks_print
+msgid "Saldo"
+msgstr "Saldo"
+
+#. module: banks
+#: selection:banks.deposit,type:0
+#: selection:debit.credit,type:0
+#: selection:mcheck.mcheck,type:0
+msgid "Sale"
+msgstr "Venta"
+
+#. module: banks
+#: view:banks.template:banks.view_banks_templates_form
+msgid "Save"
+msgstr "Guardar"
+
+#. module: banks
+#: view:banks.checkbook:banks.view_bank_checkbook_form
+msgid "Second Currency"
+msgstr "Moneda secundaria"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:394
+#, python-format
+msgid "Selec a Type and a Journal"
+msgstr "Selecciones un Diario y un tipo de operación"
+
+#. module: banks
+#: code:addons/banks/model/deposit.py:315
+#, python-format
+msgid "Selec a Typeand a Journal"
+msgstr "Selecciones un Diario y un tipo de operación"
+
+#. module: banks
+#: view:banks.template:banks.view_banks_templates_form
+msgid "Select Document"
+msgstr "Seleccionar transacción"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:279
+#, python-format
+msgid "Select Template"
+msgstr "Plantillas"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:307
+#: code:addons/banks/model/mcheck.py:463
+#, python-format
+msgid "Select a Type and a Journal"
+msgstr "Selecciones un Diario y un tipo de operación"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:82
+#, python-format
+msgid "Sequence was not updated!"
+msgstr "Secuencia no actualizada"
+
+#. module: banks
+#: view:account.journal:banks.view_pos_account_journal_form1
+msgid "Sequences"
+msgstr "Sequencias"
+
+#. module: banks
+#: model:res.groups,name:banks.group_banks_sequence_edit
+msgid "Sequences / Edit "
+msgstr "Sequences / Edit "
+
+#. module: banks
+#: code:addons/banks/model/mcheck.py:570
+#, python-format
+msgid "Set as Template"
+msgstr "Set as Template"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: view:debit.credit:banks.view_credit_debit_search
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "State"
+msgstr "Estado"
+
+#. module: banks
+#: field:banks.banks.transferences,state:0
+#: field:banks.deposit,state:0
+#: field:debit.credit,state:0
+#: field:mcheck.mcheck,state:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: banks
+#: model:mail.message.subtype,name:banks.banks_deposit_state_change
+#: model:mail.message.subtype,name:banks.debit_credit_state_change
+#: model:mail.message.subtype,name:banks.mcheck_state_change
+msgid "Status Change"
+msgstr "Cambio de estado"
+
+#. module: banks
+#: model:mail.message.subtype,description:banks.banks_deposit_state_change
+#: model:mail.message.subtype,description:banks.debit_credit_state_change
+#: model:mail.message.subtype,description:banks.mcheck_state_change
+msgid "Status changed"
+msgstr "Estado cambiado"
+
+#. module: banks
+#: field:banks.banks.transferences,message_summary:0
+#: field:banks.deposit,message_summary:0
+#: field:debit.credit,message_summary:0
+#: field:mcheck.mcheck,message_summary:0
+msgid "Summary"
+msgstr "Summary"
+
+#. module: banks
+#: field:banks.deposit,tax_amount:0
+#: field:debit.credit,tax_amount:0
+#: field:mcheck.mcheck,tax_amount:0
+msgid "Tax Amount"
+msgstr "Monto de impuestos"
+
+#. module: banks
+#: view:website:banks.external_layout_cierre
+msgid "Tel:"
+msgstr "Tel:"
+
+#. module: banks
+#: field:debit.credit,template_id:0
+#: field:mcheck.mcheck,template_id:0
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: banks
+#: view:banks.template:banks.view_banks_templates_tree
+#: model:ir.actions.act_window,name:banks.banks_template_action
+#: model:ir.ui.menu,name:banks.banks_template_menu
+msgid "Templates"
+msgstr "Plantillas"
+
+#. module: banks
+#: code:addons/banks/wizard/anulation_date_wizard.py:14
+#: code:addons/banks/wizard/template_docid_select.py:22
+#, python-format
+msgid "The operation was not finished, Try Again!"
+msgstr "The operation was not finished, Try Again!"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:370
+#, python-format
+msgid "The selected journal has no sequence for this kind of documnet"
+msgstr "The selected journal has no sequence for this kind of documnet"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:235
+#: code:addons/banks/model/mcheck.py:269
+#, python-format
+msgid "The selected journal must have a commission account asociadted if you want to use commissions"
+msgstr "El diario seleccionado debe tener asociada una cuenta de comisión para poder registrar la comisión directamente"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:157
+#: code:addons/banks/model/debit_credit.py:100
+#: code:addons/banks/model/deposit.py:101
+#: code:addons/banks/model/mcheck.py:175
+#, python-format
+msgid "There is not an open period for you company on the selected date"
+msgstr "There is not an open period for you company on the selected date"
+
+#. module: banks
+#: field:account.voucher,amounttext:0
+#: field:banks.banks.transferences,total:0
+#: field:banks.deposit,amount:0
+#: field:banks.deposit,amountcredit:0
+#: field:banks.deposit,amountdebit:0
+#: field:banks.deposit,amounttext:0
+#: field:banks.deposit,total:0
+#: field:debit.credit,amount:0
+#: field:debit.credit,amountcredit:0
+#: field:debit.credit,amountdebit:0
+#: field:debit.credit,amounttext:0
+#: field:debit.credit,total:0
+#: field:mcheck.mcheck,amdit:0
+#: field:mcheck.mcheck,amount:0
+#: field:mcheck.mcheck,amountdebit:0
+#: field:mcheck.mcheck,amounttext:0
+#: field:mcheck.mcheck,total:0
+msgid "Total"
+msgstr "Total"
+
+#. module: banks
+#: model:mail.message.subtype,name:banks.banks_deposit_total_change
+#: model:mail.message.subtype,name:banks.banks_transferences_total_change
+#: model:mail.message.subtype,name:banks.debit_credit_total_change
+#: model:mail.message.subtype,name:banks.mcheck_total_change
+msgid "Total Change"
+msgstr "Cambio en Total"
+
+#. module: banks
+#: model:mail.message.subtype,description:banks.banks_deposit_total_change
+#: model:mail.message.subtype,description:banks.banks_transferences_total_change
+#: model:mail.message.subtype,description:banks.debit_credit_total_change
+#: model:mail.message.subtype,description:banks.mcheck_total_change
+msgid "Total changed"
+msgstr "Total cambiado"
+
+#. module: banks
+#: help:banks.banks,name:0
+#: help:mcheck.mcheck,reference:0
+msgid "Transaction reference number."
+msgstr "Número de referencia de la operación."
+
+#. module: banks
+#: selection:banks.template,doc_type:0
+#: selection:mcheck.mcheck,doc_type:0
+msgid "Transference"
+msgstr "Transferencia"
+
+#. module: banks
+#: field:banks.banks.transferences,move_ids:0
+msgid "Transferences Account Move lines"
+msgstr "Apuntes contables"
+
+#. module: banks
+#: code:addons/banks/wizard/template_docid_select.py:19
+#, python-format
+msgid "Try again Please"
+msgstr "Try again Please"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:190
+#: code:addons/banks/model/debit_credit.py:193
+#: code:addons/banks/model/deposit.py:177
+#: code:addons/banks/model/mcheck.py:285
+#, python-format
+msgid "Try to make it fit"
+msgstr "Intente ajustar"
+
+#. module: banks
+#: field:banks.deposit,doc_type:0
+#: field:debit.credit,doc_type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: banks
+#: field:banks.banks.transferences,message_unread:0
+#: field:banks.deposit,message_unread:0
+#: field:debit.credit,message_unread:0
+#: field:mcheck.mcheck,message_unread:0
+msgid "Unread Messages"
+msgstr "Mensajes no leidos"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: view:banks.deposit:banks.view_deposit_form
+#: view:debit.credit:banks.view_credit_debit_form
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Unreconciliate"
+msgstr "Romper conciliación"
+
+#. module: banks
+#: field:banks.banks.transferences,was_unreconcilied:0
+#: field:banks.deposit,was_unreconcilied:0
+#: field:debit.credit,was_unreconcilied:0
+#: field:mcheck.mcheck,was_unreconcilied:0
+msgid "Unreconcilied"
+msgstr "No conciliado"
+
+#. module: banks
+#: code:addons/banks/wizard/template_docid_select.py:33
+#: help:template_docid_select,to_debit_credit:0
+#, python-format
+msgid "Use as Debit or credit Template"
+msgstr "Use as Debit or credit Template"
+
+#. module: banks
+#: code:addons/banks/wizard/template_docid_select.py:31
+#: help:template_docid_select,to_mcheck:0
+#, python-format
+msgid "Use as Mchecks and Transferences Template"
+msgstr "Use as Mchecks and Transferences Template"
+
+#. module: banks
+#: view:debit.credit:banks.view_credit_debit_form
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Use as template"
+msgstr "Definir como plantilla"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_transferences_form
+#: view:banks.deposit:banks.view_deposit_form
+#: view:debit.credit:banks.view_credit_debit_form
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Validate"
+msgstr "Validar"
+
+#. module: banks
+#: selection:banks.banks.transferences,state:0
+#: selection:banks.deposit,state:0
+#: selection:debit.credit,state:0
+#: selection:mcheck.mcheck,state:0
+msgid "Validated"
+msgstr "Validado"
+
+#. module: banks
+#: selection:banks.mchecks.consolidations,type:0
+msgid "Voucher"
+msgstr "Voucher"
+
+#. module: banks
+#: view:banks.deposit:banks.view_deposit_form
+#: view:debit.credit:banks.view_credit_debit_form
+#: view:mcheck.mcheck:banks.view_mcheck_form
+msgid "Voucher Entry"
+msgstr "Comprobante"
+
+#. module: banks
+#: code:addons/banks/model/account_voucher.py:309
+#: code:addons/banks/model/debit_credit.py:396
+#: code:addons/banks/model/deposit.py:317
+#: code:addons/banks/model/mcheck.py:465
+#, python-format
+msgid "Warnig! Please Create a sequence code with the code '' or add a sequence for this journal with the code ''"
+msgstr "¡Advertencia! Aun no ha definido una secuencia de tipo '' para este diario. Cree o seleccione una en la configuración de este diario"
+
+#. module: banks
+#: code:addons/banks/model/ir_sequence.py:37
+#, python-format
+msgid "Warning"
+msgstr "¡Advertencia!"
+
+#. module: banks
+#: code:addons/banks/model/mcheck.py:498
+#, python-format
+msgid "You can not delete a Miscellaneous check when it has a diferent state than Draft or it has not been unreconcilied!"
+msgstr "No puede eliminar una operación de este tipo cuando ya ha sido validada. Sin embargo, puede romper la conciliación y luego cancelar el comprobante"
+
+#. module: banks
+#: code:addons/banks/model/banks_transferences.py:109
+#, python-format
+msgid "You can not delete a bank transference when it has a diferent state than Draft or it has been unreconcilied!"
+msgstr "No puede eliminar una operación de este tipo cuando ya ha sido validada. Sin embargo, puede romper la conciliación y luego cancelar el comprobante"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:410
+#, python-format
+msgid "You can not delete a debit or credit when it has a diferent state than Draft or it has been unreconcilied!"
+msgstr "No puede eliminar una operación de este tipo cuando ya ha sido validada. Sin embargo, puede romper la conciliación y luego cancelar el comprobante"
+
+#. module: banks
+#: code:addons/banks/model/deposit.py:331
+#, python-format
+msgid "You can not delete a deposit when it has a diferent state than Draft or it has been unreconcilied!"
+msgstr "No puede eliminar una operación de este tipo cuando ya ha sido validada. Sin embargo, puede romper la conciliación y luego cancelar el comprobante"
+
+#. module: banks
+#: code:addons/banks/model/mcheck.py:312
+#, python-format
+msgid "amount total is 0"
+msgstr "El total para esta operación debe ser distinto de cero"
+
+#. module: banks
+#: view:banks.checkbook:banks.view_mcheck_search
+msgid "bank"
+msgstr "bank"
+
+#. module: banks
+#: model:ir.actions.act_window,name:banks.banks_bank_action
+#: model:ir.ui.menu,name:banks.banks_menu
+msgid "banks"
+msgstr "Bancos"
+
+#. module: banks
+#: model:ir.actions.act_window,name:banks.banks_checkbook_action
+#: model:ir.ui.menu,name:banks.checkbook
+msgid "banks checkbook"
+msgstr "Chequeras"
+
+#. module: banks
+#: field:mcheck.mcheck,mcheck_ids:0
+msgid "checks lines"
+msgstr "Lineas de Cheque"
+
+#. module: banks
+#: view:account.journal:banks.view_pos_account_journal_form1
+msgid "debit and credit"
+msgstr "Débitos y créditos"
+
+#. module: banks
+#: field:debit.credit.name,mcheck_id:0
+msgid "debit and credit "
+msgstr "Débitos y créditos "
+
+#. module: banks
+#: selection:debit.credit,doc_type:0
+msgid "deposit"
+msgstr "Depósito"
+
+#. module: banks
+#: field:account.voucher,is_type_selected:0
+msgid "is type selected"
+msgstr "Tipo seleccionado"
+
+#. module: banks
+#: view:banks.checkbook:banks.view_mcheck_search
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: view:debit.credit:banks.view_credit_debit_search
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "journal"
+msgstr "Diario"
+
+#. module: banks
+#: field:account.move.line,mcheck_id:0
+#: model:ir.actions.act_window,name:banks.mcheck_action_form_mcheck
+#: model:ir.ui.menu,name:banks.mcheck_mcheck
+#: field:mcheck.mcheck_name,mcheck_id:0
+msgid "mcheck"
+msgstr "Cheques Misceláneos"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transactions_tre
+#: view:debit.credit:banks.view_credit_debit_form
+#: view:mcheck.mcheck:banks.view_mcheck_form
+#: view:mcheck.mcheck:banks.view_mcheck_tree
+msgid "miscellaneous checks"
+msgstr "Cheques Misceláneos"
+
+#. module: banks
+#: field:banks.banks.transferences,obs:0
+#: field:banks.deposit,obs:0
+#: field:debit.credit,obs:0
+#: field:mcheck.mcheck,obs:0
+msgid "obs"
+msgstr "Obs"
+
+#. module: banks
+#: view:anullation_date_wizard:banks.banks_anullation_date_wizard_form
+#: view:banks.template:banks.view_banks_templates_form
+#: view:template_docid_select:banks.banks_template_doc_id_select_wizard_form
+msgid "or"
+msgstr "o"
+
+#. module: banks
+#: field:banks.mchecks.consolidations,position:0
+msgid "pointer"
+msgstr "puntero"
+
+#. module: banks
+#: model:ir.actions.report.xml,name:banks.banks_write_checks_print
+msgid "print voucher"
+msgstr "Imprimir Cheque"
+
+#. module: banks
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "reference"
+msgstr "Referencia"
+
+#. module: banks
+#: view:banks.banks.transferences:banks.view_banks_banks_transferences_search
+#: view:banks.checkbook:banks.view_mcheck_search
+#: view:banks.deposit:banks.view_banks_deposit_search
+#: view:debit.credit:banks.view_credit_debit_search
+#: view:mcheck.mcheck:banks.view_mcheck_mcheck_search
+msgid "search"
+msgstr "Búsqueda"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:217
+#: code:addons/banks/model/deposit.py:203
+#: code:addons/banks/model/mcheck.py:314
+#, python-format
+msgid "select more than one line"
+msgstr "Debe agregar líneas de detalle en esta operación"
+
+#. module: banks
+#: code:addons/banks/model/mcheck.py:312
+#, python-format
+msgid "the value of total is 0"
+msgstr "El total para esta operación debe ser distinto de cero"
+
+#. module: banks
+#: view:banks.deposit:banks.view_deposit_tree
+#: view:debit.credit:banks.view_credit_debit_tree
+#: view:mcheck.mcheck:banks.view_mcheck_tree
+msgid "total"
+msgstr "total"
+
+#. module: banks
+#: field:account.voucher,msg:0
+#: field:banks.banks.transferences,msg:0
+#: field:banks.deposit,msg:0
+#: field:debit.credit,msg:0
+#: field:mcheck.mcheck,msg:0
+msgid "unknown"
+msgstr "Desconocido"
+
+#. module: banks
+#: code:addons/banks/model/debit_credit.py:190
+#: code:addons/banks/model/debit_credit.py:193
+#: code:addons/banks/model/deposit.py:177
+#: code:addons/banks/model/mcheck.py:285
+#, python-format
+msgid "you still have "
+msgstr "Aún tiene "
+

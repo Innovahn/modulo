@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<record id="group_tipo_entrega" model="res.groups">
+<field name="name">Tipo de entrega</field>
+</record>
+
+  
+
+</data>
+</openerp>
+
+

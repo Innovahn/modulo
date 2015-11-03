@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    <record model="ir.ui.view" id="view_account_account_exchange_difference_form">
+    <field name="name">account.exchange.difference.form</field>
+    <field name="model">account.exchange.difference</field>
+    <field name="inherit_id"/>
+    <field name="arch" type="xml">
+		
+		<form string="Exchange">
+			<header>
+			<button name="validate" type="object" string="Validate"  class="oe_highlight oe_read_only" states="draft"/>
+			<button name="unreconciliate" string="Unreconciliate" type="object" states="validated"  confirm="Are you sure you want to Unreconciliate this Document?"/>
+			<button name="recalculate" type="object" string="Recalculate" states="draft"/>
+
+			<field name="state" widget="statusbar" statusbar_visible="draft,validated" statusbar_colors='{"validated":"blue"}'/>
+			</header>
+			<sheet string="Accounting">
+				<h1><field name="number"  class="oe_inline" readonly='1'/> </h1>
+				<group col="4" colspan="4"> 
+					<field name="comment" />
+					<field name="rate" string='Rate' readonly="1"/>
+					<field name="date_from" readonly="1"/>
+					<field name="date" readonly="1"/>
+					<field name="gain_account" attrs="{'readonly': [('state','!=','draft')]}"/>
+					<field name="lost_account" attrs="{'readonly': [('state','!=','draft')]}"/>
+				</group> 
+				<group col="4" colspan="2"> 
+					<field name="gain" readonly="1"/>
+					<field name="lost" readonly="1"/>
+					<field name="difference" readonly="1"/>
+				</group> 
+					
+              	     		 <notebook colspan="4">
+				<page string="Lines">
+                     		    		 <field name="lines_ids"  mode="tree"  widget="one2many_list" >
+							<tree>
+								  <field name="ref"  />
+								  <field name="account_id" />
+								  <field name="amount_forg_curr" />
+							          <field name="amount_local_curr" />
+								  <field name="calculated_amount" />								  
+								  <field name="debit"  sum="debit" />
+								  <field name="credit" sum="credit"/>
+							</tree>
+						</field>
+					</page>
+                    			<page string="Voucher Entry">
+                     		    		 <field name="move_lines"  widget="one2many_list" attrs="{'readonly': [('state','!=','draft')]}"/>
+							
+					</page>
+				 
+                    			
+				 </notebook>
+			</sheet>
+			<div class="oe_chatter">
+                      		 	  <field name="message_ids" widget="mail_thread"/>
+                   		 </div>
+		</form>	
+	</field>	
+</record>
+
+	    <record model="ir.ui.view" id="view_account_exchange_difference_tree">
+		    <field name="name">account.exchange.difference</field>
+		    <field name="model">account.exchange.difference</field>
+		    <field name="arch" type="xml">
+			
+			  <tree create="true"> 
+ 
+				<field name="journal_id" />
+				<field name="date_from" />
+		                <field name="date" />
+		                <field name="comment"/>
+				 <field name="state"/>
+			</tree>
+		    </field>
+          </record>
+
+	<record id="account_plus_account_exchange_difference_action" model="ir.actions.act_window">
+		<field name="name">Exchange Difference</field>
+		<field name="res_model">account.exchange.difference</field>
+		<field name="src_model">account.exchange.difference</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="view_account_exchange_difference_tree"/> 
+		<field name="target">current</field>
+				
+	</record>
+	
+	
+	
+ <menuitem action="account_plus_account_exchange_difference_action" id="account_plus_exchange_wizard" string="Exchange Difference" parent="account.menu_finance_periodical_processing" sequence="60" />
+    </data>
+</openerp>
